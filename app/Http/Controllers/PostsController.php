@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Vote;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Requests;

@@ -8,9 +8,9 @@
         $(document).ready(function() {
             $('.topic').upvote();
 
-            $('#votes').on('click', function (e) {
+            $('.vote').on('click', function (e) {
                 e.preventDefault();
-                var value = $('.value').val();
+                var data = {value: $(this).data('value'), post_id: $(this).parent().data('post')};
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -20,19 +20,7 @@
                     type: "POST",
                     url: 'http://localhost/laravel-5/public/votes',
                     dataType: 'JSON',
-                    data: {value: value},
-                    success: function( data ) {
-
-                        //console.log(data);
-
-                        if(data.status == 'success') {
-                            alert(data.msg);
-
-                        } else {
-                            alert('error');
-                            console.log(data.msg);
-                        }
-                    }
+                    data: data
                 });
             });
 
@@ -52,10 +40,10 @@
                 <div class="row">
                     <div class="col-md-1">
                         {!! Form::open(['url' => 'votes', 'id' => 'votes']) !!}
-                            <div class="upvote topic">
-                                <a class="upvote value" data-value="1"></a>
+                            <div class="upvote topic" data-post="{{ $post->id }}">
+                                <a class="upvote vote" data-value="1"></a>
                                 <span class="count">0</span>
-                                <a class="downvote value" data-value="-1"></a>
+                                <a class="downvote vote" data-value="-1"></a>
                             </div>
                         {!! Form::close() !!}
                     </div>

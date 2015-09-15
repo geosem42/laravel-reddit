@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Vote;
 use App\Subreddit;
+use App\Post;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\VoteRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +49,8 @@ class VotesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param Requests\VoteRequest|Request $request
+     * @param $id
      * @return Response
      */
     public function store(Requests\VoteRequest $request)
@@ -57,17 +60,14 @@ class VotesController extends Controller
             'status' => 'success',
             'msg' => 'Article has been posted. Redirecting now.',
         );
-
         if(Auth::check()){
             \Log::info(Auth::user());
-            App\User::find(Auth::user()->id)->votes()->save($request->all());
+            Auth::user()->votes()->create($request->all());
         } else {
                 return \Response::json('Nope');
         }
 
         return \Response::json($response);
-
-
     }
 
     /**

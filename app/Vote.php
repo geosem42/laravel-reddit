@@ -9,7 +9,8 @@ class Vote extends Model
     protected $table = 'votes';
 
     protected $fillable = [
-        'value'
+        'value',
+        'post_id'
     ];
 
     protected $primaryKey = 'post_id';
