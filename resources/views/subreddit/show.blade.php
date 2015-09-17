@@ -8,22 +8,38 @@
         $(document).ready(function() {
             $('.topic').upvote();
 
-            $('.vote').on('click', function (e) {
+            $('.topic').on('click', function (e) {
                 e.preventDefault();
-                var data = {value: $(this).data('value'), post_id: $(this).parent().data('post')};
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('[name="_token"]').val()
-                    }
-                });
-                $.ajax({
-                    type: "POST",
-                    url: 'http://localhost/laravel-5/public/votes',
-                    dataType: 'JSON',
-                    data: data
-                });
-            });
+                var data = {value: $('.vote').data('value'), post_id: $(this).data('post')};
 
+                var clicked_button = $(this).children();
+
+                if($(clicked_button).hasClass('downvote-on')) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('[name="_token"]').val()
+                        }
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: 'http://localhost/laravel-5/public/votes',
+                        dataType: 'JSON',
+                        data: data
+                    });
+                } else if ($(clicked_button).hasClass('upvote-on')) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('[name="_token"]').val()
+                        }
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: 'http://localhost/laravel-5/public/votes',
+                        dataType: 'JSON',
+                        data: data
+                    });
+                }
+            });
         });
     </script>
 
@@ -39,7 +55,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-1">
-                        {!! Form::open(['url' => 'votes', 'id' => 'votes']) !!}
+                        <form action=""
+                        {!! Form::open(['url' => 'votes', 'class' => 'votes']) !!}
                             <div class="upvote topic" data-post="{{ $post->id }}">
                                 <a class="upvote vote" data-value="1"></a>
                                 <span class="count">0</span>
