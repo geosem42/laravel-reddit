@@ -1,7 +1,5 @@
 @extends('layouts/default')
-
-@section('content')
-    <link rel="stylesheet" href="{{ URL::asset('assets/css/jquery.upvote.css') }}">
+@section('scripts')
     <script src="{{ URL::asset('assets/js/jquery.upvote.js') }}"></script>
 
     <script type="text/javascript">
@@ -10,28 +8,26 @@
 
             $('.vote').on('click', function (e) {
                 e.preventDefault();
-                var data = {value: $(this).data('value'), post_id: $(this).parent().data('post')};
-
-                // var clicked_button = $(this).children();
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('[name="_token"]').val()
+                var $button = $(this);
+                var postId = $button.data('post-id');
+                var value = $button.data('value');
+                $.post('/votes', {postId:postId, value:value}, function(data) {
+                    if (data.status == 'success')
+                    {
+                        // Do something if you want..
                     }
-                });
-                $.ajax({
-                    type: "POST",
-                    url: 'http://localhost/laravel-5/public/votes',
-                    dataType: 'JSON',
-                    data: data
-                });
+                }, 'json');
             });
         });
     </script>
+@endsection
+
+@section('content')
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/jquery.upvote.css') }}">
 
     <h1>Subreddit: {{ $subreddit->name }}</h1>
 
-    @foreach($posts as $post)
+    @foreach($subreddit->posts as $post)
         <div class="row">
             <div class="span8">
                 <div class="row">
@@ -41,17 +37,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-1">
-                        @if ($voted = in_array($post->id, $votes))
-                            {!! Form::open(['method' => 'DELETE', 'url' => ['votes', $post->id]]) !!}
-                        @else
-                            {!! Form::open(['url' => 'votes', 'class' => 'votes']) !!}
-                        @endif
-                            <div class="upvote topic" data-post="{{ $post->id }}">
-                                <a class="upvote vote {{ $voted ? 'upvote-on' : '' }}" data-value="1"></a>
-                                <span class="count">0</span>
-                                <a class="downvote vote {{ $voted ? 'downvote-on' : '' }}" data-value="-1"></a>
-                            </div>
-                            {!! Form::close() !!}
+                        <div class="upvote topic" data-post="{{ $post->id }}">
+                            <a class="upvote vote {{ $post->votes && $post->votes->contains('user_id', Auth::id()) ? ($post->votes->where('user_id', Auth::id())->first()->value > 0 ? 'upvote-on' : null) : null}}" data-value="1" data-post-id="{{ $post->id }}"></a>
+                            <!-- Notice how we set the sum of the votes for this post here -->
+                            <span class="count">{{ $post->votes->sum('value') }}</span>
+                            <a class="downvote vote {{ $post->votes && $post->votes->contains('user_id', Auth::id()) ? ($post->votes->where('user_id', Auth::id())->first()->value < 0 ? 'downvote-on' : null) : null}}" data-value="-1" data-post-id="{{ $post->id }}"></a>
+                        </div>
                     </div>
                     <div class="col-md-1">
                         <a href="#" class="thumbnail">
