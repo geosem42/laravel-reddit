@@ -70,28 +70,9 @@ class SubredditController extends Controller
      */
     public function show(Subreddit $subreddit)
     {
-        /*$subreddit = Subreddit::findOrFail($id);
-        $subreddit->load('posts');
+        $subreddit = Subreddit::with('posts.votes')->findOrFail($subreddit->id);
 
-        if(is_null($subreddit)) {
-            abort(404);
-        }*/
-
-        /*$posts = DB::table('subreddits')
-            ->join('posts', 'subreddits.id', '=', 'posts.subreddit_id')
-            ->select('posts.*')
-            ->take(5)
-            ->get();*/
-
-        $posts = Subreddit::findOrFail($subreddit->id)->posts()->get();
-
-        $votes = Auth::user()->votes()->get()->toArray();
-
-        //dd($votes);
-
-        return view('subreddit/show')->with('subreddit', $subreddit)
-                                    ->with('posts', $posts)
-                                    ->with('votes', $votes);
+        return view('subreddit/show')->with('subreddit', $subreddit);
     }
 
     /**
