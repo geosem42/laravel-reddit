@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Subreddit;
 use App\User;
 use App\Post;
+use App\Vote;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Requests;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 
 class SubredditController extends Controller
@@ -63,6 +65,8 @@ class SubredditController extends Controller
      * Display the specified resource.
      *
      * @internal param Subreddit $subreddit
+     * @param Subreddit $subreddit
+     * @return $this
      */
     public function show(Subreddit $subreddit)
     {
@@ -81,8 +85,13 @@ class SubredditController extends Controller
 
         $posts = Subreddit::findOrFail($subreddit->id)->posts()->get();
 
+        $votes = Auth::user()->votes()->get()->toArray();
+
+        //dd($votes);
+
         return view('subreddit/show')->with('subreddit', $subreddit)
-                                    ->with('posts', $posts);
+                                    ->with('posts', $posts)
+                                    ->with('votes', $votes);
     }
 
     /**

@@ -58,7 +58,7 @@ class VotesController extends Controller
         // AJAX JSON RESPONSE
         $response = array(
             'status' => 'success',
-            'msg' => 'Article has been posted. Redirecting now.',
+            'msg' => 'Vote has been added.',
         );
         if(Auth::check()){
             \Log::info(Auth::user());
@@ -107,11 +107,25 @@ class VotesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param VoteRequest $request
      * @return Response
+     * @internal param int $id
      */
-    public function destroy($id)
+    public function destroy(Requests\VoteRequest $request)
     {
-        //
+        // AJAX JSON RESPONSE
+        $response = array(
+            'status' => 'success',
+            'msg' => 'Vote has been removed.',
+        );
+
+        if(Auth::check()){
+            \Log::info(Auth::user());
+            Auth::user()->votes()->delete($request->all());
+        } else {
+            return \Response::json('Nope');
+        }
+
+        return \Response::json($response);
     }
 }

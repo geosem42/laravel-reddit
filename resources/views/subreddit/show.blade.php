@@ -8,37 +8,23 @@
         $(document).ready(function() {
             $('.topic').upvote();
 
-            $('.topic').on('click', function (e) {
+            $('.vote').on('click', function (e) {
                 e.preventDefault();
-                var data = {value: $('.vote').data('value'), post_id: $(this).data('post')};
+                var data = {value: $(this).data('value'), post_id: $(this).parent().data('post')};
 
-                var clicked_button = $(this).children();
+                // var clicked_button = $(this).children();
 
-                if($(clicked_button).hasClass('downvote-on')) {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('[name="_token"]').val()
-                        }
-                    });
-                    $.ajax({
-                        type: "POST",
-                        url: 'http://localhost/laravel-5/public/votes',
-                        dataType: 'JSON',
-                        data: data
-                    });
-                } else if ($(clicked_button).hasClass('upvote-on')) {
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('[name="_token"]').val()
-                        }
-                    });
-                    $.ajax({
-                        type: "POST",
-                        url: 'http://localhost/laravel-5/public/votes',
-                        dataType: 'JSON',
-                        data: data
-                    });
-                }
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('[name="_token"]').val()
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost/laravel-5/public/votes',
+                    dataType: 'JSON',
+                    data: data
+                });
             });
         });
     </script>
@@ -55,14 +41,17 @@
                 </div>
                 <div class="row">
                     <div class="col-md-1">
-                        <form action=""
-                        {!! Form::open(['url' => 'votes', 'class' => 'votes']) !!}
+                        @if ($voted = in_array($post->id, $votes))
+                            {!! Form::open(['method' => 'DELETE', 'url' => ['votes', $post->id]]) !!}
+                        @else
+                            {!! Form::open(['url' => 'votes', 'class' => 'votes']) !!}
+                        @endif
                             <div class="upvote topic" data-post="{{ $post->id }}">
-                                <a class="upvote vote" data-value="1"></a>
+                                <a class="upvote vote {{ $voted ? 'upvote-on' : '' }}" data-value="1"></a>
                                 <span class="count">0</span>
-                                <a class="downvote vote" data-value="-1"></a>
+                                <a class="downvote vote {{ $voted ? 'downvote-on' : '' }}" data-value="-1"></a>
                             </div>
-                        {!! Form::close() !!}
+                            {!! Form::close() !!}
                     </div>
                     <div class="col-md-1">
                         <a href="#" class="thumbnail">
