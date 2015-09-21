@@ -7,6 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="../../favicon.ico">
 
     <title>Reddit</title>
@@ -86,6 +87,25 @@
 <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('assets/js/jquery-ui.min.js') }}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script>
+    // CSRF token setup for jQuery
+    var csrf_token = $('meta[name="csrf-token"]').attr('content');
+    $.ajaxPrefilter(function(options, originalOptions, jqXHR){
+        switch (options['type'].toLowerCase()) {
+            case "post":
+            case "delete":
+            case "put":
+                // add leading ampersand if `data` is non-empty
+                if (options.data != '') {
+                    options.data += '&';
+                }
+                // add _token entry
+                options.data += "_token=" + csrf_token;
+                break;
+        }
+    });
+</script>
+@yield('scripts')
 
 </body>
 </html>

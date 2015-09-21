@@ -14,7 +14,8 @@ class Post extends Model
         'subreddit_id'
     ];
 
-    protected $primaryKey = 'subreddit_id';
+    // this was preventing the Votes relation from working..
+    //    protected $primaryKey = 'subreddit_id';
 
     public function user() {
         return $this->belongsTo('App\User');
