@@ -37,10 +37,19 @@ class VotesController extends Controller
      */
     public function store(Requests\VoteRequest $request)
     {
-        $vote = \App\Vote::firstOrNew(['post_id' => $request->input('postId'), 'user_id' => $request->user()->id]);
-        $vote->user_id = auth()->user()->id;
-        $vote->value = $request->input('value');
-        $vote->save();
+        $postId = $request->input('postId');
+        $userId = $request->user()->id;
+        $value = $request->input('value');
+
+        // Check to see if there is an existing vote
+        $vote = Vote::wherePostId($postId)->whereUserId($userId)->first();
+        if (!$vote)
+        {
+            // First time the user is voting
+           Vote::create(['post_id' => $postId, 'user_id' => $userId, 'value' => $value]);
+        } else {
+            $vote->value == $value ? $vote->delete() : $vote->update(['value' => $value]);
+        }
         // AJAX JSON RESPONSE
         return response()->json(['status' => 'success',
             'msg' => 'Vote has been added.']);
