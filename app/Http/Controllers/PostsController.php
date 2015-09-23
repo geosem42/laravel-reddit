@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Vote;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use App\Http\Requests;
-use App\Http\Requests\PostRequest;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Input;
-use App\Subreddit;
+use App\Post;
 use Embed\Embed;
 use Image;
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Requests\PostRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth', ['only' => ['create', 'edit'] ]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -84,9 +85,13 @@ class PostsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        if (Gate::denies('update-post', $post)) {
+            return view('home')->withErrors('This is not your article');
+        }
+
+        return view('post/edit')->with('post', $post);
     }
 
     /**
@@ -96,9 +101,15 @@ class PostsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+        if (Gate::denies('update-post', $post)) {
+            return view('home')->withErrors('This is not your article');
+        }
+
+        $post->update($request->all());
+
+        return redirect('/');
     }
 
     /**

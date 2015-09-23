@@ -10,10 +10,9 @@ class Vote extends Model
 
     protected $fillable = [
         'value',
-        'post_id'
+        'post_id',
+        'user_id'
     ];
-
-    protected $primaryKey = 'post_id';
 
     public function user() {
         return $this->belongsTo('App\User');

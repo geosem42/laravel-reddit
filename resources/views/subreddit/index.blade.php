@@ -26,5 +26,8 @@
             </div>
         </div>
     @endforeach
+
+
+
     {!! $subreddit->render() !!}
 @stop

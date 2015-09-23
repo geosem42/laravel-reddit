@@ -12,8 +12,8 @@ class ServicesController extends Controller
     public function index() {
 
         return view('services')->with([
-            'firstname' => 'George',
-            'lastname' => 'Semaan',
+            'firstname' => 'John',
+            'lastname' => 'Doe',
         ]);
     }
 }

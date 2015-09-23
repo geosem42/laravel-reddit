@@ -4,19 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Subreddit;
 use App\User;
-use App\Post;
-use App\Vote;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-
 
 class SubredditController extends Controller
 {
@@ -55,7 +46,6 @@ class SubredditController extends Controller
      */
     public function store(Requests\SubredditRequest $request)
     {
-
         Auth::user()->subreddit()->create($request->all());
 
         return redirect('/');
@@ -70,28 +60,9 @@ class SubredditController extends Controller
      */
     public function show(Subreddit $subreddit)
     {
-        /*$subreddit = Subreddit::findOrFail($id);
-        $subreddit->load('posts');
+        $subreddit = Subreddit::with('posts.votes')->findOrFail($subreddit->id);
 
-        if(is_null($subreddit)) {
-            abort(404);
-        }*/
-
-        /*$posts = DB::table('subreddits')
-            ->join('posts', 'subreddits.id', '=', 'posts.subreddit_id')
-            ->select('posts.*')
-            ->take(5)
-            ->get();*/
-
-        $posts = Subreddit::findOrFail($subreddit->id)->posts()->get();
-
-        $votes = Auth::user()->votes()->get()->toArray();
-
-        //dd($votes);
-
-        return view('subreddit/show')->with('subreddit', $subreddit)
-                                    ->with('posts', $posts)
-                                    ->with('votes', $votes);
+        return view('subreddit/show')->with('subreddit', $subreddit);
     }
 
     /**
