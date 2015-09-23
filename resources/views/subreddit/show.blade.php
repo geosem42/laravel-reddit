@@ -11,7 +11,11 @@
                 var $button = $(this);
                 var postId = $button.data('post-id');
                 var value = $button.data('value');
+<<<<<<< HEAD
                 $.post('http://localhost/reddit/public/votes', {postId:postId, value:value}, function(data) {
+=======
+                $.post('/votes', {postId:postId, value:value}, function(data) {
+>>>>>>> origin/master
                     if (data.status == 'success')
                     {
                         // Do something if you want..
