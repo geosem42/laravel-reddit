@@ -11,11 +11,7 @@
                 var $button = $(this);
                 var postId = $button.data('post-id');
                 var value = $button.data('value');
-<<<<<<< HEAD
                 $.post('http://localhost/reddit/public/votes', {postId:postId, value:value}, function(data) {
-=======
-                $.post('/votes', {postId:postId, value:value}, function(data) {
->>>>>>> origin/master
                     if (data.status == 'success')
                     {
                         // Do something if you want..
@@ -60,9 +56,9 @@
                         <p style="color: darkgrey; font-size: 12px;">
                             <i class="glyphicon glyphicon-user" style="padding-right: 5px;"></i>submitted by <a href="#">{{ $post->user->name }}</a>
                              <i class="glyphicon glyphicon-calendar" style="padding-left: 15px;"></i> {{ $post->created_at->diffForHumans() }}
-                            @if ($post->user_id == Auth::id())
+                            @can('update-post', $post)
                                 <i class="glyphicon glyphicon-pencil" style="padding-left: 15px;"></i> <a href="{{ action('PostsController@edit', [$post->id]) }}">Edit</a>
-                            @endif
+                            @endcan
                              <i class="glyphicon glyphicon-comment" style="padding-left: 15px;"></i> <a href="#">3 Comments</a>
                              <i class="glyphicon glyphicon-tags" style="padding-left: 15px;"></i> Tags : <a href="#"><span class="label label-info">Snipp</span></a>
                             <a href="#"><span class="label label-info">Bootstrap</span></a>

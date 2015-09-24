@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Subreddit;
 use Embed\Embed;
 use Image;
 use Illuminate\Http\Request;
@@ -37,8 +38,9 @@ class PostsController extends Controller
      */
     public function create()
     {
+        $subreddits = Subreddit::lists('name', 'id')->toArray();
 
-        return view('post/create');
+        return view('post/create')->with('subreddits', $subreddits);
     }
 
     /**
@@ -53,11 +55,13 @@ class PostsController extends Controller
             $input['link'] = Input::get('link');
             $info = Embed::create($input['link']);
 
-            $image = \Image::make($info->image)->resize(120, 120)->save('C:\xampp\htdocs\laravel-5\public\images' . '/' . str_random(8) . '.jpg');
+            if (!empty($info->image)) {
+                $image = Image::make($info->image)->resize(120, 120)->save('C:\xampp\htdocs\reddit\public\images' . '/' . str_random(8) . '.jpg');
 
-            $embed_data = ['text' => $info->description, 'image' => $image->filename . '.jpg'];
-
-            //Auth::user()->posts()->create(array_add($request->all(), 'image', $info->image));
+                $embed_data = ['text' => $info->description, 'image' => $image->filename . '.jpg'];
+            } else {
+                $embed_data = ['text' => $info->description];
+            }
 
             Auth::user()->posts()->create(array_merge($request->all(), $embed_data));
 

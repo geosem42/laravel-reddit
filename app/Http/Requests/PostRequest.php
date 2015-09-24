@@ -24,7 +24,8 @@ class PostRequest extends Request
     public function rules()
     {
         return [
-            'title' => 'required'
+            'title' => 'required',
+            'subreddit_id' => 'required'
         ];
     }
 }
