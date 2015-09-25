@@ -6,9 +6,11 @@ use App\Post;
 use App\Subreddit;
 use Embed\Embed;
 use Image;
+use File;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\EditPostRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
@@ -55,12 +57,20 @@ class PostsController extends Controller
             $input['link'] = Input::get('link');
             $info = Embed::create($input['link']);
 
-            if (!empty($info->image)) {
-                $image = Image::make($info->image)->resize(120, 120)->save('C:\xampp\htdocs\reddit\public\images' . '/' . str_random(8) . '.jpg');
-
-                $embed_data = ['text' => $info->description, 'image' => $image->filename . '.jpg'];
-            } else {
+            if ($info->image == null) {
                 $embed_data = ['text' => $info->description];
+            } else {
+                $extension = pathinfo($info->image, PATHINFO_EXTENSION);
+
+                $newName = public_path() . '/images/' . str_random(8) . ".{$extension}";
+
+                if (File::exists($newName)) {
+                    $imageToken = substr(sha1(mt_rand()), 0, 5);
+                    $newName = public_path() . '/images/' . str_random(8) . '-' . $imageToken . ".{$extension}";
+                }
+
+                $image = Image::make($info->image)->fit(70, 70)->save($newName);
+                $embed_data = ['text' => $info->description, 'image' => $newName];
             }
 
             Auth::user()->posts()->create(array_merge($request->all(), $embed_data));
@@ -105,7 +115,7 @@ class PostsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(PostRequest $request, Post $post)
+    public function update(EditPostRequest $request, Post $post)
     {
         if (Gate::denies('update-post', $post)) {
             return view('home')->withErrors('This is not your article');

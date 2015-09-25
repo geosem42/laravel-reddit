@@ -11,11 +11,11 @@
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             var target = $(e.target).attr("href") // activated tab
-            if (target=='#home'){
-                $('.chosen-select').chosen();
+            if (target=='#link'){
+                $('.chosen-select').chosen({width: "200px"});
             }
-            if (target=='#profile'){
-                $('.chosen-select1').chosen();
+            if (target=='#text'){
+                $('.chosen-select1').chosen({width: "200px"});
             }
         });
     </script>
@@ -26,11 +26,11 @@
 
     <div class="bs-posts bs-posts-tabs" data-posts-id="togglable-tabs">
         <ul id="myTabs" class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Link</a></li>
-            <li role="presentation"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">Text</a></li>
+            <li role="presentation" class="active"><a href="#link" id="link-tab" role="tab" data-toggle="tab" aria-controls="link" aria-expanded="true">Link</a></li>
+            <li role="presentation"><a href="#text" role="tab" id="text-tab" data-toggle="tab" aria-controls="text">Text</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
-            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledBy="home-tab">
+            <div role="tabpanel" class="tab-pane fade in active" id="link" aria-labelledBy="link-tab">
 
                 {!! Form::open(['url' => 'posts', 'method' => 'POST']) !!}
                 <p>
@@ -54,7 +54,7 @@
 
                 {!! Form::close() !!}
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledBy="profile-tab">
+            <div role="tabpanel" class="tab-pane fade" id="text" aria-labelledBy="text-tab">
                 {!! Form::open(['url' => 'posts', 'method' => 'POST']) !!}
                 <p>
                     {!! Form::label('title', 'Title:') !!}

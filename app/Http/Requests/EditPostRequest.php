@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class PostRequest extends Request
+class EditPostRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class PostRequest extends Request
     public function rules()
     {
         return [
-            'title' => 'required',
-            'subreddit_id' => 'required'
+            'title' => 'required'
         ];
     }
 }
