@@ -90,12 +90,11 @@ class PostsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show(Post $post, Subreddit $subreddit)
+    public function show(Post $post)
     {
         $post = Post::with('user.votes')->findOrFail($post->id);
 
-        return view('post/show')->with('post', $post)
-                                ->with('subreddit', $subreddit);
+        return view('post/show')->with('post', $post);
     }
 
     /**
