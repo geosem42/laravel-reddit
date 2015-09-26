@@ -27,15 +27,11 @@
 @section('content')
     <div class="row">
         <div class="col-md-8">
-            <h1>Subreddit: {{ $subreddit->name }}</h1>
-
-            @foreach($subreddit->posts as $post)
-                @include('partials/post')
-            @endforeach
+            @include('partials/post')
         </div>
 
         <div class="col-md-4">
-            @include('partials/sub_sidebar')
+            @include('partials/post_sidebar')
         </div>
     </div>
 @stop

@@ -47,6 +47,11 @@ Route::resource('subreddit', 'SubredditController');
 Route::resource('posts', 'PostsController');
 Route::resource('votes', 'VotesController');
 
+Route::get('u/{name}', [
+    'as' => 'profile_path',
+    'uses' => 'ProfilesController@show'
+]);
+
 Validator::extend('alpha_spaces', function($attribute, $value)
 {
     return preg_match('"^[A-Za-z][A-Za-z0-9]*$"', $value);

@@ -59,6 +59,8 @@ class PostsController extends Controller
 
             if ($info->image == null) {
                 $embed_data = ['text' => $info->description];
+            } else if ($info->description == null) {
+                $embed_data = ['text' => ''];
             } else {
                 $extension = pathinfo($info->image, PATHINFO_EXTENSION);
 
@@ -70,7 +72,7 @@ class PostsController extends Controller
                 }
 
                 $image = Image::make($info->image)->fit(70, 70)->save($newName);
-                $embed_data = ['text' => $info->description, 'image' => $newName];
+                $embed_data = ['text' => $info->description, 'image' => basename($newName)];
             }
 
             Auth::user()->posts()->create(array_merge($request->all(), $embed_data));
@@ -88,9 +90,12 @@ class PostsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(Post $post, Subreddit $subreddit)
     {
-        //
+        $post = Post::with('user.votes')->findOrFail($post->id);
+
+        return view('post/show')->with('post', $post)
+                                ->with('subreddit', $subreddit);
     }
 
     /**

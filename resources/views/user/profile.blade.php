@@ -25,17 +25,31 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-md-8">
-            <h1>Subreddit: {{ $subreddit->name }}</h1>
-
-            @foreach($subreddit->posts as $post)
-                @include('partials/post')
-            @endforeach
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10"><h1>{{ $user->name }}</h1></div>
+            <div class="col-md-2">
+                <p>
+                    <small>
+                        Link Karma: {{ $linkKarma }}
+                    </small>
+                </p>
+                <p><small>Comment Karma: </small></p>
+            </div>
         </div>
 
-        <div class="col-md-4">
-            @include('partials/sub_sidebar')
-        </div>
-    </div>
+            <div class="col-md-12">
+
+                <div class="tab-pane active" id="my-posts">
+                    @foreach($user->posts as $post)
+                        @include('partials/post')
+                    @endforeach
+
+
+                </div><!--/tab-pane-->
+            </div><!--/tab-content-->
+
+        </div><!--/col-9-->
+    </div><!--/row-->
+
 @stop
