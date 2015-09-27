@@ -45,6 +45,11 @@ class PostsController extends Controller
         return view('post/create')->with('subreddits', $subreddits);
     }
 
+    public function getSubreddits($query) {
+        $results = Subreddit::select('id', 'name')->where('name', 'LIKE', '%' . $query . '%')->get();
+        return Response::json($results);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

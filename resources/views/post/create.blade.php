@@ -1,8 +1,8 @@
 @extends('layouts/default')
 
 @section('scripts')
-    <link rel="stylesheet" href="{{ URL::asset('assets/css/chosen.min.css') }}">
-    <script src="{{ URL::asset('assets/js/chosen.jquery.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/typeahead.css') }}">
+    <script src="{{ URL::asset('assets/js/typeahead.bundle.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -19,6 +19,29 @@
             }
         });
     </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var subreddits = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                prefetch: 'http://localhost/reddit/public/data/subreddits',
+                remote: {
+                    url: 'http://localhost/reddit/public/data/subreddits/%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#remote .typeahead').typeahead(null, {
+                name: 'name',
+                display: 'name',
+                source: subreddits
+            });
+
+            $('#remote .typeahead').bind('typeahead:select', function(ev, suggestion) {
+                $('.subreddit_id').val(suggestion.id);
+            });
+        });
+    </script>
 @endsection
 
 @section('content')
@@ -29,8 +52,10 @@
             <li role="presentation" class="active"><a href="#link" id="link-tab" role="tab" data-toggle="tab" aria-controls="link" aria-expanded="true">Link</a></li>
             <li role="presentation"><a href="#text" role="tab" id="text-tab" data-toggle="tab" aria-controls="text">Text</a></li>
         </ul>
-        <div id="myTabContent" class="tab-content">
+        <div id="myTabContent" class="tab-content" style="margin-top: 15px;">
             <div role="tabpanel" class="tab-pane fade in active" id="link" aria-labelledBy="link-tab">
+
+                <div class="alert alert-warning" role="alert">You are submitting a link. The key to a successful submission is interesting content and a descriptive title.</div>
 
                 {!! Form::open(['url' => 'posts', 'method' => 'POST']) !!}
                 <p>
@@ -44,8 +69,10 @@
                 </p>
 
                 <p>
-                    {!! Form::label('subreddit', 'Subreddit:') !!}
-                    {!! Form::select('subreddit_id', ['' => ''] + $subreddits, null, ['class' => 'chosen-select', 'data-placeholder' => 'Choose a Subredditt']) !!}
+                    <div id="remote">
+                        <input class="form-control typeahead" type="text" placeholder="Choose a Subreddit" name="subreddit_name">
+                        <input type="hidden" class="subreddit_id" value="" name="subreddit_id">
+                    </div>
                 </p>
 
                 <p>
@@ -55,6 +82,9 @@
                 {!! Form::close() !!}
             </div>
             <div role="tabpanel" class="tab-pane fade" id="text" aria-labelledBy="text-tab">
+
+                <div class="alert alert-warning" role="alert">You are submitting a text-based post. Speak your mind. A title is required, but expanding further in the text field is not. Beginning your title with "vote up if" is violation of intergalactic law.</div>
+
                 {!! Form::open(['url' => 'posts', 'method' => 'POST']) !!}
                 <p>
                     {!! Form::label('title', 'Title:') !!}
@@ -66,9 +96,13 @@
                     {!! Form::textarea('text', null, ['class' => 'form-control', 'id' => 'text']) !!}
                 </p>
 
+
+
                 <p>
-                    {!! Form::label('subreddit', 'Subreddit:') !!}
-                    {!! Form::select('subreddit_id', ['' => ''] + $subreddits, null, ['class' => 'chosen-select1', 'data-placeholder' => 'Choose a Subredditt']) !!}
+                    <div id="remote">
+                        <input class="form-control typeahead" type="text" placeholder="Choose a Subreddit" name="subreddit_name">
+                        <input type="hidden" class="subreddit_id" value="" name="subreddit_id">
+                    </div>
                 </p>
 
                 <p>

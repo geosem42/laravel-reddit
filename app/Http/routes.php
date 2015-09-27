@@ -52,6 +52,9 @@ Route::get('u/{name}', [
     'uses' => 'ProfilesController@show'
 ]);
 
+Route::get('data/subreddits', 'PostsController@getSubreddits');
+Route::get('data/subreddits/{QUERY}', 'PostsController@getSubreddits');
+
 Validator::extend('alpha_spaces', function($attribute, $value)
 {
     return preg_match('"^[A-Za-z][A-Za-z0-9]*$"', $value);
