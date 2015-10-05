@@ -5,21 +5,6 @@
     <script src="{{ URL::asset('assets/js/typeahead.bundle.js') }}"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('a[data-toggle="tab"]:first').trigger("shown.bs.tab");
-        });
-
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var target = $(e.target).attr("href") // activated tab
-            if (target=='#link'){
-                $('.chosen-select').chosen({width: "200px"});
-            }
-            if (target=='#text'){
-                $('.chosen-select1').chosen({width: "200px"});
-            }
-        });
-    </script>
-    <script type="text/javascript">
         $(document).ready(function() {
             var subreddits = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),

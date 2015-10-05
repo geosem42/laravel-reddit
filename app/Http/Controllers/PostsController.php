@@ -14,7 +14,6 @@ use App\Http\Requests\EditPostRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
 {
@@ -95,11 +94,11 @@ class PostsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show(Post $post)
+    public function show(Post $post, Subreddit $subreddit)
     {
         $post = Post::with('user.votes')->findOrFail($post->id);
 
-        return view('post/show')->with('post', $post);
+        return view('post/show')->with('post', $post)->with('subreddit', $subreddit);
     }
 
     /**
@@ -108,13 +107,13 @@ class PostsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit(Post $post)
+    public function edit(Post $post, Subreddit $subreddit)
     {
-        if (Gate::denies('update-post', $post)) {
-            return view('home')->withErrors('This is not your article');
+        if(Auth::id() == $subreddit->user_id && Auth::id() == $post->user_id) {
+            return view('home')->withErrors('You cannot do that');
+        } else {
+            return view('post/edit')->with('post', $post)->with('subreddit', $subreddit);
         }
-
-        return view('post/edit')->with('post', $post);
     }
 
     /**
@@ -124,15 +123,15 @@ class PostsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(EditPostRequest $request, Post $post)
+    public function update(EditPostRequest $request, Post $post, Subreddit $subreddit)
     {
-        if (Gate::denies('update-post', $post)) {
-            return view('home')->withErrors('This is not your article');
+        if(Auth::id() == $subreddit->user_id && Auth::id() == $post->user_id) {
+            return view('home')->withErrors('You cannot do that');
+        } else {
+            $post->update($request->all());
+
+            return redirect('/');
         }
-
-        $post->update($request->all());
-
-        return redirect('/');
     }
 
     /**
