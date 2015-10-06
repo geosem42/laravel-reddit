@@ -3,8 +3,23 @@ Laravel Reddit-like Community
 
 Still a work in progress...
 
-# Installation
+# Packages Used
+1. ["intervention/image"](https://github.com/Intervention/image)
+2. ["oscarotero/Embed"](https://github.com/oscarotero/Embed)
 
+# Features
+1. Login/Register
+2. Create Subreddits
+3. Create Posts (link and text) and grab their meta-data
+4. Assign Moderators to your Subreddits
+
+# To-Do
+1. Implement moderators permissions.
+2. Comments
+3. Sorting
+4. User Profile
+
+# Installation
 1. git clone https://github.com/Halnex/laravel-reddit projectname
 2. composer install
 3. php artisan migrate
