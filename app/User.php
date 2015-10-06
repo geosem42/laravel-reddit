@@ -50,4 +50,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function votes(){
         return $this->hasManyThrough('App\Vote','App\Post');
     }
+
+    public function moderators(){
+        return $this->hasMany('App\Subreddit', 'moderators');
+    }
 }

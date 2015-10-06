@@ -28,6 +28,8 @@
     <div class="row">
         <div class="col-md-8">
             @include('partials/post')
+
+            @include('partials/comments')
         </div>
 
         <div class="col-md-4">

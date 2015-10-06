@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Subreddit;
 use App\User;
+use App\Post;
+use App\Moderator;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
@@ -16,12 +18,6 @@ class SubredditController extends Controller
         $this->middleware('auth', ['only' => ['create', 'edit']]);
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
         $subreddit = Subreddit::latest('created_at')->paginate(3);
@@ -29,22 +25,11 @@ class SubredditController extends Controller
         return view('subreddit/index')->with('subreddit', $subreddit);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         return view('subreddit/create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Requests\SubredditRequest|Request $request
-     * @return Response
-     */
     public function store(Requests\SubredditRequest $request)
     {
         Auth::user()->subreddit()->create($request->all());
@@ -52,51 +37,47 @@ class SubredditController extends Controller
         return redirect('/');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @internal param Subreddit $subreddit
-     * @param Subreddit $subreddit
-     * @return $this
-     */
-    public function show(Subreddit $subreddit)
+    public function show(Subreddit $subreddit, Post $post)
     {
         $subreddit = Subreddit::with('posts.votes')->findOrFail($subreddit->id);
+        $moderators = Moderator::where('subreddit_id', '=', $subreddit->id)->get();
 
-        return view('subreddit/show')->with('subreddit', $subreddit);
+        return view('subreddit/show')->with('subreddit', $subreddit)
+                                    ->with('moderators', $moderators);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(User $user, Subreddit $subreddit)
     {
-        //
+        if(Gate::denies('update-sub', $subreddit)) {
+            return 'no';
+        } else {
+            return view('subreddit/edit')->with('subreddit', $subreddit);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
+    public function update(Requests\SubredditRequest $request, Subreddit $subreddit)
     {
-        //
+        if(Gate::denies('update-sub', $subreddit)) {
+            return 'no';
+        } else {
+            $subreddit->update($request->all());
+            return redirect('/subreddit');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function destroy($id)
     {
         //
+    }
+
+    public function mySubreddits(User $user, Subreddit $subreddit) {
+        $subreddit = Subreddit::where('user_id', '=', Auth::id())->get();
+        return view('user/mysubreddits')->with('user', $user)->with('subreddit', $subreddit);
+    }
+
+    public function createModerators(Subreddit $subreddit) {
+        $subreddit = Subreddit::with('posts.votes')->findOrFail($subreddit->id);
+        dd($subreddit);
+        return view('user/moderators')->with('subreddit', $subreddit);
     }
 }

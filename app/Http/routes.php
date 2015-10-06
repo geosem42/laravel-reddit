@@ -44,6 +44,18 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 //Route::get('subreddit/create', 'SubredditController@create');
 
 Route::resource('subreddit', 'SubredditController');
+Route::resource('subreddit.moderators', 'ModeratorsController');
+Route::get('mysubreddits', [
+    'as' => 'mysubreddits',
+    'uses' => 'SubredditController@mySubreddits'
+]);
+/*Route::get('subreddit/{id}/moderators', [
+    'as' => 'moderators',
+    'uses' => 'ModeratorsController@create'
+]);*/
+
+
+
 Route::resource('posts', 'PostsController');
 Route::resource('votes', 'VotesController');
 
@@ -52,8 +64,8 @@ Route::get('u/{name}', [
     'uses' => 'ProfilesController@show'
 ]);
 
-Route::get('data/subreddits', 'PostsController@getSubreddits');
-Route::get('data/subreddits/{QUERY}', 'PostsController@getSubreddits');
+Route::get('data/subreddits/{query?}', 'PostsController@getSubreddits');
+Route::get('data/users/{query?}', 'ModeratorsController@getUsers');
 
 Validator::extend('alpha_spaces', function($attribute, $value)
 {

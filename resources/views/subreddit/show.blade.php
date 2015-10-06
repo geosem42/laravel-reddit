@@ -27,6 +27,13 @@
 @section('content')
     <div class="row">
         <div class="col-md-8">
+            @if($errors->any())
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
             <h1>Subreddit: {{ $subreddit->name }}</h1>
 
             @foreach($subreddit->posts as $post)

@@ -7,13 +7,15 @@ use App\Subreddit;
 use Embed\Embed;
 use Image;
 use File;
-use Illuminate\Http\Request;
+use App\User;
+use App\Moderator;
 use App\Http\Requests;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\EditPostRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
 {
@@ -21,22 +23,11 @@ class PostsController extends Controller
         $this->middleware('auth', ['only' => ['create', 'edit'] ]);
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         $subreddits = Subreddit::lists('name', 'id')->toArray();
@@ -44,17 +35,14 @@ class PostsController extends Controller
         return view('post/create')->with('subreddits', $subreddits);
     }
 
-    public function getSubreddits($query) {
-        $results = Subreddit::select('id', 'name')->where('name', 'LIKE', '%' . $query . '%')->get();
-        return Response::json($results);
+    public function getSubreddits($query = '') {
+        $q = Subreddit::select('id', 'name');
+        if ($query) {
+            $q->where('name', 'LIKE', '%' . $query . '%');
+        }
+        return Response::json($q->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param PostRequest|Request $request
-     * @return Response
-     */
     public function store(PostRequest $request)
     {
         if (Input::has('link')) {
@@ -81,19 +69,13 @@ class PostsController extends Controller
 
             Auth::user()->posts()->create(array_merge($request->all(), $embed_data));
 
-            return redirect('/articles');
+            return redirect('/subreddit');
         }
         Auth::user()->posts()->create($request->all());
 
-        return redirect('/');
+        return redirect('/subreddit');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function show(Post $post, Subreddit $subreddit)
     {
         $post = Post::with('user.votes')->findOrFail($post->id);
@@ -101,51 +83,27 @@ class PostsController extends Controller
         return view('post/show')->with('post', $post)->with('subreddit', $subreddit);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit(Post $post, Subreddit $subreddit)
+    public function edit(User $user, Post $post)
     {
-        if(Auth::id() == $subreddit->user_id && Auth::id() == $post->user_id) {
-            return view('home')->withErrors('You cannot do that');
+        if (Gate::denies('update-post', $post)) {
+            return redirect('subreddit')->withErrors('You cannot edit this post.');
         } else {
-            return view('post/edit')->with('post', $post)->with('subreddit', $subreddit);
+            return view('post/edit')->with('post', $post);
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(EditPostRequest $request, Post $post, Subreddit $subreddit)
+    public function update(EditPostRequest $request, Post $post)
     {
-        if(Auth::id() == $subreddit->user_id && Auth::id() == $post->user_id) {
-            return view('home')->withErrors('You cannot do that');
+        if (Gate::denies('update-post', $post)) {
+            return redirect('subreddit')->withErrors('You cannot edit this post.');
         } else {
             $post->update($request->all());
-
-            return redirect('/');
+            return redirect('/subreddit');
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
     public function destroy($id)
     {
         //
-    }
-
-    public function autocomplete(){
-
     }
 }

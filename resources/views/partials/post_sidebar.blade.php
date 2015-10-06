@@ -24,8 +24,8 @@
     <div class="row">
         <div class="col-lg-6">
             <ul class="list-unstyled">
-                <li>{!!  link_to_route('profile_path', $post->subreddit->user->name, $post->subreddit->user->name) !!}
-                </li>
+                <li>{!!  link_to_route('profile_path', $post->subreddit->user->name, $post->subreddit->user->name) !!}</li>
+
             </ul>
         </div>
         <!-- /.col-lg-6 -->

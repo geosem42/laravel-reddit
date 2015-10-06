@@ -31,6 +31,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('articles', 'App\Article');
         $router->model('subreddit', 'App\Subreddit');
         $router->model('posts', 'App\Post');
+        $router->model('moderators', 'App\Moderator');
     }
 
     /**

@@ -1,9 +1,9 @@
 @extends('layouts/default')
 
 @section('content')
-    <h1>Create Subreddit</h1>
+    <h1>Edit sub: {{ $subreddit->name }}</h1>
 
-    {!! Form::open(['url' => 'subreddit']) !!}
+    {!! Form::model($subreddit, ['method' => 'PATCH', 'action' => ['SubredditController@update', $subreddit->id]]) !!}
 
     <p>
         {!! Form::label('name', 'Name:') !!}
@@ -16,7 +16,7 @@
     </p>
 
     <p>
-        {!! Form::submit('Create Subreddit', ['id' => 'submit', 'class' => 'btn btn-primary']) !!}
+        {!! Form::submit('Update Subreddit', ['id' => 'submit', 'class' => 'btn btn-primary']) !!}
     </p>
 
     @if($errors->any())

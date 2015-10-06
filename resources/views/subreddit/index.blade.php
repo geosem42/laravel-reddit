@@ -17,7 +17,8 @@
                             <p>{{ $sub->description }}</p>
                             <div class="row rating-desc">
                                 <div class="col-md-12">
-                                    <small>9,732 subscribers, community for 2 days</small>
+                                    <small>9,732 subscribers, community for 2 days</small> |
+                                    <small>created by <a href="{{ action('ProfilesController@show', [$sub->user->name]) }}">{{ $sub->user->name }}</a></small>
                                 </div>
                             </div>
                         </div>

@@ -28,4 +28,8 @@ class Post extends Model
     public function votes() {
         return $this->hasMany('App\Vote');
     }
+
+    public function moderators() {
+        return $this->hasMany('App\Moderator');
+    }
 }
