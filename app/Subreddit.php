@@ -13,14 +13,14 @@ class Subreddit extends Model
     ];
 
     public function user() {
-    return $this->belongsTo('App\User');
-}
+        return $this->belongsTo('App\User');
+    }
 
     public function posts() {
         return $this->hasMany('App\Post');
     }
 
     public function moderators() {
-        return $this->belongsTo('App\User', 'moderators');
+        return $this->hasMany('App\User', 'moderators');
     }
 }

@@ -11,7 +11,7 @@ class Moderator extends Model
     protected $fillable = ['user_id', 'subreddit_id'];
 
     public function subreddit() {
-        return $this->belongsToMany('App\Subreddit');
+        return $this->belongsTo('App\Subreddit');
     }
 
     public function user() {

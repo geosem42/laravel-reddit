@@ -36,7 +36,7 @@
                     <i class="glyphicon glyphicon-calendar" style="padding-left: 15px;"></i> {{ $post->created_at->diffForHumans() }}
                     <i class="glyphicon glyphicon-bullhorn" style="padding-left: 15px;"></i> <a href="{{ action('SubredditController@show', [$post->subreddit->id]) }}">{{ $post->subreddit->name }}</a>
                     <i class="glyphicon glyphicon-comment" style="padding-left: 15px;"></i> <a href="{{ action('PostsController@show', [$post->id]) }}">0 Comments</a>
-                    @can('update-post', [$post, $subreddit])
+                    @can('update-post', $post)
                         <i class="glyphicon glyphicon-pencil" style="padding-left: 15px;"></i> <a href="{{ action('PostsController@edit', $post->id) }}">Edit</a>
                     @endcan
                 </p>
