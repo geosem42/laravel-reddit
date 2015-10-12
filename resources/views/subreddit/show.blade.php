@@ -14,7 +14,7 @@
                 var $button = $(this);
                 var postId = $button.data('post-id');
                 var value = $button.data('value');
-                $.post('http://localhost/reddit/public/votes', {postId:postId, value:value}, function(data) {
+                $.post('votes', {postId:postId, value:value}, function(data) {
                     if (data.status == 'success')
                     {
                         //
