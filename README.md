@@ -11,13 +11,13 @@ Still a work in progress...
 1. Login/Register
 2. Create Subreddits
 3. Create Posts (link and text) and grab their meta-data
-4. Assign Moderators to your Subreddits
+4. Assign Moderators to your Subreddits with ability for mods to edit posts
+5. Search Subreddits
+6. Pagination
 
 # To-Do
-1. Implement moderators permissions.
-2. Comments
-3. Sorting
-4. User Profile
+1. Comments
+2. Sorting
 
 # Installation
 1. git clone https://github.com/Halnex/laravel-reddit projectname
