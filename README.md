@@ -46,7 +46,7 @@ public function boot(GateContract $gate)
         }
         
         if ($isModerator) {
-                    return true;
+            return true;
         }
 
         return false;
