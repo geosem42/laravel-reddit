@@ -21,17 +21,6 @@
                     }
                 }, 'json');
             });
-
-            /*$('.scroll').jscroll({
-                autoTrigger: true,
-                debug: true,
-                nextSelector: '.pagination li.active + li a',
-                contentSelector: 'div.scroll',
-                callback: function() {
-                    $('ul.pagination:visible:first').hide();
-                }
-            });*/
-
         });
     </script>
 @endsection
@@ -48,10 +37,14 @@
             @endif
             <h1>Subreddit: {{ $subreddit->name }}</h1>
             <div class="scroll">
+                @if(count($posts) < 1)
+                    There are no matches
+                @endif
+
                 @foreach($posts as $post)
                     @include('partials/post')
                 @endforeach
-                {!! $posts->render() !!}
+
             </div>
         </div>
 

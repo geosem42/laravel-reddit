@@ -45,19 +45,17 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 Route::resource('subreddit', 'SubredditController');
 Route::resource('subreddit.moderators', 'ModeratorsController');
+
+Route::post('search/{subreddit}', ['as' => 'search', 'uses' => 'SubredditController@search']);
+
 Route::get('mysubreddits', [
     'as' => 'mysubreddits',
     'uses' => 'SubredditController@mySubreddits'
 ]);
-/*Route::get('subreddit/{id}/moderators', [
-    'as' => 'moderators',
-    'uses' => 'ModeratorsController@create'
-]);*/
-
-
 
 Route::resource('posts', 'PostsController');
 Route::resource('votes', 'VotesController');
+Route::resource('profile', 'ProfilesController');
 
 Route::get('u/{name}', [
     'as' => 'profile_path',

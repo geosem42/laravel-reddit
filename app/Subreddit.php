@@ -21,6 +21,6 @@ class Subreddit extends Model
     }
 
     public function moderators() {
-        return $this->hasMany('App\User', 'moderators');
+        return $this->hasMany('App\Moderator');
     }
 }

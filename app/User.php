@@ -14,25 +14,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
     protected $table = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = ['name', 'email', 'password'];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
     protected $hidden = ['password', 'remember_token'];
 
     public function articles() {
@@ -52,6 +37,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     public function moderators(){
-        return $this->hasMany('App\Subreddit', 'moderators');
+        return $this->hasManyThrough('App\Moderator', 'user_id');
     }
 }

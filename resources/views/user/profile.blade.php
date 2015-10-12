@@ -27,14 +27,14 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-10"><h1>{{ $user->name }}</h1></div>
+            <div class="col-md-8"><h1>{{ $user->name }}</h1></div>
             <div class="col-md-2">
-                <p>
-                    <small>
+                    <h2>
                         Link Karma: {{ $linkKarma }}
-                    </small>
-                </p>
-                <p><small>Comment Karma: </small></p>
+                    </h2>
+            </div>
+            <div class="col-md-2">
+                <h2>Comment Karma: </h2>
             </div>
         </div>
 

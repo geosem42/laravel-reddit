@@ -11,6 +11,8 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Gate;
+use Input;
+use DB;
 
 class SubredditController extends Controller
 {
@@ -20,7 +22,8 @@ class SubredditController extends Controller
 
     public function index()
     {
-        $subreddit = Subreddit::latest('created_at')->paginate(3);
+        $subreddit = Subreddit::latest('created_at')->paginate(5);
+        $subreddit->setPath('subreddit');
 
         return view('subreddit/index')->with('subreddit', $subreddit);
     }
@@ -30,20 +33,37 @@ class SubredditController extends Controller
         return view('subreddit/create');
     }
 
-    public function store(Requests\SubredditRequest $request)
+    public function store(Requests\SubredditRequest $request, Moderator $moderator, Subreddit $subreddit)
     {
-        Auth::user()->subreddit()->create($request->all());
+        $sub = Auth::user()->subreddit()->create($request->all());
+
+        $moderator = new Moderator;
+        $moderator->user_id = Auth::id();
+        $moderator->subreddit_id = $sub->id;
+        $moderator->save();
 
         return redirect('/');
     }
 
-    public function show(Subreddit $subreddit, Post $post)
+    public function show(Subreddit $subreddit, Post $post, User $user)
     {
-        $subreddit = Subreddit::with('posts.votes')->findOrFail($subreddit->id);
-        $moderators = Moderator::where('subreddit_id', '=', $subreddit->id)->get();
+        // OLD METHOD
+        // $subreddit = Subreddit::with('posts.votes')->with('user')->findOrFail($subreddit->id);
+        //
+        $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->where('id', $subreddit->id)->first();
+        $posts = $subreddit->posts()->paginate(4);
+        $posts->setPath($subreddit->id);
+        $isModerator = $subreddit->moderators()->where('user_id', Auth::id())->exists();
+        $user = User::where('id', '=', Auth::id())->get();
+        $modList = Moderator::where('subreddit_id', '=', $subreddit->id)->get();
+
 
         return view('subreddit/show')->with('subreddit', $subreddit)
-                                    ->with('moderators', $moderators);
+            ->with('user', $user)
+            ->with('isModerator', $isModerator)
+            ->with('modList', $modList)
+            ->with('posts', $posts);
+
     }
 
     public function edit(User $user, Subreddit $subreddit)
@@ -77,7 +97,17 @@ class SubredditController extends Controller
 
     public function createModerators(Subreddit $subreddit) {
         $subreddit = Subreddit::with('posts.votes')->findOrFail($subreddit->id);
-        dd($subreddit);
         return view('user/moderators')->with('subreddit', $subreddit);
+    }
+
+    public function search(Subreddit $subreddit, User $user, Post $post, Request $request)
+    {
+        $query = $request->input('search');
+        $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->where('id', $subreddit->id)->first();
+        $posts = $subreddit->posts()->where('title', 'LIKE', '%' . $query . '%')->get();
+        $isModerator = $subreddit->moderators()->where('user_id', Auth::id())->exists();
+        $modList = Moderator::where('subreddit_id', '=', $subreddit->id)->get();
+
+        return view('subreddit.search', compact('query', 'subreddit', 'posts', 'isModerator', 'modList'));
     }
 }

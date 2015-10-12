@@ -3,9 +3,17 @@
 @section('scripts')
     <link rel="stylesheet" href="{{ URL::asset('assets/css/typeahead.css') }}">
     <script src="{{ URL::asset('assets/js/typeahead.bundle.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/tinymce/tinymce.min.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
+            tinymce.init({
+                selector : "textarea",
+                menubar    : false,
+                plugins : ["advlist autolink lists link image charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table contextmenu paste"],
+                toolbar : "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            });
+
             var subreddits = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,

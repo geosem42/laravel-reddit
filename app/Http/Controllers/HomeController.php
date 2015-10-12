@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Subreddit;
+use App\User;
+use App\Post;
+use App\Moderator;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -14,9 +19,16 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Subreddit $subreddit, Post $post, Moderator $moderator, User $user)
     {
-        return view('home');
+        //$posts = Post::with('user.votes')->get();
+        $posts = Post::with('user.votes')->with('subreddit.moderators')->get();
+        //$ids = $posts->subreddit;
+        $isModerator = false;
+
+        //dd($ids);
+
+        return view('home')->with('posts', $posts)->with('isModerator', $isModerator);
     }
 
     /**

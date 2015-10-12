@@ -44,15 +44,15 @@
             <ul class="nav navbar-nav">
                 <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="{{ URL::action('HomeController@index') }}">Home</a></li>
                 <li class="{{ Request::is('subreddit') ? 'active' : '' }}"><a href="{{ URL::action('SubredditController@index') }}">Subreddits</a></li>
-                <li class="{{ Request::is('subreddit/create') ? 'active' : '' }}"><a href="{{ URL::action('SubredditController@create') }}">Create Sub</a></li>
-                <li class="{{ Request::is('posts/create') ? 'active' : '' }}"><a href="{{ URL::action('PostsController@create') }}">Create Post</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::check())
+                    <li class="{{ Request::is('subreddit/create') ? 'active' : '' }}"><a href="{{ URL::action('SubredditController@create') }}"><span class="glyphicon glyphicon-plus"></span> Subreddit</a></li>
+                    <li class="{{ Request::is('posts/create') ? 'active' : '' }}"><a href="{{ URL::action('PostsController@create') }}"><span class="glyphicon glyphicon-plus"></span> Post</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::getUser()->name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Edit Profile</a></li>
+                            <li><a href="{{ action('ProfilesController@edit', Auth::getUser()->id) }}">Edit Profile</a></li>
                             <li><a href="{{ route('mysubreddits') }}">My Subreddits</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ url('auth/logout') }}">Logout</a></li>

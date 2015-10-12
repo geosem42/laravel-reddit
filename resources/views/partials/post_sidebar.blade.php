@@ -15,7 +15,7 @@
 <!-- Side Widget Well -->
 <div class="well">
     <h4>About {{ $post->subreddit->name }}</h4>
-    <p>{{ $post->subreddit->description }}</p>
+    <p>{!! $post->subreddit->description !!}</p>
 </div>
 
 <!-- Subreddit Moderators Well -->
@@ -24,8 +24,9 @@
     <div class="row">
         <div class="col-lg-6">
             <ul class="list-unstyled">
-                <li>{!!  link_to_route('profile_path', $post->subreddit->user->name, $post->subreddit->user->name) !!}</li>
-
+                @foreach($modList as $mod)
+                    <li>{!!  link_to_route('profile_path', $mod->user->name, $mod->user->name) !!}</li>
+                @endforeach
             </ul>
         </div>
         <!-- /.col-lg-6 -->

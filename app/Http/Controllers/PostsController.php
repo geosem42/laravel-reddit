@@ -23,11 +23,6 @@ class PostsController extends Controller
         $this->middleware('auth', ['only' => ['create', 'edit'] ]);
     }
 
-    public function index()
-    {
-        //
-    }
-
     public function create()
     {
         $subreddits = Subreddit::lists('name', 'id')->toArray();
@@ -76,25 +71,34 @@ class PostsController extends Controller
         return redirect('/subreddit');
     }
 
-    public function show(Post $post, Subreddit $subreddit)
+    public function show(Post $post, User $user)
     {
-        $post = Post::with('user.votes')->findOrFail($post->id);
+        $post = Post::with('user.votes')->with('subreddit.moderators')->findOrFail($post->id);
+        $ids = $post->subreddit;
+        $isModerator = $ids->moderators()->where('user_id', Auth::id())->exists();
+        $modList = Moderator::where('subreddit_id', '=', $post->subreddit->id)->get();
 
-        return view('post/show')->with('post', $post)->with('subreddit', $subreddit);
+        return view('post/show')->with('post', $post)->with('modList', $modList)->with('isModerator', $isModerator);
     }
 
-    public function edit(User $user, Post $post)
+    public function edit(Post $post)
     {
-        if (Gate::denies('update-post', $post)) {
+        $post = Post::with('user.votes')->with('subreddit.moderators')->findOrFail($post->id);
+        $ids = $post->subreddit;
+        $isModerator = $ids->moderators()->where('user_id', Auth::id())->exists();
+        if (Gate::denies('update-post', [$post, $isModerator])) {
             return redirect('subreddit')->withErrors('You cannot edit this post.');
         } else {
-            return view('post/edit')->with('post', $post);
+            return view('post/edit')->with('post', $post)->with('isModerator', $isModerator);
         }
     }
 
     public function update(EditPostRequest $request, Post $post)
     {
-        if (Gate::denies('update-post', $post)) {
+        $post = Post::with('user.votes')->with('subreddit.moderators')->findOrFail($post->id);
+        $ids = $post->subreddit;
+        $isModerator = $ids->moderators()->where('user_id', Auth::id())->exists();
+        if (Gate::denies('update-post', [$post, $isModerator])) {
             return redirect('subreddit')->withErrors('You cannot edit this post.');
         } else {
             $post->update($request->all());

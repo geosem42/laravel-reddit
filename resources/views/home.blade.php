@@ -10,4 +10,8 @@
             @endforeach
         </ul>
     @endif
+
+    @foreach($posts as $post)
+        @include('partials/post')
+    @endforeach
 @stop
