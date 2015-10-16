@@ -138,6 +138,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Eastgate\Comment\CommentServiceProvider::class,
         /*
          * Application Service Providers...
          */

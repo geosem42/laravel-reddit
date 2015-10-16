@@ -17,20 +17,19 @@
                 $.post('votes', {postId:postId, value:value}, function(data) {
                     if (data.status == 'success')
                     {
-                        //
+                        // Do something if you want..
                     }
                 }, 'json');
             });
 
-            /*$('.scroll').jscroll({
+            $('.scroll').jscroll({
                 autoTrigger: true,
-                debug: true,
                 nextSelector: '.pagination li.active + li a',
                 contentSelector: 'div.scroll',
                 callback: function() {
                     $('ul.pagination:visible:first').hide();
                 }
-            });*/
+            });
 
         });
     </script>

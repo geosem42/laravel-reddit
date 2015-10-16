@@ -2,6 +2,19 @@
     <link rel="stylesheet" href="{{ URL::asset('assets/css/jquery.upvote.css') }}">
     <script src="{{ URL::asset('assets/js/jquery.upvote.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jquery.jscroll.min.js') }}"></script>
+    <link rel="stylesheet" href="http://localhost/reddit/public/eastgate/comment/css/comment.css">
+    <script src="http://localhost/reddit/public/eastgate/comment/js/comment.js"></script>
+    <script type="text/javascript">
+        $(document).ready(
+                function(){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                }
+        );
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {

@@ -1,0 +1,17 @@
+.comment-info li{
+	display: inline;
+}
+.comment-list .comment-by{
+	color: blue;
+}
+.comment-list .separator:before{
+   content: '\0026AB';
+   color: gray;
+   font-size: 0.5em;
+}
+.comment-list .reply-to, 
+.comment-list .comment-on, 
+.comment-list .reply {
+	color: gray;
+}
+

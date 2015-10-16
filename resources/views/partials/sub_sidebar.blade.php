@@ -1,7 +1,7 @@
 <!-- Subreddit Search Well -->
 <div class="well" style="margin-top: 30px;">
     <h4>Search {{ $subreddit->name }}</h4>
-    {!! Form::open(['route' => ['search', $subreddit->getKey()]]) !!}
+    {!! Form::open(['route' => ['search', $subreddit]]) !!}
     <div id="custom-search-input">
         <div class="input-group col-md-12">
             <input type="text" name="search" class="search-query form-control" placeholder="Search" />

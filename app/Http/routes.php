@@ -48,6 +48,9 @@ Route::resource('subreddit.moderators', 'ModeratorsController');
 
 Route::post('search/{subreddit}', ['as' => 'search', 'uses' => 'SubredditController@search']);
 
+/*Route::post('comments/{post}', ['as' => 'comment', 'uses' => 'PostsController@createComment']);
+Route::post('comments/{comment}/child', ['as' => 'child-comment', 'uses' => 'PostsController@createChildComment']);*/
+
 Route::get('mysubreddits', [
     'as' => 'mysubreddits',
     'uses' => 'SubredditController@mySubreddits'
@@ -56,6 +59,10 @@ Route::get('mysubreddits', [
 Route::resource('posts', 'PostsController');
 Route::resource('votes', 'VotesController');
 Route::resource('profile', 'ProfilesController');
+
+Route::post('posts/post_this_comment', 'PostsController@post_this_comment');
+Route::get('reply_comment', 'PostsController@reply_comment');
+Route::post('per_page', 'PostsController@per_page');
 
 Route::get('u/{name}', [
     'as' => 'profile_path',

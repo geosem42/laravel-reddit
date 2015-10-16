@@ -32,11 +32,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany('App\Post');
     }
 
-    public function votes(){
+    public function votes() {
         return $this->hasManyThrough('App\Vote','App\Post');
     }
 
-    public function moderators(){
-        return $this->hasManyThrough('App\Moderator', 'user_id');
+    public function moderators() {
+        return $this->hasMany('App\Moderator');
     }
 }

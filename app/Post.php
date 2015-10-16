@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+
     protected $fillable = [
         'title',
         'link',
@@ -31,5 +32,9 @@ class Post extends Model
 
     public function moderators() {
         return $this->hasMany('App\Moderator');
+    }
+
+    public function comments() {
+        return $this->hasMany('App\Comment');
     }
 }
