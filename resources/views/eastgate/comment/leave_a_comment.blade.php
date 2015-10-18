@@ -1,7 +1,7 @@
 <div class="content">
 	<meta name="csrf-token" content="{{ csrf_token() }}">	
-	<link rel="stylesheet" href="http://localhost/reddit/public/bootstrap/3.3.4/css/bootstrap.min.css">
-	<link rel="stylesheet" href="http://localhost/reddit/public/eastgate/comment/css/comment.css">
+	<link rel="stylesheet" href="http://localhost/r2/public/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://localhost/r2/public/eastgate/comment/css/comment.css">
 	<h1>Leave A Comment</h1>
 	<div class="comment-content">
 		@include('eastgate/comment/comment_fields')
@@ -9,8 +9,8 @@
 	@include('eastgate/comment/comment_list')
 </div>
 
-<script src="http://localhost/reddit/public/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://localhost/reddit/public/eastgate/comment/js/comment.js"></script>
+<script src="http://localhost/r2/public/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://localhost/r2/public/eastgate/comment/js/comment.js"></script>
 <script type="text/javascript">
 	$(document).ready(
 		function(){

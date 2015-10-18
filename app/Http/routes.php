@@ -60,9 +60,10 @@ Route::resource('posts', 'PostsController');
 Route::resource('votes', 'VotesController');
 Route::resource('profile', 'ProfilesController');
 
-Route::post('posts/post_this_comment', 'PostsController@post_this_comment');
-Route::get('reply_comment', 'PostsController@reply_comment');
-Route::post('per_page', 'PostsController@per_page');
+/*Route::post('{post}/post_this_comment', ['as' => 'post_this_comment', 'uses' => 'PostsController@post_this_comment']);
+
+Route::get('{reply_comment/{comment}', 'PostsController@reply_comment');
+Route::post('per_page', 'PostsController@per_page');*/
 
 Route::get('u/{name}', [
     'as' => 'profile_path',

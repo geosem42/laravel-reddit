@@ -16,29 +16,44 @@ function show_comment_fields(){
 function commenter_fields(){
 	return [
 		'commenter_parent',
-		'commenter_user_id',
-		'commenter_comment'
+		'commenter_comment',
+		'commenter_post',
+		'postid'
 	];
 } 
 
 $(document).on('click', 'a.post-this-comment', function(){
-	var formData = {
-		'commenter_parent' : $('input[name=commenter_parent]').val(),
-		'commenter_user_id' : $('input[name=commenter_user_id]').val(),
-		'commenter_comment' : $('input[name=commenter_comment]').val(),
-		'per_page' : $('input[class=comments_per_page]').val(),
+	var form_data = {
+		'per_page': $('.comments_per_page').val(),
+		'commenter_parent': $('#commenter_parent').val(),
+		'commenter_post': $('#commenter_post').val(),
+		'commenter_comment': $('#commenter_comment').val(),
+		'postid': $('#postid').val(),
 	};
 
-	var request = $.ajax({ // push question data to server
-		type 		: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-		url			: 'post_this_comment', // the url where we want to POST
-		data 		: formData, // our data object
-		dataType	: 'json',
-		processData	: false,
-		contentType	: false
-	});		
-	request.done(comment_done_handler);	
-	request.fail(comment_fail_handler); // fail promise callback
+	var arr = [
+		'commenter_parent',
+		'commenter_post',
+		'commenter_comment',
+		'postid'
+	];
+
+	for (var i in arr, i < arr.length, i++) {
+		var elem = arr[i];
+		form_data[elem] = $('#' + elem).val();
+	}
+
+// console.log(form_data); // something like => Object {per_page: "some_value", commenter_parent: "some_value", commenter_user_id: "some_value", commenter_comment: "some_value"}
+
+	var request = $.ajax({
+		type: 'POST',
+		url: 'post_this_comment',
+		data: form_data,
+		dataType: 'json'
+	});
+
+	request.done(comment_done_handler);
+	request.fail(comment_fail_handler);
 });
 
 function comment_done_handler(data){

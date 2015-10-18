@@ -14,8 +14,8 @@ class Comment extends Model
         return $this->belongsTo('App\Post');
     }
 
-    public static function root_comments(){
-        return self::child_comments(0, 'desc');
+    public static function root_comments($postId){
+        return self::child_comments(0, 'desc')->where('post_id', $postId);
     }
 
     public static function child_comments($parent_id, $order='asc'){

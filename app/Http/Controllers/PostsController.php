@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\Subreddit;
+use Eastgate\Comment\CommentController;
 use Embed\Embed;
 use Image;
 use File;
@@ -19,7 +20,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Comment;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Gregwar\Captcha\CaptchaBuilder;
 use DB;
 use Validator;
 use Log;
@@ -29,6 +29,7 @@ class PostsController extends Controller
 {
     public function __construct() {
         $this->middleware('auth', ['only' => ['create', 'edit'] ]);
+        $this->postId = Input::get('post_id');
     }
 
     public function create()
@@ -85,11 +86,14 @@ class PostsController extends Controller
         $ids = $post->subreddit;
         $isModerator = $ids->moderators()->where('user_id', Auth::id())->exists();
         $modList = Moderator::where('subreddit_id', '=', $post->subreddit->id)->get();
-        $view_data = self::view_data($request);
+        $view_data = CommentController::view_data($request);
+        $comment = Post::with('comments')->findOrFail($post->id);
+        $comments = $comment->comments;
 
         return view('post/show', $view_data)->with('post', $post)
                                 ->with('modList', $modList)
-                                ->with('isModerator', $isModerator);
+                                ->with('isModerator', $isModerator)
+                                ->with('comments', $comments);
     }
 
     public function edit(Post $post)
@@ -158,13 +162,16 @@ class PostsController extends Controller
     }
 
     protected function comment_list($per_page, Request $request){
-        $root_comments = Comment::root_comments();
+        $postId = Input::get('post_id');
+        //dd($postId); // returns null
+        $root_comments = Comment::root_comments(2);
         $root_with_replies = $this->include_replies_for($root_comments);
         $paginated_comments = $this->paginate($root_with_replies, $per_page, $request);
         return $paginated_comments;
     }
 
     public static function view_data(Request $request){
+
         $instance = new Self;
         $per_page = session('per_page')?session('per_page'):config('constants.per_page'); // default per page on opening the comment page
         $result['per_page'] = $per_page;
@@ -178,12 +185,14 @@ class PostsController extends Controller
     }
 
     public function post_this_comment(Request $request){
+        $postId = Input::get('commenter_post');
+        $post = Post::with('user.votes')->with('subreddit.moderators')->whereId($postId);
 
         $comment = new Comment;
         $comment->user_id = Auth::id();
         $comment->comment = $request->input('commenter_comment');
-        dd($request->input('commenter_comment'));
         $comment->parent_id = Input::get('commenter_parent');
+        $comment->post_id = $postId;
         if($comment->parent_id > 0){
             $my_parent = Comment::find($comment->parent_id);
             $comment->parents = $my_parent->parents.'.'.$comment->parent_id;
@@ -192,16 +201,20 @@ class PostsController extends Controller
         }
         $comment->save();
         $per_page = Input::get('per_page');
-        $comment_list = view('eastgate.comment.comment_list')
+
+        $comment_list = view('post/show')
             ->with('comments', $this->comment_list($per_page, $request))
             ->with('total_comments', $this->total_comments())
             ->with('per_page', $per_page)
+            ->with('post', $post)
             ->render();
+
         $response = array(
             'status' => 'success',
             'msg' => 'Comment Saved!',
             'comment_list' => $comment_list
         );
+
         return Response::json($response);
     }
 
@@ -237,7 +250,7 @@ class PostsController extends Controller
     protected function show_comment_list($request){
         $per_page = Input::get('per_page');
         session(['per_page' => $per_page]);
-        $comment_list = view('eastgate.comment.comment_list')
+        $comment_list = view('post/show')
             ->with('comments', $this->comment_list($per_page, $request))
             ->with('total_comments', $this->total_comments())
             ->with('per_page', $per_page)
