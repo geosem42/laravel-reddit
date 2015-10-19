@@ -14,8 +14,7 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 32)->nullable();
-            $table->string('email', 32)->nullable();
+            $table->string('post_id', 32)->default(0);
             $table->string('comment', 400)->unique(); // made unique so as to avoid duplicates
             $table->integer('user_id')->default(0);
             $table->integer('parent_id')->default(0); // links to parent comment
