@@ -5,7 +5,7 @@
 
 			@foreach($comments as $each_comment)
 				<?php 
-					$name_for_display = $each_comment->name?$each_comment->name:'Anonymous';
+					$name_for_display = $each_comment->user->name;
 					$date_for_display = $each_comment->created_at->diffForHumans();
 					$parent_name_for_display = '';
 					if($each_comment->parent_id > 0){
@@ -19,9 +19,7 @@
 					$comment_length = 12 - $offset_length;
 				?>
 				<div class="col-xs-offset-{!! $offset_length !!} col-xs-{!! $comment_length !!}">
-					{!! Form::open(['method' => 'POST']) !!}
 						<input type="hidden" id="postid" name="postid" class="post-id" value="{{ $each_comment->post_id }}">
-					{!! Form::close() !!}
 					<ul class="list-inline">
 						<li class="comment-by">{!! $name_for_display !!}</li>
 						@if($parents_count > 0)
@@ -44,7 +42,7 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-
+			{!! $comments->render() !!}
 		</div>
 	</div>
 	<div class="row">

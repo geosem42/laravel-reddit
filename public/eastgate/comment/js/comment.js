@@ -1,3 +1,6 @@
+$(document).ready(function() {
+
+});
 $(document).ready(
 	hide_comment_fields
 );
@@ -17,8 +20,7 @@ function commenter_fields(){
 	return [
 		'commenter_parent',
 		'commenter_comment',
-		'commenter_post',
-		'postid'
+		'commenter_post'
 	];
 } 
 
@@ -28,14 +30,12 @@ $(document).on('click', 'a.post-this-comment', function(){
 		'commenter_parent': $('#commenter_parent').val(),
 		'commenter_post': $('#commenter_post').val(),
 		'commenter_comment': $('#commenter_comment').val(),
-		'postid': $('#postid').val(),
 	};
 
 	var arr = [
 		'commenter_parent',
 		'commenter_post',
-		'commenter_comment',
-		'postid'
+		'commenter_comment'
 	];
 
 	for (var i in arr, i < arr.length, i++) {

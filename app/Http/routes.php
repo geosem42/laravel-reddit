@@ -43,6 +43,12 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 //Route::post('subreddit', 'SubredditController@store');
 //Route::get('subreddit/create', 'SubredditController@create');
 
+Route::get('{post}/comment', 'CommentController@index');
+Route::post('{post}/post_this_comment', 'CommentController@post_this_comment');
+Route::get('{post}/recaptcha', 'CommentController@recaptcha');
+Route::get('{post}/reply_comment', 'CommentController@reply_comment');
+Route::post('{post}/per_page', 'CommentController@per_page');
+
 Route::resource('subreddit', 'SubredditController');
 Route::resource('subreddit.moderators', 'ModeratorsController');
 
