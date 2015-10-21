@@ -6,6 +6,7 @@ Still a work in progress...
 # Packages Used
 1. ["intervention/image"](https://github.com/Intervention/image)
 2. ["oscarotero/Embed"](https://github.com/oscarotero/Embed)
+3. ["mohankumaranna/comment"](https://github.com/mohankumaranna/comment)
 
 # Features
 1. Login/Register
@@ -14,9 +15,10 @@ Still a work in progress...
 4. Assign Moderators to your Subreddits with ability for mods to edit posts
 5. Search Subreddits
 6. Pagination
+7. Threaded Comments
 
 # To-Do
-1. Comments
+1. Votes on Comments
 2. Sorting
 
 # Installation
