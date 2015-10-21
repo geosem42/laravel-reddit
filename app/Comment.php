@@ -26,17 +26,22 @@ class Comment extends Model
      * 
      * @return Collection
      */
-    public static function root_comments($postId) {
-        return Comment::child_comments(0, 'desc')->where('post_id', $postId);
+    //First, you need to create scopes on the model
+    public function scopeByParent($query, $parentId, $order = 'asc') {
+        return $query->where('parent_id', $parentId)->orderBy('created_at', $order);
     }
 
-    /**
-     * Get Child Comments for the given $parent_id
-     * 
-     * @return Collection
-     */
-    public static function child_comments($parent_id, $order='asc'){
-        return Comment::where('parent_id', $parent_id)->orderBy('created_at', $order)->get();
+    public function scopeForPost($query, $postId) {
+        return $query->where('post_id', $postId);
+    }
+
+//Then, change your existing methods...
+    public static function root_comments($postId) {
+        return self::byParent(0, 'desc')->forPost($postId)->get();
+    }
+
+    public static function child_comments($parent_id, $order = 'asc') {
+        return self::byParent($parent_id, $order)->get();
     }
 
     /**

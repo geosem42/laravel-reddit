@@ -90,7 +90,7 @@ class SubredditController extends Controller
         //
     }
 
-    public function mySubreddits(User $user, Subreddit $subreddit) {
+    public function mySubreddits(User $user) {
         $subreddit = Subreddit::where('user_id', '=', Auth::id())->get();
         return view('user/mysubreddits')->with('user', $user)->with('subreddit', $subreddit);
     }
@@ -100,7 +100,7 @@ class SubredditController extends Controller
         return view('user/moderators')->with('subreddit', $subreddit);
     }
 
-    public function search(Subreddit $subreddit, User $user, Post $post, Request $request)
+    public function search(Subreddit $subreddit, Request $request)
     {
         $query = $request->input('search');
         $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->where('id', $subreddit->id)->first();

@@ -9,9 +9,9 @@
             var users = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
-                prefetch: 'http://localhost/r2/public/data/users',
+                prefetch: 'data/users',
                 remote: {
-                    url: 'http://localhost/r2/public/data/users/%QUERY',
+                    url: 'data/users/%QUERY',
                     wildcard: '%QUERY'
                 }
             });

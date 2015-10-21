@@ -24,8 +24,8 @@ class CommentController extends Controller {
 	 * 
 	 * @return integer
 	 */
-	protected function total_comments(){
-		return DB::table('comments')->count();
+	protected function total_comments(Post $post){
+		return DB::table('comments')->where('post_id', $post->id)->count();
 	}
 
 	/**
@@ -87,8 +87,8 @@ class CommentController extends Controller {
 	 * @param  Request $request
 	 * @return view - home page
 	 */
-	public function index(Request $request){
-		$view_data = CommentController::view_data($request);
+	public function index(Request $request, Post $post){
+		$view_data = CommentController::view_data($request, $post->id);
 		return view('eastgate.comment.leave_a_comment', $view_data);
 /*		$per_page = session('per_page')?session('per_page'):config('constants.per_page'); // default per page on opening the comment page
 		return view('eastgate.comment.leave_a_comment')
@@ -110,7 +110,7 @@ class CommentController extends Controller {
 		$per_page = session('per_page')?session('per_page'):config('constants.per_page'); // default per page on opening the comment page
 		$result['per_page'] = $per_page;
 		$result['comments'] = $instance->comment_list($per_page, $request, $post);
-		$result['total_comments'] = $instance->total_comments();
+		$result['total_comments'] = $instance->total_comments($post);
 		return $result;
 	}
 
@@ -132,7 +132,7 @@ class CommentController extends Controller {
                 $request, $validator);
         }
 		$comment = new Comment;
-		$comment->user_id = Auth::id();;
+		$comment->user_id = Auth::id();
 		$comment->comment = Input::get('commenter_comment');
 		$comment->post_id = Input::get('commenter_post');
 		$comment->parent_id = Input::get('commenter_parent');
@@ -144,9 +144,10 @@ class CommentController extends Controller {
 		}
 		$comment->save();
 		$per_page = Input::get('per_page');
+		$post = $post->find($request->commenter_post);
 		$comment_list = view('eastgate.comment.comment_list')
 							->with('comments', $this->comment_list($per_page, $request, $post))
-							->with('total_comments', $this->total_comments())
+							->with('total_comments', $this->total_comments($post))
 							->with('per_page', $per_page)
 							->render();
 		$response = array(

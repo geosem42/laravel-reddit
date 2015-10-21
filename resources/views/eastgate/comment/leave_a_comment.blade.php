@@ -1,6 +1,6 @@
 <div class="content">
 	<meta name="csrf-token" content="{{ csrf_token() }}">	
-	<link rel="stylesheet" href="http://localhost/r2/public/bootstrap/3.3.4/css/bootstrap.min.css">
+
 	<link rel="stylesheet" href="http://localhost/r2/public/eastgate/comment/css/comment.css">
 	<h1>Leave A Comment</h1>
 	<div class="comment-content">

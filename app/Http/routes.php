@@ -43,7 +43,7 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 //Route::post('subreddit', 'SubredditController@store');
 //Route::get('subreddit/create', 'SubredditController@create');
 
-Route::get('{post}/comment', 'CommentController@index');
+Route::get('{post}/comment', ['as' => 'comment', 'uses' => 'CommentController@index']);
 Route::post('{post}/post_this_comment', 'CommentController@post_this_comment');
 Route::get('{post}/recaptcha', 'CommentController@recaptcha');
 Route::get('{post}/reply_comment', 'CommentController@reply_comment');

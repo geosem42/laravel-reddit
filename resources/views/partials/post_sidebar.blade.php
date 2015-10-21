@@ -1,14 +1,18 @@
 <!-- Subreddit Search Well -->
 <div class="well" style="margin-top: 30px;">
     <h4>Search {{ $post->subreddit->name }}</h4>
-    <div class="input-group">
-        <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
+    {!! Form::open(['route' => ['search-post', $post]]) !!}
+    <div id="custom-search-input">
+        <div class="input-group col-md-12">
+            <input type="text" name="search" class="search-query form-control" placeholder="Search" />
+                <span class="input-group-btn">
+                    <button class="btn btn-danger" type="submit">
+                        <span class=" glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+        </div>
     </div>
+    {!! Form::close() !!}
     <!-- /.input-group -->
 </div>
 
