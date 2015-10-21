@@ -19,13 +19,27 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.topic').upvote();
+            $('.comment').upvote();
 
             $('.vote').on('click', function (e) {
                 e.preventDefault();
                 var $button = $(this);
                 var postId = $button.data('post-id');
                 var value = $button.data('value');
-                $.post('votes', {postId:postId, value:value}, function(data) {
+                $.post('http://localhost/r2/public/votes', {postId:postId, value:value}, function(data) {
+                    if (data.status == 'success')
+                    {
+                        // Do something if you want..
+                    }
+                }, 'json');
+            });
+
+            $('.commentvote').on('click', function (e) {
+                e.preventDefault();
+                var $button = $(this);
+                var commentId = $button.data('comment-id');
+                var value = $button.data('value');
+                $.post('http://localhost/r2/public/commentvotes', {commentId:commentId, value:value}, function(data) {
                     if (data.status == 'success')
                     {
                         // Do something if you want..
@@ -73,7 +87,7 @@
                     <i class="glyphicon glyphicon-user" style="padding-right: 5px;"></i>submitted by {!!  link_to_route('profile_path', $post->user->name, $post->user->name) !!}
                     <i class="glyphicon glyphicon-calendar" style="padding-left: 15px;"></i> {{ $post->created_at->diffForHumans() }}
                     <i class="glyphicon glyphicon-bullhorn" style="padding-left: 15px;"></i> <a href="{{ action('SubredditController@show', [$post->subreddit->id]) }}">{{ $post->subreddit->name }}</a>
-                    <i class="glyphicon glyphicon-comment" style="padding-left: 15px;"></i> <a href="{{ action('PostsController@show', [$post->id]) }}">0 Comments</a>
+                    <i class="glyphicon glyphicon-comment" style="padding-left: 15px;"></i> <a href="{{ action('PostsController@show', [$post->id]) }}">{{ $post->comments->count() }} Comments</a>
                     @can('update-post', [$post, $isModerator])
                         <i class="glyphicon glyphicon-pencil" style="padding-left: 15px;"></i> <a href="{{ action('PostsController@edit', $post->id) }}">Edit</a>
                     @endcan

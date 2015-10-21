@@ -1,6 +1,3 @@
-$(document).ready(function() {
-
-});
 $(document).ready(
 	hide_comment_fields
 );
@@ -61,6 +58,19 @@ function comment_done_handler(data){
 	$('.comment-content').append($('.reply-content .comment-fields'));
 	$('.comment-list').html(data.comment_list); // put new list
 	$('#captcha-image').attr('src', data.captcha); // put new captchas
+	$('.comment').upvote();
+	$('.commentvote').on('click', function (e) {
+		e.preventDefault();
+		var $button = $(this);
+		var commentId = $button.data('comment-id');
+		var value = $button.data('value');
+		$.post('http://localhost/r2/public/commentvotes', {commentId:commentId, value:value}, function(data) {
+			if (data.status == 'success')
+			{
+				// Do something if you want..
+			}
+		}, 'json');
+	});
 	clear_input_fields();
 	remove_error_messages(data);
 	hide_comment_fields();

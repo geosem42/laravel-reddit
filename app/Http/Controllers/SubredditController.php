@@ -22,7 +22,7 @@ class SubredditController extends Controller
 
     public function index()
     {
-        $subreddit = Subreddit::latest('created_at')->paginate(5);
+        $subreddit = Subreddit::latest('created_at')->paginate(15);
         $subreddit->setPath('subreddit');
 
         return view('subreddit/index')->with('subreddit', $subreddit);
@@ -51,7 +51,7 @@ class SubredditController extends Controller
         // $subreddit = Subreddit::with('posts.votes')->with('user')->findOrFail($subreddit->id);
         //
         $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->where('id', $subreddit->id)->first();
-        $posts = $subreddit->posts()->paginate(4);
+        $posts = $subreddit->posts()->orderBy('created_at', 'desc')->paginate(15);
         $posts->setPath($subreddit->id);
         $isModerator = $subreddit->moderators()->where('user_id', Auth::id())->exists();
         $user = User::where('id', '=', Auth::id())->get();

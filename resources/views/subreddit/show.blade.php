@@ -14,21 +14,12 @@
                 var $button = $(this);
                 var postId = $button.data('post-id');
                 var value = $button.data('value');
-                $.post('votes', {postId:postId, value:value}, function(data) {
+                $.post('http://localhost/r2/public/votes', {postId:postId, value:value}, function(data) {
                     if (data.status == 'success')
                     {
                         // Do something if you want..
                     }
                 }, 'json');
-            });
-
-            $('.scroll').jscroll({
-                autoTrigger: true,
-                nextSelector: '.pagination li.active + li a',
-                contentSelector: 'div.scroll',
-                callback: function() {
-                    $('ul.pagination:visible:first').hide();
-                }
             });
 
         });

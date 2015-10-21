@@ -11,7 +11,7 @@ class Image extends Model
         'file.required' => 'Image is required'
     ];
 
-    public function article() {
-        return $this->belongsTo('App\Article');
+    public function posts() {
+        return $this->belongsTo('App\Post');
     }
 }

@@ -58,7 +58,8 @@ class PostsController extends Controller
             } else if ($info->description == null) {
                 $embed_data = ['text' => ''];
             } else {
-                $extension = pathinfo($info->image, PATHINFO_EXTENSION);
+                $orig = pathinfo($info->image, PATHINFO_EXTENSION);
+                $extension = substr($orig, 0, strpos($orig, '?'));
 
                 $newName = public_path() . '/images/' . str_random(8) . ".{$extension}";
 
@@ -121,5 +122,17 @@ class PostsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function search(Post $post, Request $request)
+    {
+        $query = $request->input('search');
+        $subredditId = $request->input('subreddit_id');
+        $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->where('id', $subredditId)->first();
+        $posts = $subreddit->posts()->where('title', 'LIKE', '%' . $query . '%')->get();
+        $isModerator = $subreddit->moderators()->where('user_id', Auth::id())->exists();
+        $modList = Moderator::where('subreddit_id', '=', $subredditId)->get();
+
+        return view('subreddit.search', compact('query', 'subreddit', 'posts', 'isModerator', 'modList'));
     }
 }

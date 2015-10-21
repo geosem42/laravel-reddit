@@ -6,7 +6,7 @@
         <div class="input-group col-md-12">
             <input type="text" name="search" class="search-query form-control" placeholder="Search" />
                 <span class="input-group-btn">
-                    <button class="btn btn-danger" type="submit">
+                    <button class="btn btn-success" type="submit">
                         <span class=" glyphicon glyphicon-search"></span>
                     </button>
                 </span>

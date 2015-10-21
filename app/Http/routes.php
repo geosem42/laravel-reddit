@@ -13,24 +13,6 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::get('contact', 'ContactController@index');
-
-Route::get('services', 'ServicesController@index');
-
-//Route::get('blog', 'ArticlesController@index');
-//Route::post('blog', 'ArticlesController@store');
-//Route::get('blog/create', 'ArticlesController@create');
-//Route::get('blog/{id}/edit', 'ArticlesController@edit');
-//Route::get('blog/{id}', 'ArticlesController@show');
-
-Route::resource('articles', 'ArticlesController');
-//Route::post('articles/upload', 'ArticlesController@postUpload');
-
-// dropzone upload
-//Route::get('/', ['as' => 'upload', 'uses' => 'ImageController@getUpload']);
-Route::post('upload', ['as' => 'upload-post', 'uses' =>'ArticlesController@postUpload']);
-Route::post('upload/delete', ['as' => 'upload-remove', 'uses' =>'ArticlesController@deleteUpload']);
-
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
@@ -40,8 +22,6 @@ Route::controllers([
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
-//Route::post('subreddit', 'SubredditController@store');
-//Route::get('subreddit/create', 'SubredditController@create');
 
 Route::get('{post}/comment', ['as' => 'comment', 'uses' => 'CommentController@index']);
 Route::post('{post}/post_this_comment', 'CommentController@post_this_comment');
@@ -53,9 +33,7 @@ Route::resource('subreddit', 'SubredditController');
 Route::resource('subreddit.moderators', 'ModeratorsController');
 
 Route::post('search/{subreddit}', ['as' => 'search', 'uses' => 'SubredditController@search']);
-
-/*Route::post('comments/{post}', ['as' => 'comment', 'uses' => 'PostsController@createComment']);
-Route::post('comments/{comment}/child', ['as' => 'child-comment', 'uses' => 'PostsController@createChildComment']);*/
+Route::post('search-post/{post}', ['as' => 'search_post', 'uses' => 'PostsController@search']);
 
 Route::get('mysubreddits', [
     'as' => 'mysubreddits',
@@ -64,12 +42,8 @@ Route::get('mysubreddits', [
 
 Route::resource('posts', 'PostsController');
 Route::resource('votes', 'VotesController');
+Route::resource('commentvotes', 'CommentVotesController');
 Route::resource('profile', 'ProfilesController');
-
-/*Route::post('{post}/post_this_comment', ['as' => 'post_this_comment', 'uses' => 'PostsController@post_this_comment']);
-
-Route::get('{reply_comment/{comment}', 'PostsController@reply_comment');
-Route::post('per_page', 'PostsController@per_page');*/
 
 Route::get('u/{name}', [
     'as' => 'profile_path',
@@ -83,4 +57,3 @@ Validator::extend('alpha_spaces', function($attribute, $value)
 {
     return preg_match('"^[A-Za-z][A-Za-z0-9]*$"', $value);
 });
-

@@ -63,4 +63,8 @@ class Comment extends Model
     public function user() {
         return $this->belongsTo('App\User');
     }
+
+    public function commentvotes() {
+        return $this->hasMany('App\CommentVote');
+    }
 }

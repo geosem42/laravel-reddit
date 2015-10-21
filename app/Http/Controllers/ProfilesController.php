@@ -21,14 +21,19 @@ class ProfilesController extends Controller
 
     public function show($user, Post $post)
     {
-        $user = User::whereName($user)->with('posts.votes')->firstOrFail();
-        //dd($user);
+        $user = User::whereName($user)->with('posts.votes')->with('comments')->firstOrFail();
+        $comments = $user->comments;
         $linkKarma = User::find($user->id)->votes()->sum('value');
+        $commentKarma = User::find($user->id)->commentvotes()->sum('value');
+        $total_comments = $user->comments->count();
 
         $isModerator = false;
 
         return view('user/profile')->with('user', $user)
                                     ->with('linkKarma', $linkKarma)
+                                    ->with('commentKarma', $commentKarma)
+                                    ->with('comments', $comments)
+                                    ->with('total_comments', $total_comments)
                                     ->with('isModerator', $isModerator);
     }
 
