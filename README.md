@@ -26,7 +26,7 @@ Still a work in progress...
 2. composer install
 3. php artisan migrate
 
-Open AuthServiceProvider.php and add the following method to top of your class
+Open AuthServiceProvider.php and add the import the following into top of your class
 ```php
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
