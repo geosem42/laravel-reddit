@@ -11,13 +11,17 @@
     <link rel="icon" href="../../favicon.ico">
 
     <title>Reddit</title>
-
+    <script src="{{ URL::asset('assets/js/jquery.min.js') }}"></script>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="{{ URL::asset('assets/css/bootstrap.min.css') }}">
-    <script src="{{ URL::asset('assets/js/jquery.min.js') }}"></script>
-
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/bootstrap-editable.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/jquery.upvote.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/sweetalert.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('eastgate/comment/css/comment.css') }}">
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="{{ URL::asset('assets/css/sticky-footer-navbar.css') }}">
+
+
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -83,9 +87,18 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-
-<script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
-<script src="{{ URL::asset('assets/js/jquery-ui.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('assets/js/jquery-ui.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('eastgate/comment/js/comment.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('assets/js/bootstrap-editable.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('assets/js/jquery.upvote.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/jquery.jscroll.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('assets/js/sweetalert.min.js') }}"></script>
+<!-- wysihtml5 -->
+<link rel="stylesheet" href="{{ URL::asset('assets/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css') }}">
+<script type="text/javascript" src="{{ URL::asset('assets/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('assets/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('assets/wysihtml5/wysihtml5.js') }}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script>
     // CSRF token setup for jQuery
@@ -104,6 +117,72 @@
                 break;
         }
     });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+
+    $('.topic').upvote();
+    $('.comment').upvote();
+
+    $.get( "/data/islogged", function(data)
+    {
+        data.status == false ? console.log('not logged in') : console.log('logged in');
+
+        $('.vote').on('click', function (e) {
+            e.preventDefault();
+            var $button = $(this);
+            var postId = $button.data('post-id');
+            var value = $button.data('value');
+
+            if(data.status == false) {
+
+                sweetAlert("Oops...", "You are not logged in!", "error");
+
+                window.setInterval(function()
+                {
+                    $('a.upvote').removeClass('upvote-on');
+                    $('a.downvote').removeClass('downvote-on');
+                }, 500);
+
+            } else {
+                $.post('votes', {postId:postId, value:value}, function(data) {
+                    // success here
+                }).fail(function() {
+                    sweetAlert("Oops...", "Something went wrong...", "error");
+                }, 'json');
+            }
+        });
+
+        $('.commentvote').on('click', function (e) {
+            e.preventDefault();
+            var $button = $(this);
+            var commentId = $button.data('comment-id');
+            var value = $button.data('value');
+
+            if(data.status == false) {
+                sweetAlert("Oops...", "You are not logged in!", "error");
+
+                window.setInterval(function()
+                {
+                    $('a.commentvote').removeClass('upvote-on');
+                    $('a.commentvote').removeClass('downvote-on');
+                }, 500);
+
+            } else {
+                $.post('commentvotes', {commentId:commentId, value:value}, function(data) {
+                    // success here
+                }).fail(function() {
+                    sweetAlert("Oops...", "Something went wrong...", "error");
+                }, 'json');
+            }
+        });
+    });
+
+    $.fn.editable.defaults.mode = 'inline';
 </script>
 @yield('scripts')
 

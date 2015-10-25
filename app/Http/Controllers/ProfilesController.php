@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Post;
+use App\Comment;
 use Illuminate\Support\Facades\Auth;
 use Input;
 use Validator;
@@ -21,10 +22,10 @@ class ProfilesController extends Controller
 
     public function show($user, Post $post)
     {
-        $user = User::whereName($user)->with('posts.votes')->with('comments')->firstOrFail();
+        $user = User::whereName($user)->with('posts.votes')->with('comments.posts')->firstOrFail();
         $comments = $user->comments;
-        $linkKarma = User::find($user->id)->votes()->sum('value');
-        $commentKarma = User::find($user->id)->commentvotes()->sum('value');
+        $linkKarma = $user->votes()->sum('value');
+        $commentKarma = $user->commentvotes()->sum('value');
         $total_comments = $user->comments->count();
 
         $isModerator = false;

@@ -57,7 +57,7 @@ class Comment extends Model
     }
 
     public function posts() {
-        return $this->belongsTo('App\Post');
+        return $this->belongsTo('App\Post', 'post_id');
     }
 
     public function user() {
@@ -66,5 +66,9 @@ class Comment extends Model
 
     public function commentvotes() {
         return $this->hasMany('App\CommentVote');
+    }
+
+    public function subreddit() {
+        return $this->belongsTo('App\Subreddit');
     }
 }

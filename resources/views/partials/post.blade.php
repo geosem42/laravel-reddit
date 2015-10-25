@@ -1,55 +1,3 @@
-@section('scripts')
-    <link rel="stylesheet" href="{{ URL::asset('assets/css/jquery.upvote.css') }}">
-    <script src="{{ URL::asset('assets/js/jquery.upvote.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/jquery.jscroll.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ URL::asset('eastgate/comment/css/comment.css') }}">
-
-    <script type="text/javascript">
-        $(document).ready(
-                function(){
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                }
-        );
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.topic').upvote();
-            $('.comment').upvote();
-
-            $('.vote').on('click', function (e) {
-                e.preventDefault();
-                var $button = $(this);
-                var postId = $button.data('post-id');
-                var value = $button.data('value');
-                $.post('http://localhost/r2/public/votes', {postId:postId, value:value}, function(data) {
-                    if (data.status == 'success')
-                    {
-                        // Do something if you want..
-                    }
-                }, 'json');
-            });
-
-            $('.commentvote').on('click', function (e) {
-                e.preventDefault();
-                var $button = $(this);
-                var commentId = $button.data('comment-id');
-                var value = $button.data('value');
-                $.post('http://localhost/r2/public/commentvotes', {commentId:commentId, value:value}, function(data) {
-                    if (data.status == 'success')
-                    {
-                        // Do something if you want..
-                    }
-                }, 'json');
-            });
-        });
-    </script>
-@endsection
-
 <div class="row">
     <div class="span8">
         <div class="row">
@@ -59,11 +7,11 @@
         </div>
         <div class="row">
             <div class="col-md-1">
-                <div class="upvote topic" data-post="{{ $post->id }}">
-                    <a class="upvote vote {{ $post->votes && $post->votes->contains('user_id', Auth::id()) ? ($post->votes->where('user_id', Auth::id())->first()->value > 0 ? 'upvote-on' : null) : null}}" data-value="1" data-post-id="{{ $post->id }}"></a>
+                <div class="upvote topic upvote-disabled" data-post="{{ $post->id }}">
+                    <a id="up" class="upvote vote {{ $post->votes && $post->votes->contains('user_id', Auth::id()) ? ($post->votes->where('user_id', Auth::id())->first()->value > 0 ? 'upvote-on' : null) : null}}" data-value="1" data-post-id="{{ $post->id }}"></a>
                     <!-- Notice how we set the sum of the votes for this post here -->
                     <span class="count">{{ $post->votes->sum('value') }}</span>
-                    <a class="downvote vote {{ $post->votes && $post->votes->contains('user_id', Auth::id()) ? ($post->votes->where('user_id', Auth::id())->first()->value < 0 ? 'downvote-on' : null) : null}}" data-value="-1" data-post-id="{{ $post->id }}"></a>
+                    <a id="down" class="downvote vote {{ $post->votes && $post->votes->contains('user_id', Auth::id()) ? ($post->votes->where('user_id', Auth::id())->first()->value < 0 ? 'downvote-on' : null) : null}}" data-value="-1" data-post-id="{{ $post->id }}"></a>
                 </div>
             </div>
             <div class="col-md-1">

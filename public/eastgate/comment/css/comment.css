@@ -12,6 +12,7 @@
 .comment-list .reply-to, 
 .comment-list .comment-on, 
 .comment-list .reply {
-	color: gray;
+	color: darkgray;
+    font-size: 12px;
 }
 

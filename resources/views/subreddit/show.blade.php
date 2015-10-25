@@ -4,26 +4,6 @@
     <link rel="stylesheet" href="{{ URL::asset('assets/css/jquery.upvote.css') }}">
     <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.upvote.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jquery.jscroll.min.js') }}"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.topic').upvote();
-
-            $('.vote').on('click', function (e) {
-                e.preventDefault();
-                var $button = $(this);
-                var postId = $button.data('post-id');
-                var value = $button.data('value');
-                $.post('http://localhost/r2/public/votes', {postId:postId, value:value}, function(data) {
-                    if (data.status == 'success')
-                    {
-                        // Do something if you want..
-                    }
-                }, 'json');
-            });
-
-        });
-    </script>
 @endsection
 
 @section('content')

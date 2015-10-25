@@ -27,18 +27,24 @@ Route::get('{post}/comment', ['as' => 'comment', 'uses' => 'CommentController@in
 Route::post('{post}/post_this_comment', 'CommentController@post_this_comment');
 Route::get('{post}/recaptcha', 'CommentController@recaptcha');
 Route::get('{post}/reply_comment', 'CommentController@reply_comment');
-Route::post('{post}/per_page', 'CommentController@per_page');
+Route::post('{post}/per_page', ['as' => 'per_page', 'uses' => 'CommentController@per_page']);
+Route::post('{post}/comment/update', ['as' => 'comment/update', 'uses' => 'CommentController@update']);
 
 Route::resource('subreddit', 'SubredditController');
 Route::resource('subreddit.moderators', 'ModeratorsController');
 
 Route::post('search/{subreddit}', ['as' => 'search', 'uses' => 'SubredditController@search']);
 Route::post('search-post/{post}', ['as' => 'search_post', 'uses' => 'PostsController@search']);
+Route::post('search-site', ['as' => 'search_site', 'uses' => 'HomeController@search']);
 
 Route::get('mysubreddits', [
     'as' => 'mysubreddits',
     'uses' => 'SubredditController@mySubreddits'
 ]);
+
+Route::get('data/islogged', function() {
+    return Response::json( array('status' => Auth::check()));
+});
 
 Route::resource('posts', 'PostsController');
 Route::resource('votes', 'VotesController');

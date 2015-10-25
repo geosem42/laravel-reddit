@@ -23,4 +23,8 @@ class Subreddit extends Model
     public function moderators() {
         return $this->hasMany('App\Moderator');
     }
+
+    public function comments() {
+        return $this->hasMany('App\Comment');
+    }
 }

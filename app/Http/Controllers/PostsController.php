@@ -24,12 +24,12 @@ use DB;
 use Validator;
 use Log;
 use App\Config;
+use App\Flair;
 
 class PostsController extends Controller
 {
     public function __construct() {
         $this->middleware('auth', ['only' => ['create', 'edit'] ]);
-        $this->postId = Input::get('post_id');
     }
 
     public function create()
@@ -81,13 +81,14 @@ class PostsController extends Controller
         return redirect('/subreddit');
     }
 
-    public function show(Post $post, User $user, Request $request)
+    public function show(Post $post, User $user, Request $request, Comment $comment)
     {
         $post = Post::with('user.votes')->with('subreddit.moderators')->findOrFail($post->id);
         $ids = $post->subreddit;
-        $isModerator = $ids->moderators()->where('user_id', Auth::id())->exists();
+        $check = $ids->moderators()->where('user_id', Auth::id())->first();
+        $isModerator = $check ? true:false;
         $modList = Moderator::where('subreddit_id', '=', $post->subreddit->id)->get();
-        $view_data = CommentController::view_data($request, $post);
+        $view_data = CommentController::view_data($request, $post, $comment, $isModerator);
 
         return view('post/show', $view_data)->with('post', $post)
                                 ->with('modList', $modList)

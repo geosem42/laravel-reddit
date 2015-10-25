@@ -30,17 +30,23 @@
 					<div class="col-md-11">
 						<input type="hidden" id="postid" name="postid" class="post-id" value="{{ $each_comment->post_id }}">
 						<ul class="list-inline">
-							<li class="comment-by">{!! $name_for_display !!}</li>
-							@if($parents_count > 0)
-								<li class="reply-to">{!! $parent_name_for_display !!}</li>
-							@endif
-							<li class="separator"></li>
+							<li class="comment-by">{!! link_to_route('profile_path', $name_for_display, $name_for_display) !!}</li>
+
 							<li class="comment-on">{!! $date_for_display !!}</li>
 						</ul>
+						@can('update-comment', [$each_comment, $isModerator])
+							<a href="#" class="com" data-type="wysihtml5" data-pk="{{ $each_comment->id }}" data-placement="top" data-url="{{ url($each_comment->post_id . '/comment/update') }}">
+									<p>{!! $each_comment->comment !!}</p>
+							</a>
+						@else
+							<p>{!! $each_comment->comment !!}</p>
+						@endcan
 
-						<p>{!! $each_comment->comment !!}</p>
-
-						<a href="javascript:void(0)" class="reply comment{!! $each_comment->id !!}" title="Reply to above comment">Reply</a>
+						<p style="color: darkgrey; font-size: 12px;">
+							@if(Auth::check())
+								<i class="glyphicon glyphicon-pencil"></i> <a href="javascript:void(0)" class="reply comment{!! $each_comment->id !!}" title="Reply to above comment">Reply</a>
+							@endif
+						</p>
 
 						<div class="reply-content reply{!! $each_comment->id !!}"></div>
 
@@ -50,7 +56,7 @@
 			@endforeach
 		</div>
 	</div>
-	<div class="row">
+	{{--<div class="row">
 		<div class="col-xs-12">
 			{!! $comments->render() !!}
 		</div>
@@ -59,5 +65,5 @@
 		<div class="col-xs-12">
 			Show <input type="text" name="comments_per_page" class="comments_per_page" value="{!! $per_page !!}" size="2" title="Number of comments per page"> comments per page
 		</div>
-	</div>
+	</div>--}}
 </div>

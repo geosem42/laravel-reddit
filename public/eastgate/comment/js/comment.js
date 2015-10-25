@@ -71,6 +71,20 @@ function comment_done_handler(data){
 			}
 		}, 'json');
 	});
+	$('.com').editable({
+		validate: function(value) {
+			if($.trim(value) == '')
+				return 'Value is required.';
+		},
+		type: 'wysihtml5',
+		title: 'Edit Comment',
+		placement: 'top',
+		send:'always',
+		ajaxOptions: {
+			dataType: 'json',
+			type: 'post'
+		}
+	});
 	clear_input_fields();
 	remove_error_messages(data);
 	hide_comment_fields();

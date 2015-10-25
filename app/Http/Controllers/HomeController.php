@@ -10,6 +10,7 @@ use App\Subreddit;
 use App\User;
 use App\Post;
 use App\Moderator;
+use App\Http\Controllers\Posts;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -22,13 +23,23 @@ class HomeController extends Controller
     public function index(Subreddit $subreddit, Post $post, Moderator $moderator, User $user)
     {
         //$posts = Post::with('user.votes')->get();
-        $posts = Post::with('user.votes')->with('subreddit.moderators')->get();
+        $posts = Post::with('user.votes')->with('subreddit.moderators')->orderBy('created_at', 'desc')->get();
         //$ids = $posts->subreddit;
         $isModerator = false;
 
         //dd($ids);
 
         return view('home')->with('posts', $posts)->with('isModerator', $isModerator);
+    }
+
+    public function search(Post $post, Subreddit $subreddit, Request $request)
+    {
+        $query = $request->input('search');
+        $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->first();
+        $posts = Post::where('title', 'LIKE', '%' . $query . '%')->get();
+        $isModerator = false;
+
+        return view('site.search', compact('query', 'subreddit', 'posts', 'isModerator'));
     }
 
     /**

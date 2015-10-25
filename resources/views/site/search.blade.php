@@ -16,7 +16,7 @@
                     @endforeach
                 </ul>
             @endif
-            <h1>Searching: {{ $subreddit->name }}</h1>
+            <h1>Searching entire Site</h1>
             <div class="scroll">
                 @if(count($posts) < 1)
                     There are no matches
@@ -30,7 +30,7 @@
         </div>
 
         <div class="col-md-4">
-            @include('partials/sub_sidebar')
+            @include('site/sidebar')
         </div>
     </div>
 @stop

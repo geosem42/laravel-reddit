@@ -19,22 +19,14 @@ use App\Post;
 
 class CommentController extends Controller {
 
-	/**
-	 * Calculates number of rows in the 'comment' table
-	 * 
-	 * @return integer
-	 */
+	public function __construct() {
+		$this->middleware('auth', ['only' => ['post_this_comment', 'update'] ]);
+	}
+
 	protected function total_comments(Post $post){
 		return DB::table('comments')->where('post_id', $post->id)->count();
 	}
 
-	/**
-	 * Makes an array such a way that child comments placed next to parent comment
-	 * to show tree like structure on view
-	 * 
-	 * @param  array $comments - parent comment only
-	 * @return array - comments with child comments
-	 */
 	private function include_replies_for($comments){
 		$parent = array();
 		foreach($comments as $each_comment){
@@ -48,14 +40,6 @@ class CommentController extends Controller {
 		return $parent;
 	}
 
-	/**
-	 * Manually build pagination on the array of $items.
-	 * 
-	 * @param  array  $items
-	 * @param  int  $perPage 
-	 * @param  Request $request 
-	 * @return LengthAwarePaginator
-	 */
 	private function paginate($items, $perPage, Request $request) {
 		$page = Input::get('page', 1); // get current page or default to 1
 		$offset = ($page * $perPage) - $perPage;
@@ -67,49 +51,29 @@ class CommentController extends Controller {
 			['path' => $request->url(), 'query' => $request->query()]);
 	}
 
-	/**
-	 * Builds Paginated Comment List to be shown on a view
-	 * 
-	 * @param  int  $per_page
-	 * @param  Request $request
-	 * @return LengthAwarePaginator
-	 */
 	protected function comment_list($per_page, Request $request, Post $post) {
 		$root_comments = Comment::root_comments($post->id);
-		$root_with_replies = $this->include_replies_for($root_comments);
-		$paginated_comments = $this->paginate($root_with_replies, $per_page, $request, $post);
-		return $paginated_comments;
+		$root_with_replies = $this->include_replies_for($root_comments, $per_page, $request, $post);
+		//$paginated_comments = $this->paginate($root_with_replies, $per_page, $request, $post);
+		//$paginated_comments->setPath('');
+		return $root_with_replies;
 	}
 
-	/**
-	 * Get Home page view
-	 * 
-	 * @param  Request $request
-	 * @return view - home page
-	 */
-	public function index(Request $request, Post $post){
+	public function index(Request $request, Post $post, Comment $comment) {
 		$view_data = CommentController::view_data($request, $post->id);
 		return view('eastgate.comment.leave_a_comment', $view_data);
-/*		$per_page = session('per_page')?session('per_page'):config('constants.per_page'); // default per page on opening the comment page
-		return view('eastgate.comment.leave_a_comment')
-				->with('comments', $this->comment_list($per_page, $request))
-				->with('per_page', $per_page)
-				->with('total_comments', $this->total_comments())
-				->with('captcha_builder', $this->captcha_builder());
-*/
 	}
 
-	/**
-	 * Get data required for comment view
-	 * @param  Request $request [description]
-	 * @return Array
-	 */
 	public static function view_data(Request $request, Post $post) {
-
 		$instance = new Self;
-		$per_page = session('per_page')?session('per_page'):config('constants.per_page'); // default per page on opening the comment page
+		$per_page = session('per_page')?session('per_page'):config('constants.per_page');
+		$post = Post::with('user.votes')->with('subreddit.moderators')->with('comments')->where('id', $post->id)->first();
+		$comment = $post->comments;
+		$user = User::where('id', '=', Auth::id())->get();
+		$check = $post->subreddit->moderators->where('user_id', Auth::id())->first();
+		$isModerator = $check ? true:false;
 		$result['per_page'] = $per_page;
-		$result['comments'] = $instance->comment_list($per_page, $request, $post);
+		$result['comments'] = $instance->comment_list($per_page, $request, $post, $comment, $user, $isModerator);
 		$result['total_comments'] = $instance->total_comments($post);
 		return $result;
 	}
@@ -118,12 +82,6 @@ class CommentController extends Controller {
 		return session('per_page')?session('per_page'):config('constants.per_page'); // default per page on opening the comment page
 	}
 
-	/**
-	 * Post user submitted data, validates and saves as a new comment
-	 * 
-	 * @param  Request $request
-	 * @return Response with a json object
-	 */
 	public function post_this_comment(Request $request, Post $post) {
 		$validator = $this->validator($request->all());
 
@@ -145,10 +103,13 @@ class CommentController extends Controller {
 		$comment->save();
 		$per_page = Input::get('per_page');
 		$post = $post->find($request->commenter_post);
+		$check = $post->subreddit->moderators->where('user_id', Auth::id())->first();
+		$isModerator = $check ? true:false;
 		$comment_list = view('eastgate.comment.comment_list')
 							->with('comments', $this->comment_list($per_page, $request, $post))
 							->with('total_comments', $this->total_comments($post))
 							->with('per_page', $per_page)
+							->with('isModerator', $isModerator)
 							->render();
 		$response = array(
 			'status' => 'success',
@@ -158,12 +119,6 @@ class CommentController extends Controller {
 		return Response::json($response);
 	}
 
-    /**
-     * Get a validator for an incoming post_this_comment request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -171,11 +126,6 @@ class CommentController extends Controller {
         ]);
     }
 
-    /**
-     * Get a recaptcha builder
-     * 
-     * @return Response with a json object containing recaptcha builder
-     */
     public function recaptcha(){
     	$response = array(
     		'status'	=> 'success',
@@ -184,11 +134,6 @@ class CommentController extends Controller {
     	return Response::json($response);
     }
 
-    /**
-     * Get a Cancel link to display in the Reply view
-     * 
-     * @return Response with json object
-     */
     public function reply_comment(){
     	$response = array(
     		'status' => 'success',
@@ -198,21 +143,10 @@ class CommentController extends Controller {
     	return Response::json($response);
     }
 
-    /**
-     * builds view for cancel link
-     * 
-     * @return view on cancel link
-     */
     protected function show_cancel_reply(){
     	return view('eastgate.comment.cancel_reply')->render();
     }
 
-    /**
-     * builds view for comment list
-     * 
-     * @param  Request $request
-     * @return view on comment list
-     */
     protected function show_comment_list(Request $request, Post $post) {
 		$per_page = Input::get('per_page');
 		session(['per_page' => $per_page]);
@@ -224,12 +158,6 @@ class CommentController extends Controller {
 		return $comment_list;    	
     }
 
-    /**
-     * Post Per Page data, in turn, Get updated comment list based on new Per Page
-     * 
-     * @param  Request $request
-     * @return Response with json object
-     */
     public function per_page(Request $request, Post $post){
     	$response = array(
     		'status' => 'success',
@@ -238,4 +166,15 @@ class CommentController extends Controller {
     	);
     	return Response::json($response);    	
     }
+
+	public function update(Request $request) {
+		$pk = $request->input('pk');
+		$comment = Input::get('value');
+		$commentData = Comment::whereId($pk)->first();
+		$commentData->comment = $comment;
+		if($commentData->save())
+			return Response::json(array('status'=>1));
+		else
+			return Response::json(array('status'=>0));
+	}
 }

@@ -1,57 +1,5 @@
 @extends('layouts/default')
 
-@section('scripts')
-    <link rel="stylesheet" href="{{ URL::asset('assets/css/jquery.upvote.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('eastgate/comment/css/comment.css') }}">
-    <script src="{{ URL::asset('assets/js/jquery.upvote.js') }}"></script>
-    <script src="http://localhost/r2/public/eastgate/comment/js/comment.js"></script>
-    <script type="text/javascript">
-        $(document).ready(
-                function(){
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                }
-        );
-    </script>
-
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.topic').upvote();
-            $('.comment').upvote();
-
-            $('.vote').on('click', function (e) {
-                e.preventDefault();
-                var $button = $(this);
-                var postId = $button.data('post-id');
-                var value = $button.data('value');
-                $.post('http://localhost/r2/public/votes', {postId:postId, value:value}, function(data) {
-                    if (data.status == 'success')
-                    {
-                        // Do something if you want..
-                    }
-                }, 'json');
-            });
-
-            $('.commentvote').on('click', function (e) {
-                e.preventDefault();
-                var $button = $(this);
-                var commentId = $button.data('comment-id');
-                var value = $button.data('value');
-                $.post('http://localhost/r2/public/commentvotes', {commentId:commentId, value:value}, function(data) {
-                    if (data.status == 'success')
-                    {
-                        // Do something if you want..
-                    }
-                }, 'json');
-            });
-        });
-    </script>
-@endsection
-
 @section('content')
     <div class="container">
         <div class="row">
@@ -105,7 +53,7 @@
                             $offset_length = $parents_count;
                             $comment_length = 12 - $offset_length;
                             ?>
-                            <div class="col-xs-offset-{!! $offset_length !!} col-xs-{!! $comment_length !!}">
+                            <div class="col-xs-offset-0 col-xs-12">
                                 <div class="col-md-1">
                                     <div class="upvote comment" data-comment="{{ $each_comment->id }}">
                                         <a class="upvote commentvote {{ $each_comment->commentvotes && $each_comment->commentvotes->contains('user_id', Auth::id()) ? ($each_comment->commentvotes->where('user_id', Auth::id())->first()->value > 0 ? 'upvote-on' : null) : null}}" data-value="1" data-comment-id="{{ $each_comment->id }}"></a>
@@ -118,9 +66,7 @@
                                     <input type="hidden" id="postid" name="postid" class="post-id" value="{{ $each_comment->post_id }}">
                                     <ul class="list-inline">
                                         <li class="comment-by">{!! $name_for_display !!}</li>
-                                        @if($parents_count > 0)
-                                            <li class="reply-to">{!! $parent_name_for_display !!}</li>
-                                        @endif
+                                        <li class="reply-to"><span class="glyphicon glyphicon-share-alt" title="Reply to">&nbsp;</span> <a href="{{ action('PostsController@show', $each_comment->post_id) }}">{!! $each_comment->posts->title !!}</a></li>
                                         <li class="separator"></li>
                                         <li class="comment-on">{!! $date_for_display !!}</li>
                                     </ul>
