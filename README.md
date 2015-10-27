@@ -1,5 +1,6 @@
 # laravel-reddit
 Laravel Reddit-like Community
+Demo: http://maghnatis.com
 
 # Packages Used
 1. ["intervention/image"](https://github.com/Intervention/image)
