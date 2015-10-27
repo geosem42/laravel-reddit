@@ -24,13 +24,13 @@ Laravel Reddit-like Community
 2. composer install
 3. php artisan migrate
 
-Open AuthServiceProvider.php and add the following method to top of your class
+Open AuthServiceProvider.php and import the following classes.
 ```php
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 ```
-Now add the following method to the class in AuthServiceProvider.php
+Now add the following method to the class
 ```php
 public function boot(GateContract $gate)
 {
