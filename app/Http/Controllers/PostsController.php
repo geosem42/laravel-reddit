@@ -59,7 +59,12 @@ class PostsController extends Controller
                 $embed_data = ['text' => ''];
             } else {
                 $orig = pathinfo($info->image, PATHINFO_EXTENSION);
-                $extension = substr($orig, 0, strpos($orig, '?'));
+                $qmark = str_contains($orig, '?');
+                if($qmark == false) {
+                	$extension = $orig;
+                } else {
+                	$extension = substr($orig, 0, strpos($orig, '?'));
+                }
 
                 $newName = public_path() . '/images/' . str_random(8) . ".{$extension}";
 
