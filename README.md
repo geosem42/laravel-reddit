@@ -1,23 +1,23 @@
 # laravel-reddit
 Laravel Reddit-like Community
 
-Still a work in progress...
-
 # Packages Used
 1. ["intervention/image"](https://github.com/Intervention/image)
 2. ["oscarotero/Embed"](https://github.com/oscarotero/Embed)
+3. ["mohankumaranna/comment"](https://github.com/mohankumaranna/comment)
 
 # Features
 1. Login/Register
-2. Create Subreddits
-3. Create Posts (link and text) and grab their meta-data
-4. Assign Moderators to your Subreddits with ability for mods to edit posts
-5. Search Subreddits
-6. Pagination
+2. Subreddits
+3. Posts (link and text)
+4. Moderators
+5. Search
+6. Threaded Comments with inline editing
+7. Upvote/Downvote
+8. User Profiles
 
 # To-Do
-1. Comments
-2. Sorting
+1. Sorting
 
 # Installation
 1. git clone https://github.com/Halnex/laravel-reddit projectname
@@ -44,7 +44,7 @@ public function boot(GateContract $gate)
         if ($user->id === $post->user_id) {
             return true;
         }
-        
+
         if ($isModerator) {
             return true;
         }
@@ -58,6 +58,16 @@ public function boot(GateContract $gate)
         }
 
         return false;
-    });    
+    });
+
+    $gate->define('update-comment', function($user, $comment, $isModerator) {
+        if($user->id === $comment->user_id) {
+            return true;
+        }
+
+        if ($isModerator) {
+            return true;
+        }
+    });
 }
 ```
