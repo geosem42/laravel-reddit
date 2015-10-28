@@ -36,10 +36,10 @@
 						</ul>
 						@can('update-comment', [$each_comment, $isModerator])
 							<a href="#" class="com" data-type="wysihtml5" data-pk="{{ $each_comment->id }}" data-placement="top" data-url="{{ url($each_comment->post_id . '/comment/update') }}">
-									<p>{!! $each_comment->comment !!}</p>
+									<p>{!! strip_tags($each_comment->comment, '<b><a><img><i><u><p><br><ul><ol><li><h1><h2><h3><blockquote>') !!}</p>
 							</a>
 						@else
-							<p>{!! $each_comment->comment !!}</p>
+							<p>{!! strip_tags($each_comment->comment, '<b><a><img><i><u><p><br><ul><ol><li><h1><h2><h3><blockquote>') !!}</p>
 						@endcan
 
 						<p style="color: darkgrey; font-size: 12px;">
