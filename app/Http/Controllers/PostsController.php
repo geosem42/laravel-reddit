@@ -100,10 +100,9 @@ class PostsController extends Controller
 
                 $image = Image::make($info->image)->fit(70, 70)->save($newName);
                 $embed_data = ['text' => $info->description, 'image' => basename($newName)];
+                
+                Auth::user()->posts()->create(array_merge($request->all(), $embed_data));
             }
-
-            Auth::user()->posts()->create(array_merge($request->all(), $embed_data));
-
             return redirect('/subreddit');
         }
         Auth::user()->posts()->create($request->all());
