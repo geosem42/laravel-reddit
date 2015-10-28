@@ -28,7 +28,8 @@
                     @if ($post->link == null)
                         <a href="{{ action('PostsController@show', [$post->id]) }}">{{ $post->title }}</a>
                     @else
-                        <a href="{{ $post->link }}" target="_blank">{{ $post->title }}</a>
+                        <?php $parse = parse_url($post->link); ?>
+                        <a href="{{ $post->link }}" target="_blank">{{ $post->title }}</a> <span class="label label-info">{{ $parse['host'] }}</span>
                     @endif
                 </p>
                 <p style="color: darkgrey; font-size: 12px;">
