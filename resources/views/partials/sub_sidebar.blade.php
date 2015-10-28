@@ -18,7 +18,7 @@
 <!-- Side Widget Well -->
 <div class="well">
     <h4>About {{ $subreddit->name }}</h4>
-    <p>{!! $subreddit->description !!}</p>
+    <p>{!! strip_tags($subreddit->description, '<b><a><img><i><u><p><br><ul><ol><li><h1><h2><h3><blockquote>') !!}</p>
 </div>
 
 <!-- Subreddit Moderators Well -->
