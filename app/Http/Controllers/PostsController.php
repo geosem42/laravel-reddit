@@ -52,6 +52,31 @@ class PostsController extends Controller
         if (Input::has('link')) {
             $input['link'] = Input::get('link');
             $info = Embed::create($input['link']);
+            
+            $jpg = str_contains($input['link'], '.jpg');
+            $png = str_contains($input['link'], '.png');
+            $gif = str_contains($input['link'], '.gif');
+
+            if ($jpg || $png || $gif) {
+                $orig = pathinfo($input['link'], PATHINFO_EXTENSION);
+                $qmark = str_contains($orig, '?');
+                if($qmark == false) {
+                    $extension = $orig;
+                } else {
+                    $extension = substr($orig, 0, strpos($orig, '?'));
+                }
+
+                $newName = public_path() . '/images/' . str_random(8) . ".{$extension}";
+
+                if (File::exists($newName)) {
+                    $imageToken = substr(sha1(mt_rand()), 0, 5);
+                    $newName = public_path() . '/images/' . str_random(8) . '-' . $imageToken . ".{$extension}";
+                }
+
+                $image = Image::make($input['link'])->fit(70, 70)->save($newName);
+                $embed_data = ['image' => basename($newName)];
+                Auth::user()->posts()->create(array_merge($request->all(), $embed_data));
+            }
 
             if ($info->image == null) {
                 $embed_data = ['text' => $info->description];
