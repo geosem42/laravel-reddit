@@ -1,5 +1,5 @@
 # laravel-reddit
-Laravel Reddit-like Community
+Reddit clone built with Laravel 5
 
 Demo: http://maghnatis.com
 
