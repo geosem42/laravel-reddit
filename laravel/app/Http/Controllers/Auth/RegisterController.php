@@ -39,7 +39,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->redirectTo = env('REDIRECT_CREATE_ACC');
+        $this->redirectTo = env('https://distribution.projectoblio.com');
         $this->middleware('guest');
     }
 
