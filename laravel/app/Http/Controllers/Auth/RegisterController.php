@@ -47,7 +47,6 @@ class RegisterController extends Controller
     {
         $input = $request->all();
         $validator = $this->validator($input);
-	echo 'console.log(' this was called')';
         if ($validator->passes()) {
             $user = $this->create($request->all());
 	
