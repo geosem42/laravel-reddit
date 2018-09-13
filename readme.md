@@ -6,9 +6,9 @@
 
 2. Inside the first file that opens, keep "server_name 127.0.0.1" for localhost/docker. Change to  "server_name {{public-ip-address}}" or "server_name {{domain name}}" if running on a VPS.
 
-3. Make the mysql password this: y78tyutftret. Keep entering it every time it asks. When asked, turn off all test accounts and test databases. When asked, install phpmyadmin as an apache server. 
+3. Make the mysql password this: anyPassword. Keep entering it every time it asks. When asked, turn off all test accounts and test databases. When asked, install phpmyadmin as an apache server. 
 
-4. Upon completion to http://{{server_name}}/phpmyadmin. user "root" password "y78tyutftret". Click "Databases". Create a database called "forge" with collection "utf8_unicode_ci". 
+4. Upon completion to http://{{server_name}}/phpmyadmin. user "root" password "anyPassword". Click "Databases". Create a database called "forge" with collection "utf8_unicode_ci". 
 
 5. Run cd /var/www/laravel/; php artisan migrate
 
