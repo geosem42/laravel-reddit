@@ -8,15 +8,13 @@
 
 3. Make the mysql password this: y78tyutftret. Keep entering it every time it asks. When asked, turn off all test accounts and test databases. When asked, install phpmyadmin as an apache server. 
 
-4. Upon completion to http://{{server_name}}/phpmyadmin. user "root" password "y78tyutftret". Click "Databases". Create a database called "msf" with collection "utf8_unicode_ci". 
+4. Upon completion to http://{{server_name}}/phpmyadmin. user "root" password "y78tyutftret". Click "Databases". Create a database called "forge" with collection "utf8_unicode_ci". 
 
 5. Run cd /var/www/laravel/; php artisan migrate
 
 6. Open AuthServiceProvider.php and import the following classes.
 ```php
-use Illuminate\Auth\Access\Gate;
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Auth\Access\Gate;use Illuminate\Contracts\Auth\Access\Gate as GateContract;use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 ```
 Now add the following method to the class
 ```php
