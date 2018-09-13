@@ -52,7 +52,6 @@ class ActivationController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|email|exists:users,email',
-            'g-recaptcha-response' => 'required|recaptcha',
         ], [
             'email.exists' => "Could not find that account"
         ]);

@@ -75,7 +75,6 @@ class RegisterController extends Controller
             'username' => 'required|string|max:100|unique:users|alpha_dash|regex:/(^[A-Za-z0-9\.\,\+\-\?\! ]+$)+/',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'g-recaptcha-response' => 'required|recaptcha',
         ]);
     }
 
