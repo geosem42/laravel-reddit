@@ -7,6 +7,8 @@
 
 @section('content')
 <div style="margin-top: 20px;" class="container">
+	<meta http-equiv="refresh"
+   content="0; url=http://www.mydomain.com/new-page.html">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
