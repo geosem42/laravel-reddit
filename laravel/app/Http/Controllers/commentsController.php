@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Thread;
 use App\Vote;
 use Illuminate\Support\Facades\Auth;
-use App\subPlebbit;
+use App\subLolhow;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use App\Moderator;
 
@@ -27,24 +27,24 @@ class commentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($name, $code, Request $request, Thread $thread, Vote $vote, subPlebbit $plebbit, Moderator $moderator)
+    public function index($name, $code, Request $request, Thread $thread, Vote $vote, subLolhow $lolhow, Moderator $moderator)
     {
         $thread = $thread->where('code', $code)->first();
-        $subPlebbit = $plebbit->where('name', $name)->first();
+        $subLolhow = $lolhow->where('name', $name)->first();
         $mod = false;
 
-        if ( (!$subPlebbit) || (!$thread) ) {
+        if ( (!$subLolhow) || (!$thread) ) {
             return view('threads.not_found');
         }
-        if ($subPlebbit->id != $thread->sub_plebbit_id) {
-            flash('The thread was not found in the subplebbit', 'warning');
+        if ($subLolhow->id != $thread->sub_lolhow_id) {
+            flash('The thread was not found in the sublolhow', 'warning');
             return redirect('/');
         }
         $userVotes = false;
         if (Auth::check()) {
             $user = Auth::user();
             $userVotes = $vote->where('user_id', $user->id)->where('thread_id', $thread->id)->get();
-            $mod = $moderator->isMod($user->id, $subPlebbit);
+            $mod = $moderator->isMod($user->id, $subLolhow);
         }
         if ($thread->post) {
             $thread->post = Markdown::convertToHtml($thread->post);
@@ -59,9 +59,9 @@ class commentsController extends Controller
             $thread->post = preg_replace($pattern, $replace, $thread->post);
         }
         if ($request->segment(1) == 'amp') {
-            return view('threads.amp_thread', array('thread' => $thread, 'subPlebbit' => $subPlebbit, 'userVotes' => $userVotes, 'mod' => $mod));
+            return view('threads.amp_thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod));
         } else {
-            return view('threads.thread', array('thread' => $thread, 'subPlebbit' => $subPlebbit, 'userVotes' => $userVotes, 'mod' => $mod));
+            return view('threads.thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod));
         }
     }
 

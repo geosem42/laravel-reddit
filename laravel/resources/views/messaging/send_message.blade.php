@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-    Plebbit: Send private message
+    Lolhow: Send private message
 @endsection
 
 
 @section('stylesheets')
-    <link rel="stylesheet" href="{{ asset('css/subplebbit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sublolhow.css') }}">
     <link rel="stylesheet" href="{{asset('css/easy-autocomplete.min.css')}}">
     <style>
         #header {
@@ -60,7 +60,7 @@
                     <h4>To <span style="color:red">*</span></h4>
                 </div>
                 <div class="col-md-6">
-                    <input autocomplete="off" type="text" id="subplebbit" class="form-control" name="to" placeholder="To" @if (!$errors->has('to') && $username) value="{{$username}}" @endif @if (!$errors->has('to')) value="{{old('to')}}"@endif>
+                    <input autocomplete="off" type="text" id="sublolhow" class="form-control" name="to" placeholder="To" @if (!$errors->has('to') && $username) value="{{$username}}" @endif @if (!$errors->has('to')) value="{{old('to')}}"@endif>
                     @if ($errors->has('to'))
                         <span class="help-block">
                             <strong>{{ $errors->first('to') }}</strong>
@@ -110,8 +110,8 @@
             requestDelay: 400
         };
 
-        $("#subplebbit").easyAutocomplete(options);
-        $("#subplebbit2").easyAutocomplete(options);
+        $("#sublolhow").easyAutocomplete(options);
+        $("#sublolhow2").easyAutocomplete(options);
         $('div.easy-autocomplete').removeAttr('style');
     </script>
 @endsection

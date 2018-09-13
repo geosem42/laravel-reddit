@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class subPlebbit extends Model
+class subLolhow extends Model
 {
-    protected $table = 'sub_plebbits';
+    protected $table = 'sub_lolhows';
 
     /**
      * The attributes that are mass assignable.

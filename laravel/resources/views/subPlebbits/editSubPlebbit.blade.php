@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Edit {{ $plebbit->name }} @endsection
+@section('title') Edit {{ $lolhow->name }} @endsection
 
 <link rel="stylesheet" href="{{asset('css/easy-autocomplete.min.css')}}">
 <link rel="stylesheet" href="{{asset('css/bootstrap-tagsinput.css')}}">
@@ -23,7 +23,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel">
                 <div class="panel-heading">
-                    <h2>Edit <a href="/p/{{$plebbit->name}}">/p/{{$plebbit->name}}</a></h2>
+                    <h2>Edit <a href="/p/{{$lolhow->name}}">/p/{{$lolhow->name}}</a></h2>
                 </div>
 
                 <div class="panel-body">
@@ -32,7 +32,7 @@
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                             <label for="title" class="col-md-2 control-label">Title</label>
                             <div class="col-md-9">
-                                <input placeholder="Title" id="title" type="text" class="form-control" name="title" value="@if (!empty(old('title'))) {{ old('title') }} @else{{$plebbit->title}}@endif">
+                                <input placeholder="Title" id="title" type="text" class="form-control" name="title" value="@if (!empty(old('title'))) {{ old('title') }} @else{{$lolhow->title}}@endif">
 
                                 @if ($errors->has('title'))
                                     <span class="help-block">
@@ -45,7 +45,7 @@
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <label for="description" class="col-md-2 control-label">Description</label>
                             <div class="col-md-9">
-                                <textarea style="max-width: 100%;" name="description" id="description" placeholder="description" cols="30" rows="5" class="form-control">@if (!empty(old('description'))) {{ old('description') }} @else{{$plebbit->description}}@endif</textarea>
+                                <textarea style="max-width: 100%;" name="description" id="description" placeholder="description" cols="30" rows="5" class="form-control">@if (!empty(old('description'))) {{ old('description') }} @else{{$lolhow->description}}@endif</textarea>
                                 @if ($errors->has('description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>
@@ -57,7 +57,7 @@
                         <div class="form-group{{ $errors->has('social_description') ? ' has-error' : '' }}">
                             <label for="description" class="col-md-2 control-label">Social description</label>
                             <div class="col-md-9">
-                                <textarea style="max-width: 100%;" name="social_description" id="social_description" placeholder="Social description" cols="30" rows="5" class="form-control">@if (!empty(old('social_description'))) {{ old('social_description') }} @else{{$plebbit->description_social}}@endif</textarea>
+                                <textarea style="max-width: 100%;" name="social_description" id="social_description" placeholder="Social description" cols="30" rows="5" class="form-control">@if (!empty(old('social_description'))) {{ old('social_description') }} @else{{$lolhow->description_social}}@endif</textarea>
                                 @if ($errors->has('social_description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('social_description') }}</strong>
@@ -79,13 +79,13 @@
                             </div>
                         </div>
 
-                        @if($plebbit->header)
+                        @if($lolhow->header)
                             <div class="form-group">
                                 <label for="header" class="col-md-2 control-label">Current Header</label>
                                 <div class="col-md-10">
-                                    <img style="max-height: 100px;" src="/images/plebbits/headers/{{$plebbit->header}}" alt="{{$plebbit->title}}">
+                                    <img style="max-height: 100px;" src="/images/lolhows/headers/{{$lolhow->header}}" alt="{{$lolhow->title}}">
                                     <label style="position: absolute; bottom:25px; margin-left: 10px;" class="checkbox-inline">
-                                        <input @if($plebbit->header_type == 'fit') checked @endif type="checkbox" name="header_type"> Stretch header to full width
+                                        <input @if($lolhow->header_type == 'fit') checked @endif type="checkbox" name="header_type"> Stretch header to full width
                                     </label>
                                     <label style="position: absolute; bottom:0; margin-left: 10px;" class="checkbox-inline">
                                         <input type="checkbox" name="delete_header"> Delete header image
@@ -107,11 +107,11 @@
                             </div>
                         </div>
 
-                        @if($plebbit->icon)
+                        @if($lolhow->icon)
                             <div class="form-group">
                                 <label for="icon" class="col-md-2 control-label">Current Icon</label>
                                 <div class="col-md-10">
-                                    <img style="max-height: 100px;" src="/images/plebbits/icons/{{$plebbit->icon}}" alt="{{$plebbit->title}}">
+                                    <img style="max-height: 100px;" src="/images/lolhows/icons/{{$lolhow->icon}}" alt="{{$lolhow->title}}">
                                     <label style="position: absolute; bottom:0; margin-left: 10px;" class="checkbox-inline">
                                         <input type="checkbox" name="delete_icon"> Delete icon
                                     </label>
@@ -136,7 +136,7 @@
                         <div class="form-group{{ $errors->has('header_color') ? ' has-error' : '' }}">
                             <label for="header_color" class="col-md-2 control-label">Header color</label>
                             <div class="col-md-9">
-                                <input id="header_color" type="text" class="form-control jscolor" name="header_color" value="@if (!empty(old('header_color'))) {{ old('header_color') }} @else{{$plebbit->header_color}}@endif">
+                                <input id="header_color" type="text" class="form-control jscolor" name="header_color" value="@if (!empty(old('header_color'))) {{ old('header_color') }} @else{{$lolhow->header_color}}@endif">
 
                                 @if ($errors->has('header_color'))
                                     <span class="help-block">
@@ -149,7 +149,7 @@
                         <div class="form-group{{ $errors->has('color') ? ' has-error' : '' }}">
                             <label for="color" class="col-md-2 control-label">Color</label>
                             <div class="col-md-9">
-                                <input id="header_color" type="text" class="form-control jscolor" name="color" value="@if (!empty(old('color'))) {{ old('color') }} @else{{$plebbit->color}}@endif">
+                                <input id="header_color" type="text" class="form-control jscolor" name="color" value="@if (!empty(old('color'))) {{ old('color') }} @else{{$lolhow->color}}@endif">
 
                                 @if ($errors->has('color'))
                                     <span class="help-block">
@@ -163,10 +163,10 @@
                         <div class="form-group">
                             <div class="col-md-11">
                                 <div class="col-md-2 col-md-offset-2 col-xs-2">
-                                    <a href="/p/{{$plebbit->name}}/edit/css">Edit css</a>
+                                    <a href="/p/{{$lolhow->name}}/edit/css">Edit css</a>
                                 </div>
                                 <div class="col-md-8 col-xs-10">
-                                    <input type="submit" value="Update plebbit" class="btn btn-primary pull-right">
+                                    <input type="submit" value="Update lolhow" class="btn btn-primary pull-right">
                                 </div>
                             </div>
                         </div>

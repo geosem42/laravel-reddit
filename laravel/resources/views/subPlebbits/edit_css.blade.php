@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Edit css of {{ $plebbit->name }} @endsection
+@section('title') Edit css of {{ $lolhow->name }} @endsection
 
 @section('stylesheets')
     <style>
@@ -29,10 +29,10 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <p style="color: white; margin-top: 10px;">Allowed hosts for external resources: i.imgur.com, imgur.com, plebbit.net <br>You may also not use import, charset, and namespace</p>
+                <p style="color: white; margin-top: 10px;">Allowed hosts for external resources: i.imgur.com, imgur.com, lolhow.net <br>You may also not use import, charset, and namespace</p>
             </div>
             <div class="col-xs-10">
-                <h1 style="color: white;">Editing css of {{$plebbit->name}}</h1>
+                <h1 style="color: white;">Editing css of {{$lolhow->name}}</h1>
             </div>
             <div class="col-xs-2">
                 <form id="save_css" method="post" action="">
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <pre id="editor" class="ace_editor ace-tomorrow-night-eighties ace_dark">{{$plebbit->custom_css}}</pre>
+        <pre id="editor" class="ace_editor ace-tomorrow-night-eighties ace_dark">{{$lolhow->custom_css}}</pre>
     </div>
 
 @endsection

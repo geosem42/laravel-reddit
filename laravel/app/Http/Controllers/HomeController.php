@@ -35,7 +35,7 @@ class HomeController extends Controller
         if (Auth::check() && $sort_type !== 'g') {
             $user = Auth::user();
 
-            $subscriptionsIdsArray = $subscription->select('sub_plebbit_id')->where('user_id', $user->id)->get()->toArray();
+            $subscriptionsIdsArray = $subscription->select('sub_lolhow_id')->where('user_id', $user->id)->get()->toArray();
         }
 
         $page = $request->input('page');
@@ -45,7 +45,7 @@ class HomeController extends Controller
 
         if (!$sort) {
             if ($user) {
-                $threads = $thread->whereIn('sub_plebbit_id', $subscriptionsIdsArray)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->take(25)->orderBy('score', 'DESC');
+                $threads = $thread->whereIn('sub_lolhow_id', $subscriptionsIdsArray)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->take(25)->orderBy('score', 'DESC');
             } else {
                 $threads = $thread->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->take(25)->orderBy('score', 'DESC');
             }
@@ -56,13 +56,13 @@ class HomeController extends Controller
             $threads = $thread->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->take(25)->orderBy('score', 'DESC');
         } else if ($sort == 'new') {
             if ($user) {
-                $threads = $thread->whereIn('sub_plebbit_id', $subscriptionsIdsArray)->orderBy('created_at', 'DESC')->take(25);
+                $threads = $thread->whereIn('sub_lolhow_id', $subscriptionsIdsArray)->orderBy('created_at', 'DESC')->take(25);
             } else {
                 $threads = $thread->orderBy('created_at', 'DESC')->take(25);
             }
         } else if ($sort == 'top') {
             if ($user) {
-                $threads = $thread->whereIn('sub_plebbit_id', $subscriptionsIdsArray)->orderBy('score', 'DESC')->take(25);
+                $threads = $thread->whereIn('sub_lolhow_id', $subscriptionsIdsArray)->orderBy('score', 'DESC')->take(25);
             } else {
                 $threads = $thread->orderBy('score', 'DESC')->take(25);
             }

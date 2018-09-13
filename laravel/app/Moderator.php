@@ -15,14 +15,14 @@ class Moderator extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'sub_plebbit_id'
+        'user_id', 'sub_lolhow_id'
     ];
 
-    public function getBySubPlebbitId($id)
+    public function getBySubLolhowId($id)
     {
-        return $this->select('user_id', 'sub_plebbit_id', 'username')
+        return $this->select('user_id', 'sub_lolhow_id', 'username')
             ->join('users', 'moderators.user_id', '=', 'users.id')
-            ->where('sub_plebbit_id', $id)->get();
+            ->where('sub_lolhow_id', $id)->get();
     }
 
     public function validateMods($mods_string) {
@@ -42,15 +42,15 @@ class Moderator extends Model
         return false;
     }
 
-    public function isMod($user_id, $sub_plebbit)
+    public function isMod($user_id, $sub_lolhow)
     {
         if (env('ADMIN_ID') == $user_id) {
             return true;
         }
-        if ($user_id == $sub_plebbit->owner_id) {
+        if ($user_id == $sub_lolhow->owner_id) {
             return true;
         }
-        $check = $this->where('user_id', $user_id)->where('sub_plebbit_id', $sub_plebbit->id)->first();
+        $check = $this->where('user_id', $user_id)->where('sub_lolhow_id', $sub_lolhow->id)->first();
         if ($check) {
             return true;
         } else {

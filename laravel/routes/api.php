@@ -21,7 +21,7 @@ Route::group(['prefix' => '', 'middleware' => 'throttle:50,5'], function () {
 
     Route::post('/comments/load', 'api\commentsController@loadComments');
 
-    Route::get('/subplebbits/search/{query}', 'api\searchSubPlebbitsController@search');
+    Route::get('/sublolhows/search/{query}', 'api\searchSubLolhowsController@search');
     Route::get('/users/search/{query}', 'api\searchUsersController@search');
 });
 

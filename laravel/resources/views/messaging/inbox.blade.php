@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-    Plebbit: Messages inbox
+    Lolhow: Messages inbox
 @endsection
 
 
 @section('stylesheets')
-    <link rel="stylesheet" href="{{ asset('css/subplebbit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sublolhow.css') }}">
     <style>
         #stripe {
             background-color:#2779A8;

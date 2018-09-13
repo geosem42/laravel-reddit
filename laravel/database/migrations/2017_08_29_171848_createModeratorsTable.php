@@ -16,11 +16,11 @@ class CreateModeratorsTable extends Migration
         Schema::create('moderators', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('sub_plebbit_id')->unsigned();
+            $table->integer('sub_lolhow_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('sub_plebbit_id')->references('id')->on('sub_plebbits')->onDelete('cascade');
+            $table->foreign('sub_lolhow_id')->references('id')->on('sub_lolhows')->onDelete('cascade');
         });
     }
 

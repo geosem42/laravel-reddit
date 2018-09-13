@@ -21,25 +21,25 @@ Route::get('/activate', 'Auth\ActivationController@activate')->name('auth.activa
 Route::get('/activate/resend', 'Auth\ActivationController@showResendForm')->name('auth.activate.resend');
 Route::post('/activate/resend', 'Auth\ActivationController@resend');
 
-Route::get('/subplebbits/create', 'ManageSubPlebbitsController@getNewSubPlebbit')->name('subplebbit.create');
-Route::post('/subplebbits/create', 'ManageSubPlebbitsController@postNewSubPlebbit');
+Route::get('/sublolhows/create', 'ManageSubLolhowsController@getNewSubLolhow')->name('sublolhow.create');
+Route::post('/sublolhows/create', 'ManageSubLolhowsController@postNewSubLolhow');
 
 Route::get('/submit', 'createThreadController@getCreateThread');
 Route::post('/submit', 'createThreadController@postCreateThread');
 Route::get('/p/{name}/submit', 'createThreadController@getCreateThread');
 Route::post('/p/{name}/submit', 'createThreadController@postCreateThread');
 
-Route::get('/p/{name}/edit', 'ManageSubPlebbitsController@getEditPlebbit');
-Route::post('/p/{name}/edit', 'ManageSubPlebbitsController@postEditPlebbit');
+Route::get('/p/{name}/edit', 'ManageSubLolhowsController@getEditLolhow');
+Route::post('/p/{name}/edit', 'ManageSubLolhowsController@postEditLolhow');
 
 Route::group(['prefix' => '', 'middleware' => 'throttle:30,5'], function () {
-    Route::get('/p/{name}/edit/css', 'ManageSubPlebbitsController@getEditPlebbitCss');
-    Route::post('/p/{name}/edit/css', 'ManageSubPlebbitsController@postEditPlebbitCss');
-    Route::get('/cdn/css/{name}.css', 'ManageSubPlebbitsController@loadcss');
+    Route::get('/p/{name}/edit/css', 'ManageSubLolhowsController@getEditLolhowCss');
+    Route::post('/p/{name}/edit/css', 'ManageSubLolhowsController@postEditLolhowCss');
+    Route::get('/cdn/css/{name}.css', 'ManageSubLolhowsController@loadcss');
 });
 
-Route::get('/p/{name}', 'subPlebbitsController@subPlebbit');
-Route::get('/p/{name}/{sort}', 'subPlebbitsController@subPlebbit');
+Route::get('/p/{name}', 'subLolhowsController@subLolhow');
+Route::get('/p/{name}/{sort}', 'subLolhowsController@subLolhow');
 
 Route::get('/p/{name}/comments/{code}', 'commentsController@index');
 Route::get('/p/{name}/comments/{code}/{title}', 'commentsController@index');
@@ -51,7 +51,7 @@ Route::get('/u/{name}', 'userProfileController@index');
 Route::get('/u/{name}/{sort}', 'userProfileController@index');
 
 Route::get('/search', 'SearchController@search');
-Route::get('/search/{subplebbit}', 'SearchController@search');
+Route::get('/search/{sublolhow}', 'SearchController@search');
 
 Route::get('/messages', 'MessagesController@inbox')->name('messages.inbox');
 Route::get('/messages/send', 'MessagesController@GetSendMessage')->name('messages.send');

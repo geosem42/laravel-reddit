@@ -53,11 +53,11 @@
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
                 <div style="height: inherit; display: inline-block; font-family: Raleway; font-weight: 500;">
-                    {{ config('app.name', 'Plebbit') }}
-                    @if(isset($subPlebbit) && $subPlebbit->icon)
-                        <img style="height: 48px; margin-top: -11px;" src="/images/plebbits/icons/{{$subPlebbit->icon}}" alt="plebbit">
+                    {{ config('app.name', 'Lolhow') }}
+                    @if(isset($subLolhow) && $subLolhow->icon)
+                        <img style="height: 48px; margin-top: -11px;" src="/images/lolhows/icons/{{$subLolhow->icon}}" alt="lolhow">
                     @else
-                        <img style="height: inherit; margin-top: -14px;" src="/images/logo.png" alt="plebbit">
+                        <img style="height: inherit; margin-top: -14px;" src="/images/logo.png" alt="lolhow">
                     @endif
                 </div>
             </a>
@@ -73,7 +73,7 @@
                 <ul class="nav navbar-nav navbar">
                     <li class="dropdown">
                         <a style="margin-top: 0px;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            my subplebbits <span class="caret"></span>
+                            my sublolhows <span class="caret"></span>
                         </a>
                         <ul style="font-size: 12px; margin:0; padding:0;" class="dropdown-menu" role="menu">
                             <li class="subscriptions">
@@ -145,7 +145,7 @@
                                 <a href="{{ route('messages.inbox') }}">Private messages</a>
                             </li>
                             <li>
-                                <a href="{{ route('subplebbit.create') }}">Create subplebbit</a>
+                                <a href="{{ route('sublolhow.create') }}">Create sublolhow</a>
                             </li>
                             <li>
                                 <a href="{{ route('logout') }}"

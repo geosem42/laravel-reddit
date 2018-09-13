@@ -1,42 +1,42 @@
 @extends('layouts.app')
 
-@section('title') @if(isset($subPlebbit->name)) p/{{ $subPlebbit->name }} @else What happened? @endif @endsection
+@section('title') @if(isset($subLolhow->name)) p/{{ $subLolhow->name }} @else What happened? @endif @endsection
 
-@php $twitter_title = 'Search in ' . $subPlebbit->name; @endphp
+@php $twitter_title = 'Search in ' . $subLolhow->name; @endphp
 @include('layouts.partials.twitter_cards')
 
 @section('stylesheets')
-    <link rel="stylesheet" href="{{ asset('css/subplebbit.css') }}">
-    @if($subPlebbit)
+    <link rel="stylesheet" href="{{ asset('css/sublolhow.css') }}">
+    @if($subLolhow)
         <style>
             .header {
-                @if($subPlebbit->header)
-                background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url("/images/plebbits/headers/{{$subPlebbit->header}}");
+                @if($subLolhow->header)
+                background: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url("/images/lolhows/headers/{{$subLolhow->header}}");
                 @endif
                 background-position: center;
-                @if($subPlebbit->header_type == 'fit')
+                @if($subLolhow->header_type == 'fit')
                    background-size: cover;
                 @endif
                 width: 100%;
-                @if(!$subPlebbit->header)
-                background: {{$subPlebbit->header_color}};
+                @if(!$subLolhow->header)
+                background: {{$subLolhow->header_color}};
                 @else
                 margin-top: 0;
             @endif
 }
             #stripe {
-                background-color: @if($subPlebbit->header_color) {{ $subPlebbit->header_color }} @else grey @endif;
+                background-color: @if($subLolhow->header_color) {{ $subLolhow->header_color }} @else grey @endif;
                 height: 20px;
                 width: 100%;
                 position: sticky;
                 z-index: 3;
             }
-            @if($subPlebbit->header_color)
+            @if($subLolhow->header_color)
                 #header_name {
-                color: {{$subPlebbit->color}};
+                color: {{$subLolhow->color}};
             }
             #header_title {
-                color: {{$subPlebbit->color}};
+                color: {{$subLolhow->color}};
             }
             @endif
             .notsubscribed {
@@ -65,19 +65,19 @@
 
 @section('content')
 
-    @if($subPlebbit)
+    @if($subLolhow)
 
-        @if($subPlebbit->header)
+        @if($subLolhow->header)
             <div id="stripe" data-spy="affix"></div>
         @endif
         <div class="header">
-            <h1 id="header_name">{{$subPlebbit->name}}</h1>
-            <p id="header_title">{{ $subPlebbit->title }}</p>
+            <h1 id="header_name">{{$subLolhow->name}}</h1>
+            <p id="header_title">{{ $subLolhow->title }}</p>
         </div>
 
         <div class="container">
-            <h2 style="text-align: center; font-weight: 200">Search in <a href="/p/{{$subPlebbit->name}}">/p/{{$subPlebbit->name}}</a></h2>
-            <form method="GET" action="/search/{{$subPlebbit->name}}">
+            <h2 style="text-align: center; font-weight: 200">Search in <a href="/p/{{$subLolhow->name}}">/p/{{$subLolhow->name}}</a></h2>
+            <form method="GET" action="/search/{{$subLolhow->name}}">
                 <div id="custom-search-input">
                     <div class="input-group col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                         <input value="{{ Request::input('q') }}" type="text" name="q" class="search-query form-control" placeholder="Search" />
@@ -113,13 +113,13 @@
                                 </div>
                                 <div style="min-width: 90px;" class="image col-xs-1">
                                     <div class="row">
-                                        <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
+                                        <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subLolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
                                     </div>
                                 </div>
                                 <div class="thread_info">
-                                    <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
+                                    <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$subLolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
                                     <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}}</p>
-                                    <a href="{{url('/')}}/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
+                                    <a href="{{url('/')}}/p/{{$subLolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                         <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
                             <h2 style="font-weight: lighter">No results found for that search criteria</h2>
                             <h4 style="font-weight: lighter; text-align: center">Looks like we ran out of stolen memes</h4>
-                            <a href="@if(Request::input('page') == '2') /p/{{$subPlebbit->name}} @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">Go back a page</a>
+                            <a href="@if(Request::input('page') == '2') /p/{{$subLolhow->name}} @elseif(Request::input('after')) ?page={{Request::input('page')-1}}&after={{Request::input('after')}} @else ?page={{Request::input('page')-1}} @endif">Go back a page</a>
                         </div>
                     @endif
                 @endif
@@ -158,7 +158,7 @@
 
     @else
         <div class="container">
-            <p>It looks like this plebbit does not exist. Make it yours!</p>
+            <p>It looks like this lolhow does not exist. Make it yours!</p>
         </div>
     @endif
 

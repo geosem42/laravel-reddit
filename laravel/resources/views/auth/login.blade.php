@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: Login @endsection
+@section('title') Lolhow: Login @endsection
 
 @php $twitter_title = 'Login'; @endphp
 @include('layouts.partials.twitter_cards')

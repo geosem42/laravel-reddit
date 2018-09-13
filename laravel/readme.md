@@ -2,16 +2,16 @@
 <img src="http://i.imgur.com/tHNVDSX.png">
 </p>
 
-# Plebbit: a reddit clone made in Laravel
+# Lolhow: a reddit clone made in Laravel
 
-Plebbit is a reddit clone build in Laravel 5.5. <br>
+Lolhow is a reddit clone build in Laravel 5.5. <br>
 
 ## Features
 - Subreddits
 - Moderation only deleting (more moderation soon... I think)
 - Youtube, vimeo, image and video nicely displayed
-- Searching global and in subplebbits
-- Customizig of your subplebbits (images, custom CSS and more)
+- Searching global and in sublolhows
+- Customizig of your sublolhows (images, custom CSS and more)
 - Upvoting and downvoting
 - Alerts
 - Private messaging
@@ -32,7 +32,7 @@ Plebbit is a reddit clone build in Laravel 5.5. <br>
 Pretty straight forward if you're familiar with Laravel but see the instructions below if you're not familiar with the workflow.
 
 ```
-git clone https://github.com/Michael-J-Scofield/plebbit.git
+git clone https://github.com/Michael-J-Scofield/lolhow.git
 ```
 make sure you are in the project folder then run
 ```
@@ -42,6 +42,6 @@ create a .env file and copy the contents from .env.example and modify it with yo
 ```
 php artisan migrate
 ```
-That's it! plebbit should now be up and running!
+That's it! lolhow should now be up and running!
 
-Feel free to contribute to plebbit by submitting issues or creating pull requests.
+Feel free to contribute to lolhow by submitting issues or creating pull requests.

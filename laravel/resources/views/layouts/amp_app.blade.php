@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <link rel='icon' href="{{url('/')}}/images/logo.png" sizes="256x256" type="image/png" />
-    <meta name="keywords" content=" plebbit, plebbit.net, vote, comment, submit " />
-    <meta name="description" content="Plebbit • Post your stolen memes here" />
+    <meta name="keywords" content=" lolhow, lolhow.net, vote, comment, submit " />
+    <meta name="description" content="Lolhow • Post your stolen memes here" />
     @yield('meta')
 
     <!-- CSRF Token -->

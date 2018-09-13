@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: Reset Password @endsection
+@section('title') Lolhow: Reset Password @endsection
 
 @section('content')
 <div class="container">

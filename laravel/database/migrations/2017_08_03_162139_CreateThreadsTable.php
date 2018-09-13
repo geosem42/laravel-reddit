@@ -22,7 +22,7 @@ class CreateThreadsTable extends Migration
             $table->integer('upvotes')->default(0);
             $table->integer('downvotes')->default(0);
             $table->integer('score')->default(0);
-            $table->integer('sub_plebbit_id')->unsigned();
+            $table->integer('sub_lolhow_id')->unsigned();
             $table->string('type')->default('text');
             $table->string('link')->nullable();
             $table->string('media_type')->nullable();
@@ -32,7 +32,7 @@ class CreateThreadsTable extends Migration
             $table->timestamps();
 
             $table->foreign('poster_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('sub_plebbit_id')->references('id')->on('sub_plebbits')->onDelete('cascade');
+            $table->foreign('sub_lolhow_id')->references('id')->on('sub_lolhows')->onDelete('cascade');
         });
     }
 

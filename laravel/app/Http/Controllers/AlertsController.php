@@ -32,7 +32,7 @@ class AlertsController extends Controller
             $thread = $thread->where('id', $alert->thread_id)->first();
             $alert->active = false;
             $alert->save();
-            return redirect('/p/'.$thread->subPlebbit->name.'/comments/'.$thread->code.'/'.str_slug($thread->title));
+            return redirect('/p/'.$thread->subLolhow->name.'/comments/'.$thread->code.'/'.str_slug($thread->title));
         }
 
         if ($alert->post_id) {

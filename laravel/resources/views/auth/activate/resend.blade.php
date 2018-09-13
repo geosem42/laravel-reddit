@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: Resend activation code @endsection
+@section('title') Lolhow: Resend activation code @endsection
 
 @php $twitter_title = 'Login'; @endphp
 @include('layouts.partials.twitter_cards')

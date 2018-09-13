@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: Post stolen memes here @endsection
+@section('title') Lolhow: Post stolen memes here @endsection
 
 @include('layouts.partials.twitter_cards')
 
 @section('stylesheets')
-    <link rel="stylesheet" href="{{ asset('css/subplebbit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sublolhow.css') }}">
     <style>
         #stripe {
             background-color:#2779A8;
@@ -41,7 +41,7 @@
 
             <div class="col-sm-4 col-sm-push-8">
                 <div style="padding-bottom: 20px;" class="well search_box">
-                    <h4>Search Plebbit</h4>
+                    <h4>Search Lolhow</h4>
                     <form method="GET" action="/search">
                         <div id="custom-search-input">
                             <div class="input-group col-md-12">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </form>
-                    <p style="text-align: right; margin-bottom: -12px; margin-top: 4px;"><a href="/subplebbits/create">Create your own subplebbit</a></p>
+                    <p style="text-align: right; margin-bottom: -12px; margin-top: 4px;"><a href="/sublolhows/create">Create your own sublolhow</a></p>
                 </div>
 
             </div>
@@ -63,7 +63,7 @@
            <div class="col-sm-8 col-sm-pull-4">
                 @foreach($threads as $thread)
                     @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
-                    @php $plebbit = \App\subPlebbit::select('id', 'name')->where('id', $thread->sub_plebbit_id)->first(); @endphp
+                    @php $lolhow = \App\subLolhow::select('id', 'name')->where('id', $thread->sub_lolhow_id)->first(); @endphp
 
                     <div class="thread @if($first) first  @php $first = false @endphp @endif">
                         <div style="min-width: 40px;" class="votes col-xs-1">
@@ -79,14 +79,14 @@
                         </div>
                         <div style="min-width: 90px;" class="image col-xs-1">
                             <div class="row">
-                                <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$plebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
+                                <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
                             </div>
                         </div>
                         <div class="thread_info">
-                            <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$plebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
+                            <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
                             <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
-                                <a href="/p/{{$plebbit->name}}">{{$plebbit->name}}</a></p>
-                            <a href="{{url('/')}}/p/{{$plebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
+                                <a href="/p/{{$lolhow->name}}">{{$lolhow->name}}</a></p>
+                            <a href="{{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
                         </div>
                     </div>
                 @endforeach
@@ -98,7 +98,7 @@
             <div class="col-sm-8 col-sm-pull-4">
                 <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
                     <h2 style="font-weight: lighter">@if(Auth::check()) <strong>{{Auth::user()->username}},</strong> @endif this is your homepage</h2>
-                    <h4 style="font-weight: lighter; text-align: center">Fill it up by subscribing to some subplebbits</h4>
+                    <h4 style="font-weight: lighter; text-align: center">Fill it up by subscribing to some sublolhows</h4>
                     <p style="margin-top: 50px;">Find some communities by searching or...</p>
                 </div>
                 <div onclick="window.location.href='/g/popular'" style="display: block; margin-left: auto;  margin-right: auto; width:210px;" class="btn btn-primary">Check out what's popular</div>

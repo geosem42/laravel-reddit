@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: search {{substr($q, 0, 140)}} @endsection
+@section('title') Lolhow: search {{substr($q, 0, 140)}} @endsection
 
-@php $twitter_title = 'Search plebbit'; @endphp
+@php $twitter_title = 'Search lolhow'; @endphp
 @include('layouts.partials.twitter_cards')
 
 @section('stylesheets')
-    <link rel="stylesheet" href="{{ asset('css/subplebbit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sublolhow.css') }}">
     <style>
         #stripe {
             background-color:#2779A8;
@@ -41,37 +41,37 @@
             $user = new \App\User();
         @endphp
         <div class="row">
-            @if($subplebbits->count() > 0)
+            @if($sublolhows->count() > 0)
                 <div class="col-sm-12">
-                    <h3>Subplebbits</h3>
-                    @foreach($subplebbits as $plebbit)
-                        @php $readers = \App\Subscription::where('sub_plebbit_id', $plebbit->id)->count(); @endphp
+                    <h3>Sublolhows</h3>
+                    @foreach($sublolhows as $lolhow)
+                        @php $readers = \App\Subscription::where('sub_lolhow_id', $lolhow->id)->count(); @endphp
                         <div style="padding-left: 10px; margin-bottom: 10px;" class="panel">
-                            <h4><a href="/p/{{$plebbit->name}}">{{$plebbit->name}}</a></h4>
-                            <p style="font-size: 12px;">{{$readers}} {{str_plural('subscriber', $readers)}}, this subplebbit was created {{Carbon\Carbon::parse($plebbit->created_at)->diffForHumans()}}</p>
-                            @if($plebbit->title)
-                                <p style="margin-top: -10px; font-size: 12px;">{{substr($plebbit->title, 0, 140)}}</p>
+                            <h4><a href="/p/{{$lolhow->name}}">{{$lolhow->name}}</a></h4>
+                            <p style="font-size: 12px;">{{$readers}} {{str_plural('subscriber', $readers)}}, this sublolhow was created {{Carbon\Carbon::parse($lolhow->created_at)->diffForHumans()}}</p>
+                            @if($lolhow->title)
+                                <p style="margin-top: -10px; font-size: 12px;">{{substr($lolhow->title, 0, 140)}}</p>
                             @endif
                         </div>
                     @endforeach
-                    @if($page == 1 && $subplebbits->count() > 4)
+                    @if($page == 1 && $sublolhows->count() > 4)
                         <div style="margin-top: 0; margin-bottom: 10px;">
-                            <a href="/search?q={{$q}}&page=2&type=subplebbits">next</a>
+                            <a href="/search?q={{$q}}&page=2&type=sublolhows">next</a>
                         </div>
                     @endif
                     @if($page == 2)
                         <div style="margin-top: 0; margin-bottom: 10px;">
                             <a href="/search?q={{$q}}&page=1">previous</a>
                             @if($threads->count() > 19)
-                                - <a href="/search?q={{$q}}&page={{$page+1}}&type=subplebbits">next</a>
+                                - <a href="/search?q={{$q}}&page={{$page+1}}&type=sublolhows">next</a>
                             @endif
                         </div>
                     @endif
                     @if($page > 2)
                         <div style="margin-top: 0; margin-bottom: 10px;">
-                            <a href="/search?q={{$q}}&page={{$page-1}}&type=subplebbits">previous</a>
+                            <a href="/search?q={{$q}}&page={{$page-1}}&type=sublolhows">previous</a>
                             @if($threads->count() > 24)
-                                - <a href="/search?q={{$q}}&page={{$page+1}}&type=subplebbits">next</a>
+                                - <a href="/search?q={{$q}}&page={{$page+1}}&type=sublolhows">next</a>
                             @endif
                         </div>
                     @endif
@@ -84,7 +84,7 @@
                     <h3>Threads</h3>
                     @foreach($threads as $thread)
                         @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
-                        @php $plebbit = \App\subPlebbit::select('id', 'name')->where('id', $thread->sub_plebbit_id)->first(); @endphp
+                        @php $lolhow = \App\subLolhow::select('id', 'name')->where('id', $thread->sub_lolhow_id)->first(); @endphp
                         <div style="margin-bottom: 10px;" class="panel">
                             <div style="margin-top: -12px;" class="thread @if($first) first  @php $first = false @endphp @endif">
                                 <div style="min-width: 40px;" class="votes col-xs-1">
@@ -100,14 +100,14 @@
                                 </div>
                                 <div style="min-width: 90px;" class="image col-xs-1">
                                     <div class="row">
-                                        <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$plebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
+                                        <a href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($thread->thumbnail !== null){{$thread->thumbnail}} @elseif($thread->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$thread->title}}"></a>
                                     </div>
                                 </div>
                                 <div class="thread_info">
-                                    <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$plebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
+                                    <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
                                     <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
-                                        <a href="/p/{{$plebbit->name}}">{{$plebbit->name}}</a></p>
-                                    <a href="{{url('/')}}/p/{{$plebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
+                                        <a href="/p/{{$lolhow->name}}">{{$lolhow->name}}</a></p>
+                                    <a href="{{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                 @php unset($thread); // Unset variable so it doesn't get confused with a normal thread @endphp
             @endif
 
-            @if($threads->count() < 1 && $subplebbits->count() < 1 && !Request::input('page') && !Request::input('after'))
+            @if($threads->count() < 1 && $sublolhows->count() < 1 && !Request::input('page') && !Request::input('after'))
                 <h2 id="looks_like" style="margin-top:15px; font-weight: lighter; text-align: center">No results found</h2>
                 @php $no_res = true; @endphp
             @endif

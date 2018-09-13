@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Plebbit: Create subplebbit @endsection
+@section('title') Lolhow: Create sublolhow @endsection
 
 @section('content')
     <div style="margin-top: 22px;" class="container">
@@ -68,7 +68,7 @@
 
                         <div class="form-group">
                             <div class="col-md-11">
-                                <input type="submit" value="Create subplebbit" class="btn btn-primary pull-right">
+                                <input type="submit" value="Create sublolhow" class="btn btn-primary pull-right">
                             </div>
                         </div>
 

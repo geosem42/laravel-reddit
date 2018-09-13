@@ -1,4 +1,4 @@
-@if($subPlebbit)
+@if($subLolhow)
 <script>
     $('.subscribe').click(function() {
         subscriptions = $('.subscriptions');
@@ -9,17 +9,17 @@
         @if(Auth::check())
             data = {'api_token': '{{Auth::user()->api_token}}'};
 
-            plebbit = '{{$subPlebbit->name}}';
+            lolhow = '{{$subLolhow->name}}';
             if (subscribed === 'no') {
-                $.post( "/api/subscribe/" + plebbit, data, function( res ) {
+                $.post( "/api/subscribe/" + lolhow, data, function( res ) {
                     _this.removeClass('notsubscribed').addClass('subscribed').attr('data-subscribed', 'yes').text('Unsubscribe');
-                    subscriptions.append('<a href="/p/'+ res.sub_plebbit +'">'+ res.sub_plebbit +'</a>');
+                    subscriptions.append('<a href="/p/'+ res.sub_lolhow +'">'+ res.sub_lolhow +'</a>');
                 });
             } else {
-            $.post( "/api/unsubscribe/" + plebbit, data, function( res ) {
+            $.post( "/api/unsubscribe/" + lolhow, data, function( res ) {
                     _this.removeClass('subscribed').addClass('notsubscribed').attr('data-subscribed', 'no').text('Subscribe');
                     $('.sub').each(function() {
-                        if ($(this).text() === res.sub_plebbit) {
+                        if ($(this).text() === res.sub_lolhow) {
                             $(this).remove();
                         }
                     });
@@ -27,7 +27,7 @@
             }
         @else
             $('#loginModal').modal('show');
-            $('#loginModalMessage').html('to subscribe to <a href="/p/{{$subPlebbit->name}}">/p/{{$subPlebbit->name}}</a>');
+            $('#loginModalMessage').html('to subscribe to <a href="/p/{{$subLolhow->name}}">/p/{{$subLolhow->name}}</a>');
         @endif
     });
 </script>

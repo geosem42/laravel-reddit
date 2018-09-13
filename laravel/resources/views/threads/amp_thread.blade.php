@@ -15,7 +15,7 @@
       }
     </script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
-    <link rel="canonical" href="{{ url('/') }}/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">
+    <link rel="canonical" href="{{ url('/') }}/p/{{$subLolhow->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">
     <style amp-custom>
         @php
             include 'css/amp_grid.min.css';
@@ -53,7 +53,7 @@
             text-decoration: none;
             font-weight:300;
         }
-        #subplebbit_name {
+        #sublolhow_name {
             text-align: center;
             margin-top: 10px;
             font-size:14px;
@@ -199,7 +199,7 @@
 @section('content')
     <nav class="topNav">
         <a href="{{ url('/') }}">
-            <div id="nav_header">Plebbit</div>
+            <div id="nav_header">Lolhow</div>
             <amp-img id="nav_img" src="{{ url('/') }}/images/logo.png" height="48" width="86"></amp-img>
         </a>
     </nav>
@@ -211,11 +211,11 @@
 
     <div class="container">
         <div id="content_wrapper" class="row">
-            <div id="subplebbit_name">
-                <a href="/p/{{$subPlebbit->name}}">/p/{{$subPlebbit->name}}</a>
+            <div id="sublolhow_name">
+                <a href="/p/{{$subLolhow->name}}">/p/{{$subLolhow->name}}</a>
             </div>
             <div id="title">
-                <h1><a href="{{ url('/') }}/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">{{$thread->title}}</a></h1>
+                <h1><a href="{{ url('/') }}/p/{{$subLolhow->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">{{$thread->title}}</a></h1>
             </div>
             <div id="poster_date">
                 <span><a href="/u/{{$postername->username}}">u/{{$postername->username}}</a> - {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}}</span>
@@ -268,7 +268,7 @@
     </div>
     <div class="commentsHeader">
         <div id="post_count">
-            <a href="{{ url('/') }}/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">
+            <a href="{{ url('/') }}/p/{{$subLolhow->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}">
                 {{$thread->reply_count}} {{str_plural('comment', $thread->reply_count)}}
             </a>
         </div>
@@ -294,7 +294,7 @@
                     </div>
                 @endforeach
 
-                <a href="{{ url('/') }}/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}" class="button_more"><span>View more comments</span></a>
+                <a href="{{ url('/') }}/p/{{$subLolhow->name}}/comments/{{$thread->code}}/{{ str_slug($thread->title) }}" class="button_more"><span>View more comments</span></a>
             </div>
         </div>
     </div>
@@ -302,12 +302,12 @@
         <div class="row">
             @php
             $thread = new \App\Thread();
-            $top_posts = $thread->where('sub_plebbit_id', $subPlebbit->id)->orderBy('score', 'desc')->take(5)->get();
+            $top_posts = $thread->where('sub_lolhow_id', $subLolhow->id)->orderBy('score', 'desc')->take(5)->get();
             @endphp
 
             @if($top_posts->count() > 0)
                 <div id="title">
-                    <h1 class="center padding-top">Top posts in <a href="/p/{{$subPlebbit->name}}">/p/{{$subPlebbit->name}}</a></h1>
+                    <h1 class="center padding-top">Top posts in <a href="/p/{{$subLolhow->name}}">/p/{{$subLolhow->name}}</a></h1>
                 </div>
                 @foreach($top_posts as $thread)
                     <div class="post row">
@@ -318,13 +318,13 @@
                         </div>
                         <div id="post_wrapper" class="col-9-sm">
                             <div class="title">
-                                <a href="/p/{{$subPlebbit->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">{{$thread->title}}</a>
+                                <a href="/p/{{$subLolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}">{{$thread->title}}</a>
                             </div>
                         </div>
                     </div>
                 @endforeach
             @endif
-            <a href="{{ url('/') }}/p/{{$subPlebbit->name}}" class="button_more">View more /p/{{$subPlebbit->name}} posts</a>
+            <a href="{{ url('/') }}/p/{{$subLolhow->name}}" class="button_more">View more /p/{{$subLolhow->name}} posts</a>
         </div>
     </div>
 @endsection

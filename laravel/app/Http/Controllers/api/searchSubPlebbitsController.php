@@ -4,9 +4,9 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\subPlebbit;
+use App\subLolhow;
 
-class searchSubPlebbitsController extends Controller
+class searchSubLolhowsController extends Controller
 {
 
     /**
@@ -14,9 +14,9 @@ class searchSubPlebbitsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search($query, subPlebbit $subPlebbit)
+    public function search($query, subLolhow $subLolhow)
     {
-        $results = $subPlebbit->searchByName($query)->toArray();
+        $results = $subLolhow->searchByName($query)->toArray();
 
         return response()->json(
            $results
