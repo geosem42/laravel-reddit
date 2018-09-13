@@ -59,5 +59,7 @@ cd /var/www/laravel/;
 composer install -n; 
 cd /var/www/laravel; 
  php artisan key:generate;
-echo "Log in to phpmyadmin at http://{{site-name}}/phpmyadmin. Make sure it is http not https! Click databases. Create 'msf' database. then run 'cd /var/www/laravel; php artisan migrate'."
+mysql -uroot -panyPassword -e "create database irt;"
+
+sudo nohup php artisan serve --host=poster.projectoblio.com & 
 
