@@ -1,6 +1,5 @@
 /vendor
 /node_modules
 Homestead.yaml
-.env
 .idea
 updateRemote.sh
