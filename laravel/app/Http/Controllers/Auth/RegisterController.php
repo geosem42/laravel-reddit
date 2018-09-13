@@ -47,8 +47,10 @@ class RegisterController extends Controller
     {
         $input = $request->all();
         $validator = $this->validator($input);
+	echo 'console.log(' this was called')';
         if ($validator->passes()) {
             $user = $this->create($request->all());
+	
             if (!env('EMAIL_ACTIVATION')) {
                 $this->guard()->login($user);
             } else {
@@ -56,6 +58,7 @@ class RegisterController extends Controller
 
                 flash('Registered. Please check your email to activate your account.', 'success');
             }
+	     
             return redirect($this->redirectPath());
         }
         return redirect(route('register'))->with('errors', $validator->errors())->withInput();
