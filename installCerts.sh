@@ -1,6 +1,6 @@
 #!/bin/sh
 sslemail=s@projectoblio.com;
-domain=distribution.projectoblio.com;
+domain=poster.projectoblio.com;
 nano +39 nginx-default-ssl
 systemctl reload nginx; 
 

@@ -51,12 +51,13 @@ cd laravel;
 #git init; 
 rm -rf bootstrap; 
 #git clone https://github.com/Shafayatul/Airdrop-Form; cd Airdrop-Form; 
-mv ~/distribution-form/laravel/* ./; mv ~/distribution-form/laravel/.* ./; cd ../; 
-chown -R :www-data /var/www/laravel; chmod -R 775 /var/www/laravel/storage; chmod -R 775 /var/www/laravel/bootstrap/cache; composer install --no-dev; 
-cd laravel; 
+mv ~/laravel-reddit/laravel/* /var/www/laravel/; 
+mv ~/laravel-reddit/laravel/.* /var/www/laravel; 
+cd /var/www/; 
+chown -R :www-data /var/www/laravel; chmod -R 775 /var/www/laravel/storage; chmod -R 775 /var/www/laravel/bootstrap/cache; 
+cd /var/www/laravel/; 
+composer install -n; 
+cd /var/www/laravel; 
  php artisan key:generate;
 echo "Log in to phpmyadmin at http://{{site-name}}/phpmyadmin. Make sure it is http not https! Click databases. Create 'msf' database. then run 'cd /var/www/laravel; php artisan migrate'."
-
-
-#./mysql_install.sh
 

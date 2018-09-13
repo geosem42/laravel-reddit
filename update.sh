@@ -2,4 +2,4 @@
 git fetch all;
 git reset --hard origin/master;
 git pull;
-mv ./laravel/* /var/www/laravel/
+rsync -ravv ./laravel/* /var/www/laravel/
