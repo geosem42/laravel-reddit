@@ -67,10 +67,10 @@ class CommentController extends Controller {
 	public static function view_data(Request $request, Post $post) {
 		$instance = new Self;
 		$per_page = session('per_page')?session('per_page'):config('constants.per_page');
-		$post = Post::with('user.votes')->with('subreddit.moderators')->with('comments')->where('id', $post->id)->first();
+		$post = Post::with('user.votes')->with('subirt.moderators')->with('comments')->where('id', $post->id)->first();
 		$comment = $post->comments;
 		$user = User::where('id', '=', Auth::id())->get();
-		$check = $post->subreddit->moderators->where('user_id', Auth::id())->first();
+		$check = $post->subirt->moderators->where('user_id', Auth::id())->first();
 		$isModerator = $check ? true:false;
 		$result['per_page'] = $per_page;
 		$result['comments'] = $instance->comment_list($per_page, $request, $post, $comment, $user, $isModerator);
@@ -103,7 +103,7 @@ class CommentController extends Controller {
 		$comment->save();
 		$per_page = Input::get('per_page');
 		$post = $post->find($request->commenter_post);
-		$check = $post->subreddit->moderators->where('user_id', Auth::id())->first();
+		$check = $post->subirt->moderators->where('user_id', Auth::id())->first();
 		$isModerator = $check ? true:false;
 		$comment_list = view('eastgate.comment.comment_list')
 							->with('comments', $this->comment_list($per_page, $request, $post))

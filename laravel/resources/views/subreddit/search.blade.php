@@ -16,7 +16,7 @@
                     @endforeach
                 </ul>
             @endif
-            <h1>Searching: {{ $subreddit->name }}</h1>
+            <h1>Searching: {{ $subirt->name }}</h1>
             <div class="scroll">
                 @if(count($posts) < 1)
                     There are no matches

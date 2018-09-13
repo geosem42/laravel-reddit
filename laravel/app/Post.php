@@ -12,18 +12,18 @@ class Post extends Model
         'link',
         'text',
         'image',
-        'subreddit_id'
+        'subirt_id'
     ];
 
     // this was preventing the Votes relation from working..
-    //    protected $primaryKey = 'subreddit_id';
+    //    protected $primaryKey = 'subirt_id';
 
     public function user() {
         return $this->belongsTo('App\User');
     }
 
-    public function subreddit() {
-        return $this->belongsTo('App\Subreddit');
+    public function subirt() {
+        return $this->belongsTo('App\Subirt');
     }
 
     public function votes() {

@@ -30,7 +30,7 @@
 @endsection
 
 @section('content')
-    <h1>Moderators for: {{ $subreddit->name }}</h1>
+    <h1>Moderators for: {{ $subirt->name }}</h1>
 
     @if(Session::has('message'))
         <p class="alert {{ Session::get('success-class', 'alert-success') }}" role="alert">{{ Session::get('message') }}</p>
@@ -38,7 +38,7 @@
         <p class="alert {{ Session::get('alert-class', 'alert-warning') }}" role="alert">{{ Session::get('message_info') }}</p>
     @endif
 
-    {!! Form::open(['url' => 'subreddit/' . $subreddit->id . '/moderators', 'method' => 'POST']) !!}
+    {!! Form::open(['url' => 'subirt/' . $subirt->id . '/moderators', 'method' => 'POST']) !!}
 
     <p>
         <div id="remote">
@@ -60,7 +60,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Subreddit</th>
+                <th>Subirt</th>
                 <th class="text-center">Action</th>
             </tr>
             </thead>
@@ -68,9 +68,9 @@
             <tr>
                 <td>{{ $moderator->id }}</td>
                 <td>{{ $moderator->user->name }}</td>
-                <td>{{ $moderator->subreddit->name }}</td>
+                <td>{{ $moderator->subirt->name }}</td>
                 <td class="text-center">
-                    {!! Form::open(['action' => ['ModeratorsController@destroy', $subreddit->id, $moderator->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['action' => ['ModeratorsController@destroy', $subirt->id, $moderator->id], 'method' => 'delete']) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-xs btn-danger']) !!}
 
                     {!! Form::close() !!}

@@ -26,7 +26,7 @@ public function boot(GateContract $gate)
     parent::registerPolicies($gate);
 
     $gate->define('update-post', function ($user, $post, $isModerator) {
-        if ($user->id === $post->subreddit->user->id) {
+        if ($user->id === $post->subirt->user->id) {
             return true;
         }
 
@@ -41,8 +41,8 @@ public function boot(GateContract $gate)
         return false;
     });
 
-    $gate->define('update-sub', function($user, $subreddit) {
-        if($user->id === $subreddit->user->id) {
+    $gate->define('update-sub', function($user, $subirt) {
+        if($user->id === $subirt->user->id) {
             return true;
         }
 

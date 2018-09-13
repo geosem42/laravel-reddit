@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Subreddit;
+use App\Subirt;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;

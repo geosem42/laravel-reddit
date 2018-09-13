@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot($router);
 
         $router->model('articles', 'App\Article');
-        $router->model('subreddit', 'App\Subreddit');
+        $router->model('subirt', 'App\Subirt');
         $router->model('posts', 'App\Post');
         $router->model('moderators', 'App\Moderator');
         $router->model('comments', 'App\Comment');

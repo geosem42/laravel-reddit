@@ -20,8 +20,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $hidden = ['password', 'remember_token'];
 
-    public function subreddit() {
-        return $this->hasMany('App\Subreddit');
+    public function subirt() {
+        return $this->hasMany('App\Subirt');
     }
 
     public function posts() {

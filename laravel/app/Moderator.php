@@ -8,10 +8,10 @@ class Moderator extends Model
 {
     //protected $table = 'moderators';
 
-    protected $fillable = ['user_id', 'subreddit_id'];
+    protected $fillable = ['user_id', 'subirt_id'];
 
-    public function subreddit() {
-        return $this->belongsTo('App\Subreddit');
+    public function subirt() {
+        return $this->belongsTo('App\Subirt');
     }
 
     public function user() {

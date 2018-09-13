@@ -35,7 +35,7 @@
                 <p style="color: darkgrey; font-size: 12px;">
                     <i class="glyphicon glyphicon-user" style="padding-right: 5px;"></i>submitted by {!!  link_to_route('profile_path', $post->user->name, $post->user->name) !!}
                     <i class="glyphicon glyphicon-calendar" style="padding-left: 15px;"></i> {{ $post->created_at->diffForHumans() }}
-                    <i class="glyphicon glyphicon-bullhorn" style="padding-left: 15px;"></i> <a href="{{ action('SubredditController@show', [$post->subreddit->id]) }}">{{ $post->subreddit->name }}</a>
+                    <i class="glyphicon glyphicon-bullhorn" style="padding-left: 15px;"></i> <a href="{{ action('SubirtController@show', [$post->subirt->id]) }}">{{ $post->subirt->name }}</a>
                     <i class="glyphicon glyphicon-comment" style="padding-left: 15px;"></i> <a href="{{ action('PostsController@show', [$post->id]) }}">{{ $post->comments->count() }} Comments</a>
                     @can('update-post', [$post, $isModerator])
                         <i class="glyphicon glyphicon-pencil" style="padding-left: 15px;"></i> <a href="{{ action('PostsController@edit', $post->id) }}">Edit</a>

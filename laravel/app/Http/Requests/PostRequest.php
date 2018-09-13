@@ -23,7 +23,7 @@ class PostRequest extends Request
     {
         return [
             'title' => 'required',
-            'subreddit_id' => 'required'
+            'subirt_id' => 'required'
         ];
     }
 }

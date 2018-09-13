@@ -16,9 +16,9 @@
 @endsection
 
 @section('content')
-    <h1>Create Subreddit</h1>
+    <h1>Create Subirt</h1>
 
-    {!! Form::open(['url' => 'subreddit']) !!}
+    {!! Form::open(['url' => 'subirt']) !!}
 
     <p>
         {!! Form::label('name', 'Name:') !!}
@@ -31,7 +31,7 @@
     </p>
 
     <p>
-        {!! Form::submit('Create Subreddit', ['id' => 'submit', 'class' => 'btn btn-primary']) !!}
+        {!! Form::submit('Create Subirt', ['id' => 'submit', 'class' => 'btn btn-primary']) !!}
     </p>
 
     @if($errors->any())

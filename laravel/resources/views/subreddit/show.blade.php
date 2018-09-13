@@ -16,7 +16,7 @@
                     @endforeach
                 </ul>
             @endif
-            <h1>Subreddit: {{ $subreddit->name }}</h1>
+            <h1>Subirt: {{ $subirt->name }}</h1>
             <div class="scroll">
                 @foreach($posts as $post)
                     @include('partials/post')

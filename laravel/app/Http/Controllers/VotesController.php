@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Vote;
-use App\Subreddit;
+use App\Subirt;
 use App\Post;
 use Illuminate\Http\Request;
 use Carbon\Carbon;

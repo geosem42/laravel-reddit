@@ -2,7 +2,7 @@
 ## Installation on an Ubuntu 16.04 VPS / virtual box
 
 
-1. Run "git clone https://github.com/Project-Oblio/laravel-reddit.git; cd laravel-reddit; ./install.sh". There are some manual configurations needed:
+1. Run "git clone https://github.com/Project-Oblio/laravel-irt.git; cd laravel-irt; ./install.sh". There are some manual configurations needed:
 
 2. Inside the first file that opens, keep "server_name 127.0.0.1" for localhost/docker. Change to  "server_name {{public-ip-address}}" or "server_name {{domain name}}" if running on a VPS.
 
@@ -23,7 +23,7 @@ public function boot(GateContract $gate)
     parent::registerPolicies($gate);
 
     $gate->define('update-post', function ($user, $post, $isModerator) {
-        if ($user->id === $post->subreddit->user->id) {
+        if ($user->id === $post->subirt->user->id) {
             return true;
         }
 
@@ -38,8 +38,8 @@ public function boot(GateContract $gate)
         return false;
     });
 
-    $gate->define('update-sub', function($user, $subreddit) {
-        if($user->id === $subreddit->user->id) {
+    $gate->define('update-sub', function($user, $subirt) {
+        if($user->id === $subirt->user->id) {
             return true;
         }
 

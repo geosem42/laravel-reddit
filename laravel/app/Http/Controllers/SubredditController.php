@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Subreddit;
+use App\Subirt;
 use App\User;
 use App\Post;
 use App\Moderator;
@@ -14,7 +14,7 @@ use Gate;
 use Input;
 use DB;
 
-class SubredditController extends Controller
+class SubirtController extends Controller
 {
     public function __construct() {
         $this->middleware('auth', ['only' => ['create', 'edit']]);
@@ -22,43 +22,43 @@ class SubredditController extends Controller
 
     public function index()
     {
-        $subreddit = Subreddit::latest('created_at')->paginate(15);
-        $subreddit->setPath('subreddit');
+        $subirt = Subirt::latest('created_at')->paginate(15);
+        $subirt->setPath('subirt');
 
-        return view('subreddit/index')->with('subreddit', $subreddit);
+        return view('subirt/index')->with('subirt', $subirt);
     }
 
     public function create()
     {
-        return view('subreddit/create');
+        return view('subirt/create');
     }
 
-    public function store(Requests\SubredditRequest $request, Moderator $moderator, Subreddit $subreddit)
+    public function store(Requests\SubirtRequest $request, Moderator $moderator, Subirt $subirt)
     {
-        $sub = Auth::user()->subreddit()->create($request->all());
+        $sub = Auth::user()->subirt()->create($request->all());
 
         $moderator = new Moderator;
         $moderator->user_id = Auth::id();
-        $moderator->subreddit_id = $sub->id;
+        $moderator->subirt_id = $sub->id;
         $moderator->save();
 
         return redirect('/');
     }
 
-    public function show(Subreddit $subreddit, Post $post, User $user)
+    public function show(Subirt $subirt, Post $post, User $user)
     {
         // OLD METHOD
-        // $subreddit = Subreddit::with('posts.votes')->with('user')->findOrFail($subreddit->id);
+        // $subirt = Subirt::with('posts.votes')->with('user')->findOrFail($subirt->id);
         //
-        $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->where('id', $subreddit->id)->first();
-        $posts = $subreddit->posts()->orderBy('created_at', 'desc')->paginate(15);
-        $posts->setPath($subreddit->id);
-        $isModerator = $subreddit->moderators()->where('user_id', Auth::id())->exists();
+        $subirt = Subirt::with('posts.votes')->with('moderators.user')->where('id', $subirt->id)->first();
+        $posts = $subirt->posts()->orderBy('created_at', 'desc')->paginate(15);
+        $posts->setPath($subirt->id);
+        $isModerator = $subirt->moderators()->where('user_id', Auth::id())->exists();
         $user = User::where('id', '=', Auth::id())->get();
-        $modList = Moderator::where('subreddit_id', '=', $subreddit->id)->get();
+        $modList = Moderator::where('subirt_id', '=', $subirt->id)->get();
 
 
-        return view('subreddit/show')->with('subreddit', $subreddit)
+        return view('subirt/show')->with('subirt', $subirt)
             ->with('user', $user)
             ->with('isModerator', $isModerator)
             ->with('modList', $modList)
@@ -66,22 +66,22 @@ class SubredditController extends Controller
 
     }
 
-    public function edit(User $user, Subreddit $subreddit)
+    public function edit(User $user, Subirt $subirt)
     {
-        if(Gate::denies('update-sub', $subreddit)) {
+        if(Gate::denies('update-sub', $subirt)) {
             return 'no';
         } else {
-            return view('subreddit/edit')->with('subreddit', $subreddit);
+            return view('subirt/edit')->with('subirt', $subirt);
         }
     }
 
-    public function update(Requests\SubredditRequest $request, Subreddit $subreddit)
+    public function update(Requests\SubirtRequest $request, Subirt $subirt)
     {
-        if(Gate::denies('update-sub', $subreddit)) {
+        if(Gate::denies('update-sub', $subirt)) {
             return 'no';
         } else {
-            $subreddit->update($request->all());
-            return redirect('/subreddit');
+            $subirt->update($request->all());
+            return redirect('/subirt');
         }
     }
 
@@ -90,24 +90,24 @@ class SubredditController extends Controller
         //
     }
 
-    public function mySubreddits(User $user) {
-        $subreddit = Subreddit::where('user_id', '=', Auth::id())->get();
-        return view('user/mysubreddits')->with('user', $user)->with('subreddit', $subreddit);
+    public function mySubirts(User $user) {
+        $subirt = Subirt::where('user_id', '=', Auth::id())->get();
+        return view('user/mysubirts')->with('user', $user)->with('subirt', $subirt);
     }
 
-    public function createModerators(Subreddit $subreddit) {
-        $subreddit = Subreddit::with('posts.votes')->findOrFail($subreddit->id);
-        return view('user/moderators')->with('subreddit', $subreddit);
+    public function createModerators(Subirt $subirt) {
+        $subirt = Subirt::with('posts.votes')->findOrFail($subirt->id);
+        return view('user/moderators')->with('subirt', $subirt);
     }
 
-    public function search(Subreddit $subreddit, Request $request)
+    public function search(Subirt $subirt, Request $request)
     {
         $query = $request->input('search');
-        $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->where('id', $subreddit->id)->first();
-        $posts = $subreddit->posts()->where('title', 'LIKE', '%' . $query . '%')->get();
-        $isModerator = $subreddit->moderators()->where('user_id', Auth::id())->exists();
-        $modList = Moderator::where('subreddit_id', '=', $subreddit->id)->get();
+        $subirt = Subirt::with('posts.votes')->with('moderators.user')->where('id', $subirt->id)->first();
+        $posts = $subirt->posts()->where('title', 'LIKE', '%' . $query . '%')->get();
+        $isModerator = $subirt->moderators()->where('user_id', Auth::id())->exists();
+        $modList = Moderator::where('subirt_id', '=', $subirt->id)->get();
 
-        return view('subreddit.search', compact('query', 'subreddit', 'posts', 'isModerator', 'modList'));
+        return view('subirt.search', compact('query', 'subirt', 'posts', 'isModerator', 'modList'));
     }
 }

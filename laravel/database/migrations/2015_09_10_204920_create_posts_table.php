@@ -19,16 +19,16 @@ class CreatePostsTable extends Migration
             $table->text('text');
             $table->string('image');
             $table->integer('user_id')->unsigned();
-            $table->integer('subreddit_id')->unsigned();
+            $table->integer('subirt_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('user_id')
                     ->references('id')
                     ->on('users');
 
-            $table->foreign('subreddit_id')
+            $table->foreign('subirt_id')
                     ->references('id')
-                    ->on('subreddits');
+                    ->on('subirts');
 
         });
     }
@@ -43,8 +43,8 @@ class CreatePostsTable extends Migration
         Schema::drop('posts', function(Blueprint $table) {
             $table->dropForeign('posts_user_id_foreign');
             $table->dropColumn('user_id');
-            $table->dropForeign('posts_subreddit_id_foreign');
-            $table->dropColumn('subreddit_id');
+            $table->dropForeign('posts_subirt_id_foreign');
+            $table->dropColumn('subirt_id');
         });
     }
 }

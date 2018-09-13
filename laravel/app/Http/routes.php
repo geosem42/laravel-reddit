@@ -30,16 +30,16 @@ Route::get('{post}/reply_comment', 'CommentController@reply_comment');
 Route::post('{post}/per_page', ['as' => 'per_page', 'uses' => 'CommentController@per_page']);
 Route::post('{post}/comment/update', ['as' => 'comment/update', 'uses' => 'CommentController@update']);
 
-Route::resource('subreddit', 'SubredditController');
-Route::resource('subreddit.moderators', 'ModeratorsController');
+Route::resource('subirt', 'SubirtController');
+Route::resource('subirt.moderators', 'ModeratorsController');
 
-Route::post('search/{subreddit}', ['as' => 'search', 'uses' => 'SubredditController@search']);
+Route::post('search/{subirt}', ['as' => 'search', 'uses' => 'SubirtController@search']);
 Route::post('search-post/{post}', ['as' => 'search_post', 'uses' => 'PostsController@search']);
 Route::post('search-site', ['as' => 'search_site', 'uses' => 'HomeController@search']);
 
-Route::get('mysubreddits', [
-    'as' => 'mysubreddits',
-    'uses' => 'SubredditController@mySubreddits'
+Route::get('mysubirts', [
+    'as' => 'mysubirts',
+    'uses' => 'SubirtController@mySubirts'
 ]);
 
 Route::get('data/islogged', function() {
@@ -56,7 +56,7 @@ Route::get('u/{name}', [
     'uses' => 'ProfilesController@show'
 ]);
 
-Route::get('data/subreddits/{query?}', 'PostsController@getSubreddits');
+Route::get('data/subirts/{query?}', 'PostsController@getSubirts');
 Route::get('data/users/{query?}', 'ModeratorsController@getUsers');
 
 Validator::extend('alpha_spaces', function($attribute, $value)

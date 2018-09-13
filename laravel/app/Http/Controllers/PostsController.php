@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-use App\Subreddit;
+use App\Subirt;
 use App\Http\Controllers\CommentController;
 use Embed\Embed;
 use Image;
@@ -34,13 +34,13 @@ class PostsController extends Controller
 
     public function create()
     {
-        $subreddits = Subreddit::lists('name', 'id')->toArray();
+        $subirts = Subirt::lists('name', 'id')->toArray();
 
-        return view('post/create')->with('subreddits', $subreddits);
+        return view('post/create')->with('subirts', $subirts);
     }
 
-    public function getSubreddits($query = '') {
-        $q = Subreddit::select('id', 'name');
+    public function getSubirts($query = '') {
+        $q = Subirt::select('id', 'name');
         if ($query) {
             $q->where('name', 'LIKE', '%' . $query . '%');
         }
@@ -103,20 +103,20 @@ class PostsController extends Controller
                 
                 Auth::user()->posts()->create(array_merge($request->all(), $embed_data));
             }
-            return redirect('/subreddit');
+            return redirect('/subirt');
         }
         Auth::user()->posts()->create($request->all());
 
-        return redirect('/subreddit');
+        return redirect('/subirt');
     }
 
     public function show(Post $post, User $user, Request $request, Comment $comment)
     {
-        $post = Post::with('user.votes')->with('subreddit.moderators')->findOrFail($post->id);
-        $ids = $post->subreddit;
+        $post = Post::with('user.votes')->with('subirt.moderators')->findOrFail($post->id);
+        $ids = $post->subirt;
         $check = $ids->moderators()->where('user_id', Auth::id())->first();
         $isModerator = $check ? true:false;
-        $modList = Moderator::where('subreddit_id', '=', $post->subreddit->id)->get();
+        $modList = Moderator::where('subirt_id', '=', $post->subirt->id)->get();
         $view_data = CommentController::view_data($request, $post, $comment, $isModerator);
 
         return view('post/show', $view_data)->with('post', $post)
@@ -126,11 +126,11 @@ class PostsController extends Controller
 
     public function edit(Post $post)
     {
-        $post = Post::with('user.votes')->with('subreddit.moderators')->findOrFail($post->id);
-        $ids = $post->subreddit;
+        $post = Post::with('user.votes')->with('subirt.moderators')->findOrFail($post->id);
+        $ids = $post->subirt;
         $isModerator = $ids->moderators()->where('user_id', Auth::id())->exists();
         if (Gate::denies('update-post', [$post, $isModerator])) {
-            return redirect('subreddit')->withErrors('You cannot edit this post.');
+            return redirect('subirt')->withErrors('You cannot edit this post.');
         } else {
             return view('post/edit')->with('post', $post)->with('isModerator', $isModerator);
         }
@@ -138,14 +138,14 @@ class PostsController extends Controller
 
     public function update(EditPostRequest $request, Post $post)
     {
-        $post = Post::with('user.votes')->with('subreddit.moderators')->findOrFail($post->id);
-        $ids = $post->subreddit;
+        $post = Post::with('user.votes')->with('subirt.moderators')->findOrFail($post->id);
+        $ids = $post->subirt;
         $isModerator = $ids->moderators()->where('user_id', Auth::id())->exists();
         if (Gate::denies('update-post', [$post, $isModerator])) {
-            return redirect('subreddit')->withErrors('You cannot edit this post.');
+            return redirect('subirt')->withErrors('You cannot edit this post.');
         } else {
             $post->update($request->all());
-            return redirect('/subreddit');
+            return redirect('/subirt');
         }
     }
 
@@ -157,12 +157,12 @@ class PostsController extends Controller
     public function search(Post $post, Request $request)
     {
         $query = $request->input('search');
-        $subredditId = $request->input('subreddit_id');
-        $subreddit = Subreddit::with('posts.votes')->with('moderators.user')->where('id', $subredditId)->first();
-        $posts = $subreddit->posts()->where('title', 'LIKE', '%' . $query . '%')->get();
-        $isModerator = $subreddit->moderators()->where('user_id', Auth::id())->exists();
-        $modList = Moderator::where('subreddit_id', '=', $subredditId)->get();
+        $subirtId = $request->input('subirt_id');
+        $subirt = Subirt::with('posts.votes')->with('moderators.user')->where('id', $subirtId)->first();
+        $posts = $subirt->posts()->where('title', 'LIKE', '%' . $query . '%')->get();
+        $isModerator = $subirt->moderators()->where('user_id', Auth::id())->exists();
+        $modList = Moderator::where('subirt_id', '=', $subirtId)->get();
 
-        return view('subreddit.search', compact('query', 'subreddit', 'posts', 'isModerator', 'modList'));
+        return view('subirt.search', compact('query', 'subirt', 'posts', 'isModerator', 'modList'));
     }
 }

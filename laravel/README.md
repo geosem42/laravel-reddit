@@ -1,5 +1,5 @@
-# laravel-reddit
-Reddit clone built with Laravel 5
+# laravel-irt
+IRT clone built with Laravel 5
 
 Demo: http://maghnatis.com
 
@@ -10,7 +10,7 @@ Demo: http://maghnatis.com
 
 # Features
 1. Login/Register
-2. Subreddits
+2. Subirts
 3. Posts (link and text)
 4. Moderators
 5. Search
@@ -22,7 +22,7 @@ Demo: http://maghnatis.com
 1. Sorting
 
 # Installation
-1. git clone https://github.com/Halnex/laravel-reddit projectname
+1. git clone https://github.com/Halnex/laravel-irt projectname
 2. composer install
 3. php artisan migrate
 
@@ -39,7 +39,7 @@ public function boot(GateContract $gate)
     parent::registerPolicies($gate);
 
     $gate->define('update-post', function ($user, $post, $isModerator) {
-        if ($user->id === $post->subreddit->user->id) {
+        if ($user->id === $post->subirt->user->id) {
             return true;
         }
 
@@ -54,8 +54,8 @@ public function boot(GateContract $gate)
         return false;
     });
 
-    $gate->define('update-sub', function($user, $subreddit) {
-        if($user->id === $subreddit->user->id) {
+    $gate->define('update-sub', function($user, $subirt) {
+        if($user->id === $subirt->user->id) {
             return true;
         }
 

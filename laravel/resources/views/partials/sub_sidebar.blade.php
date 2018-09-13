@@ -1,7 +1,7 @@
-<!-- Subreddit Search Well -->
+<!-- Subirt Search Well -->
 <div class="well" style="margin-top: 30px;">
-    <h4>Search {{ $subreddit->name }}</h4>
-    {!! Form::open(['route' => ['search', $subreddit]]) !!}
+    <h4>Search {{ $subirt->name }}</h4>
+    {!! Form::open(['route' => ['search', $subirt]]) !!}
     <div id="custom-search-input">
         <div class="input-group col-md-12">
             <input type="text" name="search" class="search-query form-control" placeholder="Search" />
@@ -17,13 +17,13 @@
 
 <!-- Side Widget Well -->
 <div class="well">
-    <h4>About {{ $subreddit->name }}</h4>
-    <p>{!! strip_tags($subreddit->description, '<b><a><img><i><u><p><br><ul><ol><li><h1><h2><h3><blockquote>') !!}</p>
+    <h4>About {{ $subirt->name }}</h4>
+    <p>{!! strip_tags($subirt->description, '<b><a><img><i><u><p><br><ul><ol><li><h1><h2><h3><blockquote>') !!}</p>
 </div>
 
-<!-- Subreddit Moderators Well -->
+<!-- Subirt Moderators Well -->
 <div class="well">
-    <h4>Moderators Of {{ $subreddit->name }}</h4>
+    <h4>Moderators Of {{ $subirt->name }}</h4>
     <div class="row">
         <div class="col-lg-6">
             <ul class="list-unstyled">

@@ -1,7 +1,7 @@
 @extends('layouts/default')
 
 @section('content')
-    <h1>My Subreddits</h1>
+    <h1>My Subirts</h1>
 
     <div class="container">
         <div class="row col-md-12">
@@ -22,12 +22,12 @@
                     <p class="alert {{ Session::get('alert-class', 'alert-danger') }}" role="alert">{{ Session::get('message_danger') }}</p>
                 @endif
 
-                @foreach($subreddit as $sub)
+                @foreach($subirt as $sub)
                 <tr>
                     <td>{{ $sub->id }}</td>
                     <td>{{ $sub->name }}</td>
                     <td class="text-center">
-                        <a class='btn btn-info btn-xs' href="{{ action('SubredditController@edit', [$sub->id]) }}"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        <a class='btn btn-info btn-xs' href="{{ action('SubirtController@edit', [$sub->id]) }}"><span class="glyphicon glyphicon-edit"></span> Edit</a>
                         <a class="btn btn-warning btn-xs" href="{{ action('ModeratorsController@create', [$sub->id]) }}" ><span class="glyphicon glyphicon-user"></span> Moderators</a>
                     </td>
                 </tr>

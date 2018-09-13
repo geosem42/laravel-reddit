@@ -5,7 +5,7 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class Subreddit extends Model
+class Subirt extends Model
 {
     protected $fillable = [
         'name',

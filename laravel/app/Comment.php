@@ -68,7 +68,7 @@ class Comment extends Model
         return $this->hasMany('App\CommentVote');
     }
 
-    public function subreddit() {
-        return $this->belongsTo('App\Subreddit');
+    public function subirt() {
+        return $this->belongsTo('App\Subirt');
     }
 }

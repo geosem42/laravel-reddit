@@ -14,12 +14,12 @@
                 toolbar : "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
             });
 
-            var subreddits = new Bloodhound({
+            var subirts = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
-                prefetch: 'data/subreddits',
+                prefetch: 'data/subirts',
                 remote: {
-                    url: 'data/subreddits/%QUERY',
+                    url: 'data/subirts/%QUERY',
                     wildcard: '%QUERY'
                 }
             });
@@ -27,11 +27,11 @@
             $('#remote .typeahead').typeahead(null, {
                 name: 'name',
                 display: 'name',
-                source: subreddits
+                source: subirts
             });
 
             $('#remote .typeahead').bind('typeahead:select', function(ev, suggestion) {
-                $('.subreddit_id').val(suggestion.id);
+                $('.subirt_id').val(suggestion.id);
             });
         });
     </script>
@@ -63,8 +63,8 @@
 
                 <p>
                     <div id="remote">
-                        <input class="form-control typeahead" type="text" placeholder="Choose a Subreddit" name="subreddit_name">
-                        <input type="hidden" class="subreddit_id" value="" name="subreddit_id">
+                        <input class="form-control typeahead" type="text" placeholder="Choose a Subirt" name="subirt_name">
+                        <input type="hidden" class="subirt_id" value="" name="subirt_id">
                     </div>
                 </p>
 
@@ -93,8 +93,8 @@
 
                 <p>
                     <div id="remote">
-                        <input class="form-control typeahead" type="text" placeholder="Choose a Subreddit" name="subreddit_name">
-                        <input type="hidden" class="subreddit_id" value="" name="subreddit_id">
+                        <input class="form-control typeahead" type="text" placeholder="Choose a Subirt" name="subirt_name">
+                        <input type="hidden" class="subirt_id" value="" name="subirt_id">
                     </div>
                 </p>
 

@@ -16,9 +16,9 @@
 @endsection
 
 @section('content')
-    <h1>Edit sub: {{ $subreddit->name }}</h1>
+    <h1>Edit sub: {{ $subirt->name }}</h1>
 
-    {!! Form::model($subreddit, ['method' => 'PATCH', 'action' => ['SubredditController@update', $subreddit->id]]) !!}
+    {!! Form::model($subirt, ['method' => 'PATCH', 'action' => ['SubirtController@update', $subirt->id]]) !!}
 
     <p>
         {!! Form::label('name', 'Name:') !!}
@@ -31,7 +31,7 @@
     </p>
 
     <p>
-        {!! Form::submit('Update Subreddit', ['id' => 'submit', 'class' => 'btn btn-primary']) !!}
+        {!! Form::submit('Update Subirt', ['id' => 'submit', 'class' => 'btn btn-primary']) !!}
     </p>
 
     @if($errors->any())

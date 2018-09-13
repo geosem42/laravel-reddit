@@ -15,16 +15,16 @@ class CreateModeratorsTable extends Migration
         Schema::create('moderators', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('subreddit_id')->unsigned();
+            $table->integer('subirt_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
 
-            $table->foreign('subreddit_id')
+            $table->foreign('subirt_id')
                 ->references('id')
-                ->on('subreddits');
+                ->on('subirts');
         });
     }
 
@@ -38,8 +38,8 @@ class CreateModeratorsTable extends Migration
         Schema::drop('moderators', function(Blueprint $table) {
             $table->dropForeign('moderators_user_id_foreign');
             $table->dropColumn('user_id');
-            $table->dropForeign('moderators_subreddit_id_foreign');
-            $table->dropColumn('subreddit_id');
+            $table->dropForeign('moderators_subirt_id_foreign');
+            $table->dropColumn('subirt_id');
         });
     }
 }
