@@ -1,65 +1,94 @@
-@extends('layouts/default')
+@extends('layouts.app')
+
+@section('title') Plebbit: Register @endsection
+
+@php $twitter_title = 'Register'; @endphp
+@include('layouts.partials.twitter_cards')
 
 @section('content')
+<div style="margin-top: 20px;" class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Register</div>
+                <div class="panel-body">
+                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                        {{ csrf_field() }}
 
-    @if($errors->any())
-        <ul>
-            @foreach($errors->all() as $error)
-                <div class="alert alert-danger list-unstyled" role="alert">
-                    <li class="">{{ $error }}</li>
+                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                            <label for="name" class="col-md-4 control-label">Username</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+
+                                @if ($errors->has('username'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" class="col-md-4 control-label">Password</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control" name="password" required>
+
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                {!! Recaptcha::render() !!}
+
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span style="color: #a94442;" class="help-block">
+                                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Register
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            @endforeach
-        </ul>
-    @endif
-
-    {!! Form::open(['url' => 'auth/register']) !!}
-        <fieldset>
-            <div id="legend">
-                <legend class="">Register</legend>
             </div>
-            <div class="control-group">
-                <!-- Username -->
-                <label class="control-label"  for="name">Username</label>
-                <div class="controls">
-                    <input type="text" id="name" name="name" placeholder="" value="{{ old('name') }}" class="form-control">
-                    <p class="help-block">Username can contain any letters or numbers, without spaces</p>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <!-- E-mail -->
-                <label class="control-label" for="email">E-mail</label>
-                <div class="controls">
-                    <input type="text" id="email" name="email" placeholder="" value="{{ old('email') }}" class="form-control">
-                    <p class="help-block">Please provide your E-mail</p>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <!-- Password-->
-                <label class="control-label" for="password">Password</label>
-                <div class="controls">
-                    <input type="password" id="password" name="password" placeholder="" class="form-control">
-                    <p class="help-block">Password should be at least 4 characters</p>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <!-- Password -->
-                <label class="control-label"  for="password_confirmation">Password (Confirm)</label>
-                <div class="controls">
-                    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="" class="form-control">
-                    <p class="help-block">Please confirm password</p>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <!-- Button -->
-                <div class="controls">
-                    <button class="btn btn-success">Register</button>
-                </div>
-            </div>
-        </fieldset>
-    {!! Form::close() !!}
-
-@stop
+        </div>
+    </div>
+</div>
+@endsection

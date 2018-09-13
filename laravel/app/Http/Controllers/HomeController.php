@@ -3,108 +3,90 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Subirt;
-use App\User;
-use App\Post;
-use App\Moderator;
-use App\Http\Controllers\Posts;
+use App\Thread;
+use App\Vote;
 use Illuminate\Support\Facades\Auth;
+use App\Subscription;
 
 class HomeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
      *
-     * @return Response
+     * @return void
      */
-    public function index(Subirt $subirt, Post $post, Moderator $moderator, User $user)
+    public function __construct()
     {
-        //$posts = Post::with('user.votes')->get();
-        $posts = Post::with('user.votes')->with('subirt.moderators')->orderBy('created_at', 'desc')->get();
-        //$ids = $posts->subirt;
-        $isModerator = false;
-
-        //dd($ids);
-
-        return view('home')->with('posts', $posts)->with('isModerator', $isModerator);
-    }
-
-    public function search(Post $post, Subirt $subirt, Request $request)
-    {
-        $query = $request->input('search');
-        $subirt = Subirt::with('posts.votes')->with('moderators.user')->first();
-        $posts = Post::where('title', 'LIKE', '%' . $query . '%')->get();
-        $isModerator = false;
-
-        return view('site.search', compact('query', 'subirt', 'posts', 'isModerator'));
+        //$this->middleware('auth');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the application dashboard.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function index(Request $request, Thread $thread, Vote $vote, Subscription $subscription)
     {
-        //
-    }
+        $sort = $request->segment(2);
+        $sort_type = $request->segment(1);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $user = false;
+        $subscriptionsIdsArray = null;
+        if (Auth::check() && $sort_type !== 'g') {
+            $user = Auth::user();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
+            $subscriptionsIdsArray = $subscription->select('sub_plebbit_id')->where('user_id', $user->id)->get()->toArray();
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $page = $request->input('page');
+        if (!is_numeric($page)) {
+            $page = 1;
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        if (!$sort) {
+            if ($user) {
+                $threads = $thread->whereIn('sub_plebbit_id', $subscriptionsIdsArray)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->take(25)->orderBy('score', 'DESC');
+            } else {
+                $threads = $thread->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->take(25)->orderBy('score', 'DESC');
+            }
+        } else if ($sort == 'popular') {
+            if ($sort_type == 'g') {
+                $sort = 'popular_g';
+            }
+            $threads = $thread->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->take(25)->orderBy('score', 'DESC');
+        } else if ($sort == 'new') {
+            if ($user) {
+                $threads = $thread->whereIn('sub_plebbit_id', $subscriptionsIdsArray)->orderBy('created_at', 'DESC')->take(25);
+            } else {
+                $threads = $thread->orderBy('created_at', 'DESC')->take(25);
+            }
+        } else if ($sort == 'top') {
+            if ($user) {
+                $threads = $thread->whereIn('sub_plebbit_id', $subscriptionsIdsArray)->orderBy('score', 'DESC')->take(25);
+            } else {
+                $threads = $thread->orderBy('score', 'DESC')->take(25);
+            }
+        } else if ($sort == 'shekeld') {
+            //coming soon
+            $threads = null;
+        } else {
+            $threads = null;
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        $userVotes = null;
+        if ($threads) {
+            if ($page) {
+                $threads = $threads->skip(25 * $page - 25);
+            }
+            $threads = $threads->get();
+
+            $threadsArray = $threads->pluck('id')->toArray();
+            if (Auth::check()) {
+                $userVotes = $vote->where('user_id', Auth::user()->id)->whereIn('thread_id', $threadsArray)->get();
+            }
+        }
+
+
+        return view('home', array('threads' => $threads, 'userVotes' => $userVotes, 'sort' => $sort, 'page' => $page));
     }
 }
