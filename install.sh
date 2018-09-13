@@ -60,6 +60,7 @@ composer install -n;
 cd /var/www/laravel; 
  php artisan key:generate;
 mysql -uroot -panyPassword -e "create database irt;"
-
+php artisan migrate; 
+sleep 3s; 
 sudo nohup php artisan serve --host=poster.projectoblio.com & 
 

@@ -36,7 +36,6 @@
                                 <input style="margin-top: 10px;" id="password" type="password" class="form-control" name="password" placeholder="Password" required>
                                 <input style="margin-top: 10px;" id="password-confirm" type="password" class="form-control" placeholder="Verify password" name="password_confirmation" required>
                                 <div style="margin-top:10px; transform:scale(0.89);-webkit-transform:scale(0.89);transform-origin:0 0;-webkit-transform-origin:0 0;">
-                                    {!! Recaptcha::render() !!}
                                 </div>
                                 <input type="submit" value="Register" class="btn btn-primary pull-right">
                             </form>
