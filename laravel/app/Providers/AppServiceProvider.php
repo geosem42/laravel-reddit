@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
     }
-
+}
     /**
      * Register any application services.
      *
