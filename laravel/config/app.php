@@ -181,6 +181,9 @@ return [
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+	Laravel\Socialite\SocialiteServiceProvider::class,
+	\SocialiteProviders\Manager\ServiceProvider::class,
+
     ],
 
     /*
