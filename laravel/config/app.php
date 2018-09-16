@@ -181,9 +181,8 @@ return [
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
-SocialiteProviders\Manager\ServiceProvider::class,
-SocialiteProviders\Generators\GeneratorsServiceProvider::class,
-'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+	SocialiteProviders\Manager\ServiceProvider::class,
+	SocialiteProviders\Generators\GeneratorsServiceProvider::class,
 
 
     ],
@@ -200,7 +199,7 @@ SocialiteProviders\Generators\GeneratorsServiceProvider::class,
     */
 
     'aliases' => [
-
+	'Socialite' => Laravel\Socialite\Facades\Socialite:class,
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
