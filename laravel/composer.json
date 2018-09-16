@@ -13,7 +13,8 @@
         "laracasts/flash": "^3.0",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.1",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "socialiteproviders/manager": "^3.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
