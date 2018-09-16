@@ -19,8 +19,8 @@ composer install --no-dev
 php artisan key:generate;
 if [ $# -eq 2 ] ; then
     echo 'Updating mysql'
-    mysql -uroot -panyPassword -e "drop database msf;" 
-    mysql -uroot -panyPassword -e "create database msf;"
+    mysql -uroot -panyPassword -e "drop database irt;" 
+    mysql -uroot -panyPassword -e "create database irt;"
 fi
 
 php artisan migrate; 
