@@ -1,4 +1,5 @@
 /vendor
+./laravel/vendor
 /node_modules
 Homestead.yaml
 .idea
