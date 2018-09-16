@@ -9,6 +9,8 @@ use Lang;
 use Illuminate\Validation\Rule;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Socialite; 
+
 
 class LoginController extends Controller
 {
@@ -41,6 +43,26 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+  public function redirectToProvider()
+    {
+	return Socialite::driver('laravel-irt')
+	    ->scopes(['last_dub_time','point','karma','name'])
+	    ->redirect();
+       
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('laravel-irt')->user();
+	$token = $user->token;
+	$user = Socialite::driver('github')->userFromToken($token);
     }
 
     protected function authenticated(Request $request, User $user){
