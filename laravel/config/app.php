@@ -199,7 +199,7 @@ return [
     */
 
     'aliases' => [
-	'Socialite' => Laravel\Socialite\Facades\Socialite:class,
+	'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
