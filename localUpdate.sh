@@ -9,6 +9,7 @@ git fetch;
 #git reset --hard origin/master;
 git pull origin $branch;
 rsync -ravv ./laravel/* /var/www/laravel/
+cp ./laravel/.* /var/www/laravel/
 cd /var/www/; 
 chown -R :www-data /var/www/laravel; 
 chmod -R 775 /var/www/laravel/storage; 
@@ -22,6 +23,10 @@ rm -rf bootstrap/cache/services.php;
 composer install --no-scripts
 composer update; 
 php artisan key:generate;
+chown -R :www-data /var/www/laravel; 
+chmod -R 775 /var/www/laravel/storage; 
+chmod -R 775 /var/www/laravel/bootstrap/cache; 
+
 if [ $# -eq 2 ] ; then
     echo 'Updating mysql'
     mysql -uroot -panyPassword -e "drop database irt;" 
