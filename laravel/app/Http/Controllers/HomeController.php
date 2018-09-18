@@ -27,6 +27,7 @@ class HomeController extends Controller
      */
     public function index(Request $request, Thread $thread, Vote $vote, Subscription $subscription)
     {
+        
         $sort = $request->segment(2);
         $sort_type = $request->segment(1);
 

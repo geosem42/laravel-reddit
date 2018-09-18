@@ -23,14 +23,14 @@
 
     <div class="container">
         <ul class="tabmenu">
-            <li @if(!$sort || $sort == 'popular') class="selected" @endif><a href="/">popular</a></li>
-            <li @if($sort == 'new') class="selected" @endif><a href="/s/new">new</a></li>
-            <li @if($sort == 'top') class="selected" @endif><a href="/s/top">top</a></li>
+            <li @if(!$sort || $sort == 'popular') class="selected" @endif><a href="{{url('/')}}">popular</a></li>
+            <li @if($sort == 'new') class="selected" @endif><a href="{{url('/s/new')}}">new</a></li>
+            <li @if($sort == 'top') class="selected" @endif><a href="{{url('/s/top')}}">top</a></li>
             {{--<li @if($sort == 'shekeld') class="selected" @endif><a href="/s/shekeld">shekeld</a></li>--}}
         </ul>
 
         <ul class="tabmenu rightmenu">
-            <li class="selected tabmenu_bottom"><a href="/submit">Submit a post</a></li>
+            <li class="selected tabmenu_bottom"><a href="{{url('/submit')}}">Submit a post</a></li>
         </ul>
 
         @php
@@ -42,7 +42,7 @@
             <div class="col-sm-4 col-sm-push-8">
                 <div style="padding-bottom: 20px;" class="well search_box">
                     <h4>Search Lolhow</h4>
-                    <form method="GET" action="/search">
+                    <form method="GET" action="{{url('/search')}}">
                         <div id="custom-search-input">
                             <div class="input-group col-md-12">
                                 <input type="text" name="q" class="search-query form-control" placeholder="Search" />
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </form>
-                    <p style="text-align: right; margin-bottom: -12px; margin-top: 4px;"><a href="/sublolhows/create">Create your own sublolhow</a></p>
+                    <p style="text-align: right; margin-bottom: -12px; margin-top: 4px;"><a href="{{url('/sublolhows/create')}}">Create your own sublolhow</a></p>
                 </div>
 
             </div>
@@ -101,7 +101,7 @@
                     <h4 style="font-weight: lighter; text-align: center">Fill it up by subscribing to some sublolhows</h4>
                     <p style="margin-top: 50px;">Find some communities by searching or...</p>
                 </div>
-                <div onclick="window.location.href='/g/popular'" style="display: block; margin-left: auto;  margin-right: auto; width:210px;" class="btn btn-primary">Check out what's popular</div>
+                <div onclick="window.location.href='{{url('/')}}/g/popular'" style="display: block; margin-left: auto;  margin-right: auto; width:210px;" class="btn btn-primary">Check out what's popular</div>
             </div>
             @php $no_res = true; @endphp
         @elseif(Request::input('page') || Request::input('after'))

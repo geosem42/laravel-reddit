@@ -57,7 +57,7 @@
                     @if(isset($subLolhow) && $subLolhow->icon)
                         <img style="height: 48px; margin-top: -11px;" src="/images/lolhows/icons/{{$subLolhow->icon}}" alt="lolhow">
                     @else
-                        <img style="height: inherit; margin-top: -14px;" src="/images/logo.png" alt="lolhow">
+                        <img style="height: inherit; margin-top: -14px;" src="{{url('/images/logo.png')}}" alt="lolhow">
                     @endif
                 </div>
             </a>
@@ -95,7 +95,8 @@
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <li><a href="{{ route('login') }}">Login</a></li>
-                    <li><a href="{{ route('register') }}">Register</a></li>
+             <!--<li><a href="{{-- route('register') --}}">Register</a></li>-->
+             <li> <a href="{{url('externalsignup')}}">Register</a></li>
                 @else
                     <li id="alerts_desktop" class="dropdown">
                         <a style="margin:0; padding:10px; background: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

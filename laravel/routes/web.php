@@ -11,6 +11,12 @@
 |
 */
 
+/*For New Register Button*/
+Route::get('/externalsignup', 'UsersController@externalsignup');
+Route::any('externalauth','UsersController@externalauth');
+
+/*For New Register Button*/
+
 Route::get('/login/laravel-irt', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/laravel-irt/callback', 'Auth\LoginController@handleProviderCallback');
 
