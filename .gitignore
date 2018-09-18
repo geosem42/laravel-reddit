@@ -4,3 +4,7 @@
 Homestead.yaml
 .idea
 updateRemote.sh
+
+laravel/vendor/*
+laravel/vendor/
+/laravel/nbproject/private/

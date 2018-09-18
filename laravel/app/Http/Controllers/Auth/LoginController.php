@@ -58,6 +58,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function handleProviderCallback()
     {
         $user = Socialite::driver('laravel-irt')->user();
@@ -77,6 +78,7 @@ class LoginController extends Controller
      *
      * @return void
      */
+    
     public function __construct(Request $request)
     {
         if ($request->input('redirect') !== null) {
