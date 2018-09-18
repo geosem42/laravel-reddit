@@ -1,0 +1,32 @@
+.post {
+    font-weight: lighter;
+    padding: 10px;
+}
+
+.commentbox {
+    max-width: 100%;
+}
+
+.errors {
+    color: red;
+}
+
+.linkwrapper {
+    margin-top: -12px;
+    padding: 0;
+}
+
+.comment {
+    /*overflow-x: scroll;*/
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.hidden-content {
+    color: red;
+}
+
+.post img {
+    max-width: 100%;
+    max-height: 600px;
+}
