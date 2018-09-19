@@ -37,4 +37,4 @@ if [ $# -eq 2 ] || [ $# -eq 3 ] ; then
 fi
 cd /var/www/laravel/;
 php artisan migrate; 
-php artisan serve --host "https://poster.projectoblio.com"
+php artisan serve --host "poster.projectoblio.com"
