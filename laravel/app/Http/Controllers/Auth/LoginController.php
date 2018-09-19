@@ -48,7 +48,7 @@ class LoginController extends Controller
   public function redirectToProvider()
     {
 	error_log("redirected here");
-	$user = Socialite::driver('oblio')->scopes(['last_dub_time','point','karma','name'])->redirect();
+	$user = Socialite::driver('oblio')->stateless()->scopes(['last_dub_time','point','karma','name'])->redirect();
 	error_log((string)($user));	
 	dd($user);
 	//return Socialite::driver('oblio')->scopes(['last_dub_time','point','karma','name'])->redirect();
