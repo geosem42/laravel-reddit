@@ -66,7 +66,7 @@ class LoginController extends Controller
 	error_log("here is the code:");
 	$code=$_GET['code'];
 	error_log($code);
-      	$response=Socialite::driver('oblio')->user();
+      	$response=Socialite::driver('oblio')->stateless()->user();
 	var_dump($response);
 	return redirect()->url('/');
 	
