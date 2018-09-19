@@ -91,6 +91,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
 	$user = Socialite::driver('laravel-irt')->stateless()->redirect();
+	error_log((string)($user));	
 	dd($user);
 	
         /*$this->validate($request, [
