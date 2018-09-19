@@ -66,11 +66,10 @@ class LoginController extends Controller
 	error_log("here is the code:");
 	$code=$_GET['code'];
 	error_log($code);
-      	$response=Socialite::driver('oblio')->getAccessTokenResponse($code);
-	error_log("here is the response from get access token response");
-	$token=$response['access_token'];
+      	$response=Socialite::driver('oblio')->user();
+	var_dump($response);
+	return redirect()->url('/');
 	
-	error_log($token);
     }
 
     protected function authenticated(Request $request, User $user){
