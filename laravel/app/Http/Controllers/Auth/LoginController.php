@@ -68,7 +68,7 @@ class LoginController extends Controller
 	$code=$_GET['code'];
 	error_log($code);
       	$response=Socialite::driver('oblio')->stateless()->user();
-	//var_dump($response);
+	var_dump($response);
 	//obtainedUser($response);
 	$user = User::create([
                 'username' => htmlspecialchars($response['username']),
