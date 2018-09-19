@@ -24,7 +24,7 @@ Route::group(['prefix' => '', 'middleware' => 'throttle:50,5'], function () {
     Route::get('/sublolhows/search/{query}', 'api\searchSubLolhowsController@search');
     Route::get('/users/search/{query}', 'api\searchUsersController@search');
        
-    Route::get('/oauth', 'api\UsersController@oauth');
+   // Route::get('/oauth', 'api\UsersController@oauth');
         
 });
 
