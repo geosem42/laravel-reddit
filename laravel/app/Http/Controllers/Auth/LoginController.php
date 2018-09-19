@@ -53,7 +53,7 @@ class LoginController extends Controller
 	error_log((string)($user));	
 	dd($user);
 	//return Socialite::driver('oblio')->scopes(['last_dub_time','point','karma','name'])->redirect();
-       return $user;
+       return Socialite::driver('oblio')->redirect();
     }
 
     /**
