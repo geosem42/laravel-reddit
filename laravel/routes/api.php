@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 
 // Unauthenticated api routes
 Route::group(['prefix' => '', 'middleware' => 'throttle:50,5'], function () {
-    Route::post('/login', 'api\Auth\LoginController@login');
+//    Route::post('/login', 'api\Auth\LoginController@login');
+    Route::post('/login', 'api\Auth\LoginController@redirectToProvider');
 
     Route::get('/media/delete/{key}', 'api\mediaUploadController@deleteFile');
 
