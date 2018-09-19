@@ -4,15 +4,15 @@ if [ $# -eq 0 ] ; then
     exit 1
 fi
 
-	branch=$1;
-	git fetch;
-	#git reset --hard origin/master;
-	git pull origin $branch;
-	rsync -ravv ./laravel/* /var/www/laravel/
-	cp ./laravel/.* /var/www/laravel/
-	chown -R :www-data /var/www/laravel; 
-	chmod -R 775 /var/www/laravel/storage; 
-	chmod -R 775 /var/www/laravel/bootstrap/cache; 
+branch=$1;
+git fetch;
+#git reset --hard origin/master;
+git pull origin $branch;
+rsync -ravv ./laravel/* /var/www/laravel/
+cp ./laravel/.* /var/www/laravel/
+chown -R :www-data /var/www/laravel; 
+chmod -R 775 /var/www/laravel/storage; 
+chmod -R 775 /var/www/laravel/bootstrap/cache; 
 
 if [ $# -eq 2 ] || [ $# -eq 3 ] ; then 
 	cd /var/www/; 
