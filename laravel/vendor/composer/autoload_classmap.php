@@ -24,7 +24,7 @@ return array(
     'App\\Http\\Controllers\\ManageSubLolhowsController' => $baseDir . '/app/Http/Controllers/ManageSubLolhowsController.php',
     'App\\Http\\Controllers\\MessagesController' => $baseDir . '/app/Http/Controllers/MessagesController.php',
     'App\\Http\\Controllers\\SearchController' => $baseDir . '/app/Http/Controllers/SearchController.php',
-    'App\\Http\\Controllers\\UsersController' => $baseDir . '/app/Http/Controllers/UsersController.php',
+    'App\\Http\\Controllers\\UsersController' => $baseDir . '/app/Http/Controllers/api/UsersController.php',
     'App\\Http\\Controllers\\api\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/api/Auth/LoginController.php',
     'App\\Http\\Controllers\\api\\commentsController' => $baseDir . '/app/Http/Controllers/api/commentsController.php',
     'App\\Http\\Controllers\\api\\mediaUploadController' => $baseDir . '/app/Http/Controllers/api/mediaUploadController.php',

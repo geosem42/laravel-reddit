@@ -18,11 +18,12 @@ if [ $# -eq 2 ] || [ $# -eq 3 ] ; then
 	cd /var/www/; 
 	cd laravel;
 	rm -rf vendor;
+	composer clearcache;
 	composer dump-autoload;
 	php artisan clear-compiled; 
 	rm -rf bootstrap/cache/packages.php;
 	rm -rf bootstrap/cache/services.php;
-	composer install --no-scripts
+	composer install --no-scripts;
 	composer update; 
 	php artisan key:generate;
 	chown -R :www-data /var/www/laravel; 

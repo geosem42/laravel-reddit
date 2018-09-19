@@ -1638,12 +1638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Project-Oblio/socialite-oblio.git",
-                "reference": "5b9775a875eac700d9ad8ce83f642f13e288c156"
+                "reference": "f519b92b43b3de73544e68ac1e50f4331d07dc20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Project-Oblio/socialite-oblio/zipball/5b9775a875eac700d9ad8ce83f642f13e288c156",
-                "reference": "5b9775a875eac700d9ad8ce83f642f13e288c156",
+                "url": "https://api.github.com/repos/Project-Oblio/socialite-oblio/zipball/f519b92b43b3de73544e68ac1e50f4331d07dc20",
+                "reference": "f519b92b43b3de73544e68ac1e50f4331d07dc20",
                 "shasum": ""
             },
             "require": {
@@ -1662,12 +1662,12 @@
             ],
             "authors": [
                 {
-                    "name": "Brian Faust",
-                    "email": "hello@brianfaust.de"
+                    "name": "SQ",
+                    "email": "s@projectoblio.com"
                 }
             ],
             "description": "Oblio OAuth2 Provider for Laravel Socialite",
-            "time": "2018-09-19 16:29:50"
+            "time": "2018-09-19 17:42:41"
         },
         {
             "name": "psr/container",

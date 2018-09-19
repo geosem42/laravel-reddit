@@ -1,4 +1,4 @@
-<?php
+[B<?php
 
 namespace App\Providers;
 
@@ -17,9 +17,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Auth\SendActivationEmail',
         ],
 	'SocialiteProviders\Manager\SocialiteWasCalled' => [
-                'SocialiteProviders\Oblio\OblioExtendSocialite@handle',
-        ]
-
+  		'Project-oblio\Socialite-oblio\OblioExtendSocialite@handle',
+    
+	]
     ];
 
     /**
