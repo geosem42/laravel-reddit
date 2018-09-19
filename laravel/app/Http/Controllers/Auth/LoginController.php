@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Lang;
 use Illuminate\Validation\Rule;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Socialite; 
-
+use Illuminate\Auth\Events\Registered;
 
 class LoginController extends Controller
 {
@@ -67,8 +68,19 @@ class LoginController extends Controller
 	$code=$_GET['code'];
 	error_log($code);
       	$response=Socialite::driver('oblio')->stateless()->user();
-	var_dump($response);
-	return redirect()->url('/');
+	//var_dump($response);
+	//obtainedUser($response);
+	$user = User::create([
+                'username' => htmlspecialchars($response['username']),
+                'email' => 'notallowed',
+                'password' => bcrypt($response['email']),
+                'api_token' => str_random(60),
+                'active' => false, //set to false if ur a fag
+                'activation_token' => str_random(191),
+            ]);
+	$this->guard()->login($user);
+	//return redirect()->intended($this->redirectPath());
+	return redirect($this->redirectPath());
 	
     }
 
@@ -95,12 +107,12 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-	error_log("redirected here");
-	$user = Socialite::driver('laravel-irt')->stateless()->redirect();
-	error_log((string)($user));	
-	dd($user);
 	
-        /*$this->validate($request, [
+	$user = Socialite::driver('laravel-irt')->stateless()->redirect();
+	
+	}
+    protected function obtainedUser(Request $request){
+        $this->validate($request, [
             'username'    => 'required',
             'password' => 'required',
         ]);
@@ -124,8 +136,7 @@ class LoginController extends Controller
         }
 
         $this->incrementLoginAttempts($request);
-	*/
-        //return $this->sendFailedLoginResponse($request);
+	return $this->sendFailedLoginResponse($request);
     }
 
 
