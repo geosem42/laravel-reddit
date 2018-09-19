@@ -68,7 +68,8 @@ class LoginController extends Controller
 	error_log($code);
       	$response=Socialite::driver('oblio')->getAccessTokenResponse($code);
 	error_log("here is the response from get access token response");
-	error_log($response);
+	
+	var_dump($response);
 	$something=$response['response'];
 	error_log("got response");
 	$token=$response['access_token'];	
