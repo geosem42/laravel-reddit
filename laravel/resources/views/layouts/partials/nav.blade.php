@@ -94,7 +94,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 @if (Auth::guest())
-                    <li><a href="{{ route('login') }}">Login with Oblio!</a></li>
+                    <li><a href="{{ route('login/irt') }}">Login with Oblio!</a></li>
              <!--<li><a href="{{-- route('register') --}}">Register</a></li>-->
              <li> <a href="{{url('externalsignup')}}">Register</a></li>
                 @else
