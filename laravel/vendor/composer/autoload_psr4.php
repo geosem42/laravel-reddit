@@ -26,6 +26,7 @@ return array(
     'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
     'Symfony\\Component\\CssSelector\\' => array($vendorDir . '/symfony/css-selector'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'SocialiteProviders\\Oblio\\' => array($vendorDir . '/project-oblio/socialite-oblio'),
     'SocialiteProviders\\Manager\\Test\\' => array($vendorDir . '/socialiteproviders/manager/tests'),
     'SocialiteProviders\\Manager\\' => array($vendorDir . '/socialiteproviders/manager/src'),
     'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),

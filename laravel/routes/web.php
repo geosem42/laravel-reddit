@@ -16,9 +16,8 @@ Route::get('/externalsignup', 'UsersController@externalsignup');
 Route::any('externalauth','UsersController@externalauth');
 
 /*For New Register Button*/
-
-Route::get('/login/laravel-irt', 'Auth\LoginController@redirectToProvider');
-Route::get('/login/laravel-irt/callback', 'Auth\LoginController@handleProviderCallback');
+//Route::get('/login/laravel-irt', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/irt/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/s/{sort}', 'HomeController@index')->name('home');

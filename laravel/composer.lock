@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "47a79047be6cfc0bd8f359ae03a28a77",
-    "content-hash": "ee0e686946f1c7762abaa846d8ffd827",
+    "hash": "d710028e97bd0db9ed4087aad1743aff",
+    "content-hash": "909265e985bed5f81a2bcac5a70d5367",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1631,6 +1631,43 @@
                 "random"
             ],
             "time": "2018-07-02 15:55:56"
+        },
+        {
+            "name": "project-oblio/socialite-oblio",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Project-Oblio/socialite-oblio.git",
+                "reference": "5b9775a875eac700d9ad8ce83f642f13e288c156"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Project-Oblio/socialite-oblio/zipball/5b9775a875eac700d9ad8ce83f642f13e288c156",
+                "reference": "5b9775a875eac700d9ad8ce83f642f13e288c156",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0",
+                "socialiteproviders/manager": "~2.0 || ~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialiteProviders\\Oblio\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian Faust",
+                    "email": "hello@brianfaust.de"
+                }
+            ],
+            "description": "Oblio OAuth2 Provider for Laravel Socialite",
+            "time": "2018-09-19 16:29:50"
         },
         {
             "name": "psr/container",
@@ -4552,7 +4589,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "project-oblio/socialite-oblio": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

@@ -59,8 +59,9 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function handleProviderCallback()
+    public function handleProviderCallback(Request $request)
     {
+	dd($request);
         $user = Socialite::driver('laravel-irt')->user();
 	$token = $user->token;
 	$user = Socialite::driver('github')->userFromToken($token);
@@ -89,7 +90,10 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $this->validate($request, [
+	$user = Socialite::driver('laravel-irt')->stateless()->redirect();
+	dd($user);
+	
+        /*$this->validate($request, [
             'username'    => 'required',
             'password' => 'required',
         ]);
@@ -113,8 +117,8 @@ class LoginController extends Controller
         }
 
         $this->incrementLoginAttempts($request);
-
-        return $this->sendFailedLoginResponse($request);
+	*/
+        //return $this->sendFailedLoginResponse($request);
     }
 
 
