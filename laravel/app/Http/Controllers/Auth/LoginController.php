@@ -67,6 +67,8 @@ class LoginController extends Controller
 	$code=$_GET['code'];
 	dd($code);
       	$response=Socialite::driver('oblio')->getAccessTokenResponse($code);
+	error_log("here is the response from get access token response");
+	error_log($response);
     }
 
     protected function authenticated(Request $request, User $user){
