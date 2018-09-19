@@ -4,17 +4,18 @@ if [ $# -eq 0 ] ; then
     exit 1
 fi
 
-if [ $# -eq 2 ] || [ $# -eq 3 ] ; then 
 	branch=$1;
 	git fetch;
 	#git reset --hard origin/master;
 	git pull origin $branch;
 	rsync -ravv ./laravel/* /var/www/laravel/
 	cp ./laravel/.* /var/www/laravel/
-	cd /var/www/; 
 	chown -R :www-data /var/www/laravel; 
 	chmod -R 775 /var/www/laravel/storage; 
 	chmod -R 775 /var/www/laravel/bootstrap/cache; 
+
+if [ $# -eq 2 ] || [ $# -eq 3 ] ; then 
+	cd /var/www/; 
 	cd laravel;
 	rm -rf vendor;
 	composer dump-autoload;
@@ -34,6 +35,6 @@ if [ $# -eq 2 ] || [ $# -eq 3 ] ; then
     		mysql -uroot -panyPassword -e "create database irt;"
 	fi
 fi
-
+cd /var/www/laravel/;
 php artisan migrate; 
 php artisan serve --host "https://poster.projectoblio.com"
