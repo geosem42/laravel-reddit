@@ -17,7 +17,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Auth\SendActivationEmail',
         ],
 	'SocialiteProviders\Manager\SocialiteWasCalled' => [
-  		'Project-oblio\Socialite-oblio\OblioExtendSocialite@handle',
+  		'Projectoblio\Socialiteoblio\OblioExtendSocialite@handle',
     
 	]
     ];

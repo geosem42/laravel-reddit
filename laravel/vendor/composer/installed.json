@@ -3153,45 +3153,6 @@
         "description": "Easily add new or override built-in providers in Laravel Socialite."
     },
     {
-        "name": "project-oblio/socialite-oblio",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Project-Oblio/socialite-oblio.git",
-            "reference": "f519b92b43b3de73544e68ac1e50f4331d07dc20"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Project-Oblio/socialite-oblio/zipball/f519b92b43b3de73544e68ac1e50f4331d07dc20",
-            "reference": "f519b92b43b3de73544e68ac1e50f4331d07dc20",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.6 || ^7.0",
-            "socialiteproviders/manager": "~2.0 || ~3.0"
-        },
-        "time": "2018-09-19 17:42:41",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "SocialiteProviders\\Oblio\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "SQ",
-                "email": "s@projectoblio.com"
-            }
-        ],
-        "description": "Oblio OAuth2 Provider for Laravel Socialite"
-    },
-    {
         "name": "fzaninotto/faker",
         "version": "v1.7.1",
         "version_normalized": "1.7.1.0",
@@ -4735,5 +4696,44 @@
             "testing",
             "xunit"
         ]
+    },
+    {
+        "name": "projectoblio/socialiteoblio",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Project-Oblio/socialite-oblio.git",
+            "reference": "39897c4fff65e24a3657fecd07b5a6d418f565fb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Project-Oblio/socialite-oblio/zipball/39897c4fff65e24a3657fecd07b5a6d418f565fb",
+            "reference": "39897c4fff65e24a3657fecd07b5a6d418f565fb",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6 || ^7.0",
+            "socialiteproviders/manager": "~2.0 || ~3.0"
+        },
+        "time": "2018-09-19 18:45:26",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Projectoblio\\Socialiteoblio\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "SQ",
+                "email": "s@projectoblio.com"
+            }
+        ],
+        "description": "Oblio OAuth2 Provider for Laravel Socialite"
     }
 ]

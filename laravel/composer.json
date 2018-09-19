@@ -14,7 +14,7 @@
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.1",
         "laravel/tinker": "~1.0",
-        "project-oblio/socialite-oblio": "@dev",
+        "projectoblio/socialiteoblio": "@dev",
         "socialiteproviders/manager": "^3.3"
     },
     "require-dev": {
