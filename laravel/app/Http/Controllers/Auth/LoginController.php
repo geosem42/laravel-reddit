@@ -47,10 +47,12 @@ class LoginController extends Controller
 
   public function redirectToProvider()
     {
-	return Socialite::driver('laravel-irt')
-	    ->scopes(['last_dub_time','point','karma','name'])
-	    ->redirect();
-       
+	error_log("redirected here");
+	$user = Socialite::driver('oblio')->scopes(['last_dub_time','point','karma','name'])->redirect();
+	error_log((string)($user));	
+	dd($user);
+	//return Socialite::driver('oblio')->scopes(['last_dub_time','point','karma','name'])->redirect();
+       return $user;
     }
 
     /**
@@ -61,6 +63,7 @@ class LoginController extends Controller
     
     public function handleProviderCallback(Request $request)
     {
+	
 	dd($request);
         $user = Socialite::driver('laravel-irt')->user();
 	$token = $user->token;
@@ -90,6 +93,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+	error_log("redirected here");
 	$user = Socialite::driver('laravel-irt')->stateless()->redirect();
 	error_log((string)($user));	
 	dd($user);
