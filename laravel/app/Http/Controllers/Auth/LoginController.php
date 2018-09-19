@@ -47,7 +47,6 @@ class LoginController extends Controller
 
   public function redirectToProvider()
     {
-	
 	$user = Socialite::driver('oblio')->stateless()->redirect();
 	error_log("here is $user");
 	error_log((string)($user));
@@ -64,10 +63,10 @@ class LoginController extends Controller
     public function handleProviderCallback(Request $request)
     {
 	
-	dd($request);
-        $user = Socialite::driver('laravel-irt')->user();
-	$token = $user->token;
-	$user = Socialite::driver('github')->userFromToken($token);
+	error_log("here is the code:");
+	$code=$_GET['code'];
+	dd($code);
+      	$response=Socialite::driver('oblio')->getAccessTokenResponse($code);
     }
 
     protected function authenticated(Request $request, User $user){
