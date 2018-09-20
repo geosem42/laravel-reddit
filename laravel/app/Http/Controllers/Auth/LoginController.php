@@ -70,6 +70,9 @@ class LoginController extends Controller
       	$response=Socialite::driver('oblio')->stateless()->user();
 	var_dump($response);
 	//obtainedUser($response);
+	/// Need to keep user logged in
+	// And prevent duplicate registrations into database
+	/// Not sure how to do that
 	$user = User::create([
                 'username' => htmlspecialchars($response['name']),
                 'email' => 'notallowed',
