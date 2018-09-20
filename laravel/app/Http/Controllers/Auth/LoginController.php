@@ -71,7 +71,7 @@ class LoginController extends Controller
 	var_dump($response);
 	//obtainedUser($response);
 	$user = User::create([
-                'username' => htmlspecialchars($response['username']),
+                'username' => htmlspecialchars($response['name']),
                 'email' => 'notallowed',
                 'password' => bcrypt($response['email']),
                 'api_token' => str_random(60),
