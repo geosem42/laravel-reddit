@@ -110,7 +110,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-	
+	dd("here");
 	/*$user = Socialite::driver('laravel-irt')->stateless()->redirect();
 	*/
 	redirectToProvider($request);
