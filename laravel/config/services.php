@@ -38,6 +38,7 @@ return [
         'client_id' => env('OBLIO_KEY'),
         'client_secret' => env('OBLIO_SECRET'),
           'redirect' => env('OBLIO_REDIRECT_URI'),
+          'distribution_url' => env('DISTRIBUTION_URL')
         ],
 
 ];

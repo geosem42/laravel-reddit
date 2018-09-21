@@ -19,6 +19,8 @@ Route::any('externalauth','UsersController@externalauth');
 Route::get('login/irt', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/irt/callback', 'Auth\LoginController@handleProviderCallback');
 
+Route::get('register/irt', 'Auth\RegisterController@redirectToProvider');
+
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/s/{sort}', 'HomeController@index')->name('home');
 Route::get('/g/{sort}', 'HomeController@index')->name('home');
