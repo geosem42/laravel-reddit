@@ -57,7 +57,7 @@ class LoginController extends Controller
 //            'password' => 'required',
 //        ]);
 
-        if ($this->hasTooManyLoginAttempts($request)) {
+        /*if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
 
             return response()->json([
@@ -92,6 +92,7 @@ class LoginController extends Controller
             'status' => 'error',
             'msg' => 'Invalid username or password'
         ], 200);
+	*/
     }
 
 

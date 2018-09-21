@@ -46,7 +46,7 @@ class LoginController extends Controller
         return 'username';
     }
 
-  public function redirectToProvider()
+  public function redirectToProvider(Request $request)
     {
 	$user = Socialite::driver('oblio')->stateless()->redirect();
 	error_log("here is $user");
@@ -111,8 +111,9 @@ class LoginController extends Controller
     public function login(Request $request)
     {
 	
-	$user = Socialite::driver('laravel-irt')->stateless()->redirect();
-	
+	/*$user = Socialite::driver('laravel-irt')->stateless()->redirect();
+	*/
+	redirectToProvider($request);
 	}
     protected function obtainedUser(Request $request){
         $this->validate($request, [
