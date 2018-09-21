@@ -3,7 +3,6 @@
 /node_modules
 Homestead.yaml
 .idea
-updateRemote.sh
 
 laravel/vendor/*
 laravel/vendor/
