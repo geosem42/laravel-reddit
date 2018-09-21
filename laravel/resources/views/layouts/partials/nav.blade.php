@@ -94,7 +94,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 @if (Auth::guest())
-                    <li><a href="{{ url('login/irt') }}">Login with Oblio!</a></li>
+                    <li><a href="{{url('login') }}">Login with Oblio!</a></li>
              <!--<li><a href="{{-- route('register') --}}">Register</a></li>-->
              <!-- <li> <a href="{{url('register')}}">Register with Oblio!</a></li> -->
                 <li> <a href="{{config('services.oblio.distribution_url').'/register'}}">Register with Oblio!</a></li>
