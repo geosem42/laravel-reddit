@@ -12,7 +12,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <h4>Login</h4>
+                            <h4>Login with Oblio!</h4>
                             <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                                 {{ csrf_field() }}
                                 <input id="username" type="text" class="form-control" name="username" placeholder="Username" required autofocus>

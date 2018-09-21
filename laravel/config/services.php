@@ -34,11 +34,11 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-    'laravel-irt'=>[
-	'client_id' => '1',
-	'client_secret' => 'WMvGWr4iy6sCFLFZ0ZeqSCyHnZnUKQYOxK8wxoME',
-	'redirect' => 'http://poster.projectoblio.com/login/laravel-irt/callback'
-
-	],
+	 'oblio' => [
+        'client_id' => env('OBLIO_KEY'),
+        'client_secret' => env('OBLIO_SECRET'),
+          'redirect' => env('OBLIO_REDIRECT_URI'),
+          'distribution_url' => env('DISTRIBUTION_URL')
+        ],
 
 ];

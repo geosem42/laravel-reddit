@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Lang;
 use Illuminate\Validation\Rule;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Socialite; 
-
+use Illuminate\Auth\Events\Registered;
 
 class LoginController extends Controller
 {
@@ -47,10 +48,11 @@ class LoginController extends Controller
 
   public function redirectToProvider()
     {
-	return Socialite::driver('laravel-irt')
-	    ->scopes(['last_dub_time','point','karma','name'])
-	    ->redirect();
-       
+	$user = Socialite::driver('oblio')->stateless()->redirect();
+	error_log("here is $user");
+	error_log((string)($user));
+	//return Socialite::driver('oblio')->scopes(['last_dub_time','point','karma','name'])->redirect();
+       return $user;
     }
 
     /**
@@ -59,11 +61,30 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function handleProviderCallback()
+    public function handleProviderCallback(Request $request)
     {
-        $user = Socialite::driver('laravel-irt')->user();
-	$token = $user->token;
-	$user = Socialite::driver('github')->userFromToken($token);
+	
+	error_log("here is the code:");
+	$code=$_GET['code'];
+	error_log($code);
+      	$response=Socialite::driver('oblio')->stateless()->user();
+	var_dump($response);
+	//obtainedUser($response);
+	/// Need to keep user logged in
+	// And prevent duplicate registrations into database
+	/// Not sure how to do that
+	$user = User::create([
+                'username' => htmlspecialchars($response['name']),
+                'email' => 'notallowed',
+                'password' => bcrypt($response['email']),
+                'api_token' => str_random(60),
+                'active' => false, //set to false if ur a fag
+                'activation_token' => str_random(191),
+            ]);
+	$this->guard()->login($user);
+	//return redirect()->intended($this->redirectPath());
+	return redirect($this->redirectPath());
+	
     }
 
     protected function authenticated(Request $request, User $user){
@@ -89,6 +110,11 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+	
+	$user = Socialite::driver('laravel-irt')->stateless()->redirect();
+	
+	}
+    protected function obtainedUser(Request $request){
         $this->validate($request, [
             'username'    => 'required',
             'password' => 'required',
@@ -113,8 +139,7 @@ class LoginController extends Controller
         }
 
         $this->incrementLoginAttempts($request);
-
-        return $this->sendFailedLoginResponse($request);
+	return $this->sendFailedLoginResponse($request);
     }
 
 

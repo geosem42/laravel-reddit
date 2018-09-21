@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 
 // Unauthenticated api routes
 Route::group(['prefix' => '', 'middleware' => 'throttle:50,5'], function () {
-    Route::post('/login', 'api\Auth\LoginController@login');
+//    Route::post('/login', 'api\Auth\LoginController@login');
+    Route::post('/login', 'api\Auth\LoginController@redirectToProvider');
 
     Route::get('/media/delete/{key}', 'api\mediaUploadController@deleteFile');
 
@@ -24,7 +25,7 @@ Route::group(['prefix' => '', 'middleware' => 'throttle:50,5'], function () {
     Route::get('/sublolhows/search/{query}', 'api\searchSubLolhowsController@search');
     Route::get('/users/search/{query}', 'api\searchUsersController@search');
        
-    Route::get('/oauth', 'api\UsersController@oauth');
+   // Route::get('/oauth', 'api\UsersController@oauth');
         
 });
 

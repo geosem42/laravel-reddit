@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
+use Socialite; 
 
 class RegisterController extends Controller
 {
@@ -30,7 +31,16 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '';
+    protected $redirectTo = '/';
+
+    public function redirectToProvider()
+    {
+        $user = Socialite::driver('oblio')->stateless()->redirect();
+        error_log("here is $user");
+        error_log((string)($user));
+        //return Socialite::driver('oblio')->scopes(['last_dub_time','point','karma','name'])->redirect();
+        return $user;
+    }
 
     /**
      * Create a new controller instance.
