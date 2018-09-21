@@ -33,7 +33,9 @@ if [ $# -eq 2 ] || [ $# -eq 3 ] ; then
 	if [ $# -eq 3 ] ; then
     		echo 'Updating mysql'
    		mysql -uroot -panyPassword -e "drop database irt;" 
-    		mysql -uroot -panyPassword -e "create database irt;"
+    		#mysql -uroot -panyPassword -e "create database irt;"
+	       mysql -uroot -panyPassword irt < /root/laravel-irt/backupDatabases/databaseBackup1.sql;
+
 	fi
 fi
 cd /var/www/laravel/;
