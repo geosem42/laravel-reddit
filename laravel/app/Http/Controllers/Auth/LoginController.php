@@ -73,14 +73,18 @@ class LoginController extends Controller
 	/// Need to keep user logged in
 	// And prevent duplicate registrations into database
 	/// Not sure how to do that
-	$user = User::create([
-                'username' => htmlspecialchars($response['name']),
-                'email' => 'notallowed',
-                'password' => bcrypt($response['email']),
-                'api_token' => str_random(60),
-                'active' => false, //set to false if ur a fag
-                'activation_token' => str_random(191),
-            ]);
+	  $user = User::where("username", htmlspecialchars($response['name']))->first();
+	    if (empty($user)) {
+		$user = User::create([
+		    'username' => htmlspecialchars($response['name']),
+		    'email' => 'notallowed',
+		    'password' => bcrypt($response['email']),
+		    'api_token' => str_random(60),
+		    'active' => false, //set to false if ur a fag
+		    'activation_token' => str_random(191),
+		    ]);    
+	    }
+	
 	$this->guard()->login($user);
 	//return redirect()->intended($this->redirectPath());
 	return redirect($this->redirectPath());
