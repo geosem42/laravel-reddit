@@ -1,0 +1,24 @@
+#!/usr/bin/python
+import os;
+import sys
+cwd = os.getcwd();
+x="";ctr=0;
+publish=False;
+branch=""
+for arg in sys.argv:
+	if(ctr==1):
+		branch=arg;
+	elif(ctr==2):
+		x=arg;
+		if(arg=="publish"):
+			publish=True;
+	ctr=ctr+1;
+
+if x=="":
+	x = str(raw_input("You entered"+branch+" for branch name. enter commit message:"));
+
+command="";
+command=command+ "cd "+cwd+"; git add .; git commit -m '"+x+"'; git push -u origin "+branch+";";
+print(command);
+os.system(command);
+#print("Don't forget to run 'npm publish' to update an npm repo that might have this");

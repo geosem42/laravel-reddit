@@ -52,12 +52,13 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+	dd("here2");
 //        $this->validate($request, [
 //            'username'    => 'required',
 //            'password' => 'required',
 //        ]);
 
-        if ($this->hasTooManyLoginAttempts($request)) {
+        /*if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
 
             return response()->json([
@@ -92,6 +93,7 @@ class LoginController extends Controller
             'status' => 'error',
             'msg' => 'Invalid username or password'
         ], 200);
+	*/
     }
 
 

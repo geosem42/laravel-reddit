@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') Lolhow: Post stolen memes here @endsection
+@section('title') Lolhow: Post your c O n S p I r A c I e s  here lol @endsection
 
 @section('stylesheets')
     <link rel="stylesheet" href="{{ asset('css/thread.css') }}">
