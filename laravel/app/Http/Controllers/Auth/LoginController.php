@@ -63,11 +63,19 @@ class LoginController extends Controller
     
     public function handleProviderCallback(Request $request)
     {
+  	  if (!empty($_GET['code'])) {
+          error_log("here is the code:");
+          $code=$_GET['code'];
+          error_log($code);    
+      }
+
+      try {
+          $response=Socialite::driver('oblio')->stateless()->user();
+      } catch (\Exception $e) {
+          return redirect('/');
+      }
 	
-	error_log("here is the code:");
-	$code=$_GET['code'];
-	error_log($code);
-      	$response=Socialite::driver('oblio')->stateless()->user();
+        
 	var_dump($response);
 	//obtainedUser($response);
 	/// Need to keep user logged in
