@@ -15,7 +15,7 @@
 Route::get('/externalsignup', 'UsersController@externalsignup');
 Route::any('externalauth','UsersController@externalauth');
 
-//Route::get('login/irt', 'Auth\LoginController@redirectToProvider');
+Route::get('login/irt', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/irt/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('register/irt', 'Auth\RegisterController@redirectToProvider');
