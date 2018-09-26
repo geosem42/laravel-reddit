@@ -96,7 +96,7 @@ class LoginController extends Controller
             ]);    
     }
 	error_log("hello");
-	dd("hello");
+	//dd("hello");
 	var_dump($user);
 	$request->merge([
             $login_type => $request->input('username')
