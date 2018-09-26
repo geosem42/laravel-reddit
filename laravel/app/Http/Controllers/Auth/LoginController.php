@@ -95,8 +95,10 @@ class LoginController extends Controller
             'thread_karma' => $response['karma'],
             ]);    
     }
-	
-        if (Auth::attempt($request->only($user, 'password'))) {
+	$request->merge([
+            $login_type => $request->input('username')
+        ]);
+        if (Auth::attempt($request->only($login_type, 'password'))) {
             return redirect()->intended($this->redirectPath());
         }
 	//$this->guard()->login($user);
