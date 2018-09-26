@@ -9,6 +9,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $appends = array('karma_color');
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,8 +29,30 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getKarmaColorAttribute()
+    {
+        return self::getUsernameColorByKaram($this->thread_karma);  
+    }
+
     public function searchByName($query)
     {
         return $this->select('username AS name')->where('username', 'LIKE', '%' . $query . '%')->orderBy('username', 'asc')->take(10)->get();
+    }
+
+
+    public static function getUsernameColorByKaram($karma)
+    {
+        $min = config('constant.KARMA_COLOR_MIN_VALUE');
+        $max = config('constant.KARMA_COLOR_MAX_VALUE');
+
+        if ($karma < $min) {
+            return "text-danger";
+        } else if ($karma >= $min && $karma <= $max) {
+            return "text-orange";
+        } else if ($karma > $max) {
+            return "text-success";
+        }
+
+        return "";
     }
 }

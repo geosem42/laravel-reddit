@@ -63,6 +63,7 @@ class LoginController extends Controller
     
     public function handleProviderCallback(Request $request)
     {
+      
   	  if (!empty($_GET['code'])) {
           error_log("here is the code:");
           $code=$_GET['code'];
@@ -86,11 +87,12 @@ class LoginController extends Controller
     if (empty($user)) {
         $user = User::create([
             'username' => htmlspecialchars($response['name']),
-            'email' => 'notallowed',
+            'email' => 'notallowed_'.htmlspecialchars($response['name']),
             'password' => bcrypt($response['email']),
             'api_token' => str_random(60),
             'active' => false, //set to false if ur a fag
             'activation_token' => str_random(191),
+            'thread_karma' => $response['karma'],
             ]);    
     }
 	

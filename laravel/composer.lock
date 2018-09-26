@@ -4,8 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c93bb4b21f3a300d3e31e5c723ce6f11",
+    "content-hash": "f6d89e3206dd599ad954037da1426657",
     "packages": [
+        {
+            "name": "codewizz/laravel-reddit-api",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codewizz/laravel-reddit-api.git",
+                "reference": "b9a8132403e4d1c33e78d587f2eadf3fd5a16aad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codewizz/laravel-reddit-api/zipball/b9a8132403e4d1c33e78d587f2eadf3fd5a16aad",
+                "reference": "b9a8132403e4d1c33e78d587f2eadf3fd5a16aad",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "illuminate/support": "^5.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CodeWizz\\RedditAPI\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Darius Šilkaitis",
+                    "email": "darius@codewizz.com",
+                    "homepage": "https://codewizz.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Reddit API wrapper",
+            "homepage": "https://github.com/codewizz/laravel-reddit-api",
+            "keywords": [
+                "api",
+                "codewizz",
+                "laravel",
+                "laravel-reddit-api",
+                "reddit"
+            ],
+            "time": "2017-02-08T16:20:12+00:00"
+        },
         {
             "name": "composer/ca-bundle",
             "version": "1.1.2",

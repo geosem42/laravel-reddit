@@ -97,7 +97,7 @@
         @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
             <div class="col-sm-8 col-sm-pull-4">
                 <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
-                    <h2 style="font-weight: lighter">@if(Auth::check()) <strong>{{Auth::user()->username}},</strong> @endif this is your homepage</h2>
+                    <h2 style="font-weight: lighter">@if(Auth::check()) <strong class="{{Auth::user()->karma_color}}">{{Auth::user()->username}},</strong> @endif this is your homepage</h2>
                     <h4 style="font-weight: lighter; text-align: center">Fill it up by subscribing to some sublolhows</h4>
                     <p style="margin-top: 50px;">Find some communities by searching or...</p>
                 </div>

@@ -182,7 +182,8 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 	Laravel\Socialite\SocialiteServiceProvider::class,
-   SocialiteProviders\Manager\ServiceProvider::class,      
+   SocialiteProviders\Manager\ServiceProvider::class,    
+   CodeWizz\RedditAPI\RedditAPIServiceProvider::class,  
 
     ],
 
@@ -236,6 +237,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
 	'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+    'RedditAPI' => CodeWizz\RedditAPI\RedditAPIFacade::class,
     ],
 
 ];

@@ -55,7 +55,7 @@
 
         <div class="row profile_padding">
             <div class="col-md-12">
-                <h1 class="overflow">{{$user->username}} @if(!$user->active)<span style="font-size: 12px;">Account not activated yet</span>@endif</h1>
+                <h1 class="overflow"><span class="{{$user->karma_color}}">{{$user->username}}</span> @if(!$user->active)<span style="font-size: 12px;">Account not activated yet</span>@endif</h1>
             </div>
             <div id="profile" class="col-sm-4 col-md-3">
                 <ul class="list-group">
