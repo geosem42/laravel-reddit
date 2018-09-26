@@ -95,6 +95,9 @@ class LoginController extends Controller
             'thread_karma' => $response['karma'],
             ]);    
     }
+	error_log("hello");
+	dd("hello");
+	var_dump($user);
 	$request->merge([
             $login_type => $request->input('username')
         ]);
