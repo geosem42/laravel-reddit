@@ -72,6 +72,7 @@ class LoginController extends Controller
 
       try {
           $response=Socialite::driver('oblio')->stateless()->user();
+	
       } catch (\Exception $e) {
           return redirect('/');
       }
@@ -94,10 +95,15 @@ class LoginController extends Controller
             'thread_karma' => $response['karma'],
             ]);    
     }
-	
-	$this->guard()->login($user);
+	$request->merge([
+            $login_type => $request->input('username')
+        ]);
+        if (Auth::attempt($request->only($login_type, 'password'))) {
+            return redirect()->intended($this->redirectPath());
+        }
+	//$this->guard()->login($user);
 	//return redirect()->intended($this->redirectPath());
-	return redirect($this->redirectPath());
+	//return redirect($this->redirectPath());
 	
     }
 
