@@ -29,6 +29,10 @@
             {{--<li @if($sort == 'shekeld') class="selected" @endif><a href="/s/shekeld">shekeld</a></li>--}}
         </ul>
 
+	<ul class="tabmenu rightmenu">
+            <li class="selected tabmenu_bottom"><a href="{{url('/sublolhows/create')}}">Start a sublolhow</a></li>
+        </ul>
+
         <ul class="tabmenu rightmenu">
             <li class="selected tabmenu_bottom"><a href="{{url('/submit')}}">Submit a post</a></li>
         </ul>
@@ -60,6 +64,13 @@
             </div>
 
         @if($threads)
+            <div class="col-sm-8 col-sm-pull-4">
+                <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
+                    <h2 style="font-weight: lighter">@if(Auth::check()) <strong class="{{Auth::user()->karma_color}}">{{Auth::user()->username}},</strong> @endif here's stuff from your sublolhows</h2>
+                </div>
+                <div onclick="window.location.href='{{url('/')}}/g/popular'" style="display: block; margin-left: auto;  margin-right: auto; width:210px;" class="btn btn-primary">Don't like? Check out what's popular</div>
+            </div>
+
            <div class="col-sm-8 col-sm-pull-4">
                 @foreach($threads as $thread)
                     @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
@@ -95,6 +106,7 @@
         @endif
 
         @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
+		window.location.href='{{url('/')}}/g/popular'
             <div class="col-sm-8 col-sm-pull-4">
                 <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
                     <h2 style="font-weight: lighter">@if(Auth::check()) <strong class="{{Auth::user()->karma_color}}">{{Auth::user()->username}},</strong> @endif this is your homepage</h2>
