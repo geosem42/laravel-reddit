@@ -58,7 +58,6 @@
                             </div>
                         </div>
                     </form>
-                    <p style="text-align: right; margin-bottom: -12px; margin-top: 4px;"><a href="{{url('/sublolhows/create')}}">Create your own sublolhow</a></p>
                 </div>
 
             </div>
