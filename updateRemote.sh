@@ -3,6 +3,7 @@ if [ $# -eq 0 ] ; then
     echo 'Please enter a branch name'
     exit 1
 fi
+chmod 400 ./sshKey
 branch=$1;
 comment=$2;
 if [ $# -eq 1 ] ; then

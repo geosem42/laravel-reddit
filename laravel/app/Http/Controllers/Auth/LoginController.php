@@ -72,12 +72,12 @@ class LoginController extends Controller
 
       try {
           $response=Socialite::driver('oblio')->stateless()->user();
+	
       } catch (\Exception $e) {
           return redirect('/');
       }
 	
         
-	var_dump($response);
 	//obtainedUser($response);
 	/// Need to keep user logged in
 	// And prevent duplicate registrations into database
@@ -125,9 +125,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-	dd("here");
-	/*$user = Socialite::driver('laravel-irt')->stateless()->redirect();
-	*/
+	
 	redirectToProvider($request);
 	}
     protected function obtainedUser(Request $request){
