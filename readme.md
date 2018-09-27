@@ -8,3 +8,9 @@
 
 3. Make the mysql password this: anyPassword. Keep entering it every time it asks. When asked, turn off all test accounts and test databases. When asked, install phpmyadmin as an apache server. 
 
+## Test posts
+This will set up tests posts for your db
+
+crontab -e
+
+5 * * * * php /var/www/laravel schedule:run >> /dev/null 2>&1
