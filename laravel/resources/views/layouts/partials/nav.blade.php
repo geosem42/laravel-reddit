@@ -57,7 +57,7 @@
                     @if(isset($subLolhow) && $subLolhow->icon)
                         <img style="height: 48px; margin-top: -11px;" src="/images/lolhows/icons/{{$subLolhow->icon}}" alt="lolhow">
                     @else
-                        <img style="height: inherit; margin-top: -14px;" src="{{url('/images/logo.png')}}" alt="lolhow">
+                        <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile.gif')}}" alt="lolhow">
                     @endif
                 </div>
             </a>
