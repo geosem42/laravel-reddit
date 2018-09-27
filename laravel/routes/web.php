@@ -12,8 +12,8 @@
 */
 
 /*For New Register Button*/
-Route::get('/externalsignup', 'UsersController@externalsignup');
-Route::any('externalauth','UsersController@externalauth');
+Route::get('/externalsignup', 'api\UsersController@externalsignup');
+Route::any('externalauth','api\UsersController@externalauth');
 
 Route::get('login/irt', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/irt/callback', 'Auth\LoginController@handleProviderCallback');

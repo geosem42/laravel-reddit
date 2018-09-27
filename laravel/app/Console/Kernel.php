@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $schedule->command('reddit:post')->daily();
+        $schedule->command('reddit:post')->cron('0 */3 * * *');
     }
 
     /**
