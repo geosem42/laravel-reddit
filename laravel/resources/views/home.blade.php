@@ -64,12 +64,6 @@
             </div>
 
         @if($threads)
-            <div class="col-sm-8 col-sm-pull-4">
-                <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
-                    <h2 style="font-weight: lighter">@if(Auth::check()) <strong class="{{Auth::user()->karma_color}}">{{Auth::user()->username}},</strong> @endif here's stuff from your sublolhows</h2>
-                </div>
-                <div onclick="window.location.href='{{url('/')}}/g/popular'" style="display: block; margin-left: auto;  margin-right: auto; width:210px;" class="btn btn-primary">Don't like? Check out what's popular</div>
-            </div>
 
            <div class="col-sm-8 col-sm-pull-4">
                 @foreach($threads as $thread)
@@ -106,14 +100,12 @@
         @endif
 
         @if($threads == null || $threads && $threads->count() == 0 && !Request::input('page') && !Request::input('after'))
-		window.location.href='{{url('/')}}/g/popular'
             <div class="col-sm-8 col-sm-pull-4">
                 <div class="welcome" style="font-weight: lighter; margin-top: 50px; text-align: center">
                     <h2 style="font-weight: lighter">@if(Auth::check()) <strong class="{{Auth::user()->karma_color}}">{{Auth::user()->username}},</strong> @endif this is your homepage</h2>
-                    <h4 style="font-weight: lighter; text-align: center">Fill it up by subscribing to some sublolhows</h4>
-                    <p style="margin-top: 50px;">Find some communities by searching or...</p>
+                    <h4 style="font-weight: lighter; text-align: center">Subscribe to some sublolhows to see posts</h4>
                 </div>
-                <div onclick="window.location.href='{{url('/')}}/g/popular'" style="display: block; margin-left: auto;  margin-right: auto; width:210px;" class="btn btn-primary">Check out what's popular</div>
+                <div onclick="window.location.href='{{url('/')}}/g/popular'" style="display: block; margin-left: auto;  margin-right: auto; width:210px;" class="btn btn-primary">Don't like? View all</div>
             </div>
             @php $no_res = true; @endphp
         @elseif(Request::input('page') || Request::input('after'))
