@@ -12,6 +12,9 @@
 */
 
 /*For New Register Button*/
+Route::get('/test', function(){
+	dd('aaa');
+});
 
 Route::get('/externalsignup', 'api\UsersController@externalsignup');
 Route::any('externalauth','api\UsersController@externalauth');
