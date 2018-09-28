@@ -66,7 +66,7 @@
 
            <div class="col-sm-8 col-sm-pull-4">
                 @foreach($threads as $thread)
-                    @php $postername = $user->select('username')->where('id', $thread->poster_id)->first(); @endphp
+                    @php $postername = $user->select('username', 'thread_karma')->where('id', $thread->poster_id)->first(); @endphp
                     @php $lolhow = \App\subLolhow::select('id', 'name')->where('id', $thread->sub_lolhow_id)->first(); @endphp
 
                     <div class="thread @if($first) first  @php $first = false @endphp @endif">
@@ -88,7 +88,7 @@
                         </div>
                         <div class="thread_info">
                             <a style="color: #636b6f;" href="@if($thread->link) {{$thread->link}} @else {{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}} @endif"><h3 class="thread_title overflow">{{$thread->title}}</h3></a>
-                            <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
+                            <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
                                 <a href="/p/{{$lolhow->name}}">{{$lolhow->name}}</a></p>
                             <a href="{{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
                         </div>

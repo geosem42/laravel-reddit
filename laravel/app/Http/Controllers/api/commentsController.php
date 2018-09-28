@@ -115,7 +115,8 @@ class commentsController extends Controller
         }
 
         if ( (!$sort) || $sort == 'popular' ) {
-            $comments = $post->select('posts.id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at')
+
+            $comments = $post->with("user")->select('posts.id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at', 'thread_karma', 'user_id')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->where('thread_id', $thread->id)
                 ->orderBy('score', 'desc')
@@ -125,7 +126,7 @@ class commentsController extends Controller
             $comments = $head_comments->merge($comments);
             //this trash needs a lot of improvement i know ffs
         } else if ($sort == 'new') {
-            $comments = $post->select('posts.id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at')
+            $comments = $post->with("user")->select('posts.id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at', 'thread_karma', 'user_id')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->where('thread_id', $thread->id)
                 ->orderBy('created_at', 'DESC')

@@ -77,9 +77,9 @@
                         <h4><a href="@if($thread->link){{$thread->link}}@else @endif">{{$thread->title}}</a></h4>
                         @php
                             $user = new \App\User();
-                            $postername = $user->select('username')->where('id', $thread->poster_id)->first();
+                            $postername = $user->select('username','thread_karma')->where('id', $thread->poster_id)->first();
                         @endphp
-                        <p class="overflow" style="margin-bottom: -5px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
+                        <p class="overflow" style="margin-bottom: -5px;">placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
                             <a href="/p/{{$subLolhow->name}}">{{$subLolhow->name}}</a></p>
                     </div>
                 </div>
@@ -290,7 +290,7 @@
                             '                        </div>' +
                             '                    </div>' +
                             '                    <div class="col-xs-10 col-sm11">' +
-                            '                        <span><a href="/u/' + post.user_display_name + '">' + post.user_display_name + '</a> ' + ago + '</span>' +
+                            '                        <span><a href="/u/' + post.user_display_name + '"><span class="'+post.user.karma_color+'">' + post.user_display_name + '</span></a> ' + ago + '</span>' +
                             '                        <p>' + post.comment.replace(/(?:\r\n|\r|\n)/g, '<br />') + '</p>' +
                             '                        <div class="linkwrapper"><a style="color: grey;" href="javascript:reply(' + post.id + ');">Reply</a>@if($mod)<a style="margin-left:5px;" href="javascript:deleteComment('+post.id+')">Delete</a>@endif </div>' +
                             '                        <div id="comment_box_app_' + post.id + '"></div>' +

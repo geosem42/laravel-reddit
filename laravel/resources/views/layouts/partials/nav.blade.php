@@ -96,8 +96,8 @@
                 @if (Auth::guest())
                     <li><a href="{{url('login/irt') }}">Login with Obliooooo!</a></li>
              <!--<li><a href="{{-- route('register') --}}">Register</a></li>-->
-             <!-- <li> <a href="{{url('register')}}">Register with Oblio!</a></li> -->
-                <li> <a href="{{config('services.oblio.distribution_url').'externalsignup'}}">Register with Oblio!</a></li>
+             <li> <a href="{{url('externalsignup')}}">Register with Oblio!</a></li>
+                <!-- <li> <a href="{{config('services.oblio.distribution_url').'externalsignup'}}">Register with Oblio!</a></li> -->
                 @else
                     <li id="alerts_desktop" class="dropdown">
                         <a style="margin:0; padding:10px; background: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

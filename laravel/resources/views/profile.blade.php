@@ -68,7 +68,7 @@
                             <br><a href="/p/{{$sub->name}}">/p/{{$sub->name}}</a>
                         @endforeach
                     </li>
-                    <a style="margin-left: 2px;" href="{{ route('messages.send') }}/{{ $user->username }}">Message {{ $user->username }}</a>
+                    <a style="margin-left: 2px;" href="{{ route('messages.send') }}/{{ $user->username }}">Message <span class="{{$user->karma_color}}">{{ $user->username }}</span></a>
                 </ul>
             </div>
 
@@ -84,7 +84,7 @@
                             <p style="padding-top:20px; padding-bottom: 20px; padding-left: 0;">Sorry, ran out of posts for this user.</p>
                         @endif
                         @foreach($posts as $post)
-                            @php $postername = $user->select('username')->where('id', $post->poster_id)->first(); @endphp
+                            @php $postername = $user->select('username', 'thread_karma')->where('id', $post->poster_id)->first(); @endphp
                             @php $sublolhow = \App\subLolhow::select('name')->where('id', $post->sub_lolhow_id)->first(); if (!$sublolhow) {$sublolhow->name = 'removed'; } @endphp
                             <div style="margin-top:0; padding-bottom: 10px; margin-bottom: 10px;" class="panel">
                                 <div class="thread">
@@ -104,9 +104,10 @@
                                             <a href="@if($post->link) {{$post->link}} @else {{url('/')}}/p/{{$sublolhow->name}}/comments/{{$post->code}}/{{$post->title}} @endif"><img style="max-height: 76px; max-width: 76px;" src="@if($post->thumbnail !== null){{$post->thumbnail}} @elseif($post->link) {{url('/')}}/images/link_thumb.png @else {{url('/')}}/images/text_thumb.png @endif" alt="{{$post->title}}"></a>
                                         </div>
                                     </div>
+                                    
                                     <div class="thread_info">
                                         <a style="color: #636b6f;" href="@if($post->link) {{$post->link}} @else {{url('/')}}/p/{{$sublolhow->name}}/comments/{{$post->code}}/{{str_slug($post->title)}} @endif"><h3 class="thread_title overflow">{{$post->title}}</h3></a>
-                                        <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}">{{$postername->username}}</a> {{Carbon\Carbon::parse($post->created_at)->diffForHumans()}} in
+                                        <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($post->created_at)->diffForHumans()}} in
                                             <a href="/p/{{$sublolhow->name}}">{{$sublolhow->name}}</a></p>
                                         <a href="{{url('/')}}/p/{{$sublolhow->name}}/comments/{{$post->code}}/{{$post->title}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$post->reply_count}} {{str_plural('reply', $post->reply_count)}}</strong></p></a>
                                     </div>
@@ -133,6 +134,8 @@
                         @foreach($comments as $comment)
                             @php $thread = \App\Thread::select('code', 'sub_lolhow_id')->where('id', $comment->thread_id)->first(); if(!$thread) { $thread->code = 'removed'; } @endphp
                             @php $sublolhow = \App\subLolhow::select('name')->where('id', $thread->sub_lolhow_id)->first(); if (!$sublolhow) {$sublolhow->name = 'removed'; } @endphp
+                            @php $comment->karma_color = \App\User::getUsernameColorByKaram($comment->thread_karma) @endphp
+
                             <div id="post_panel_{{$comment->id}}" style="width:100%; min-width: 400px; padding:10px; margin-bottom: 10px;" class="col-xs-12 panel comment">
                                 <div style="width: 40px; margin-left: -20px; margin-top: -5px;" class="votes col-xs-2 col-sm-1">
                                     <div style="margin-left: 20px;" class="wrap">
@@ -147,8 +150,9 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 <div class="col-xs-10 col-sm11">
-                                    <span><a href="/u/{{$comment->user_display_name}}">{{$comment->user_display_name}}</a> {{Carbon\Carbon::parse($comment->created_at)->diffForHumans()}}</span>
+                                    <span><a href="/u/{{$comment->user_display_name}}" class="{{$comment->karma_color}}">{{$comment->user_display_name}}</a> {{Carbon\Carbon::parse($comment->created_at)->diffForHumans()}}</span>
                                     <p>{!! nl2br($comment->comment) !!}</p>
                                     <div style="margin-bottom:3px;" class="linkwrapper"><a style="color: grey;" href="/p/{{$sublolhow->name}}/comments/{{$thread->code}}">thread</a></div>
                                     <div id="comment_box_app_{{$comment->id}}"></div>

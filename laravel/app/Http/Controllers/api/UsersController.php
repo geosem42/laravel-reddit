@@ -19,13 +19,16 @@ class UsersController extends Controller
  
     public function externalsignup(Request $request){
  
-    $redirect_back=env('APP_URL').'/externalauth';    
+    $redirect_back=env('APP_URL').'/externalauth';
         
     //Cookie::make('redirect_back',$redirect_back);
     setcookie('redirect_back', $redirect_back, time() + (86400 * 30), "/"); // 86400 = 1 day
 
     $external_site=env('DISTRIBUTION_URL').'externalsignup';
-    return redirect()->to($external_site);        
+
+
+    return redirect()->to($external_site);    
+
   }
   
   public function externalauth(Request $request){
@@ -33,21 +36,19 @@ class UsersController extends Controller
      $data=$request->all();
     
     if(!empty($data)){
-       
-         $user = User::create(
-            [
-             'username'         => $request->input('name'),
-             'password'         => bcrypt($request->input('password')),
-             'email'         => '',
-             'api_token'         => '',
-            ]);
-         
-      if(auth()->attempt(['username' => $data['name'], 'password' => $data['password']])){
-              Session::flash('success','New user successfully created.');         
-      }
-      else{
-       Session::flash('danger','Error in user creation.');
-      }
+         $user = User::where("username", htmlspecialchars($request->input('name')))->first();
+         if (empty($user)) {
+          $user = User::create([
+            'username' => htmlspecialchars($request->input('name')),
+            'email' => 'notallowed_'.htmlspecialchars($request->input('name')),
+            'password' => bcrypt($request->input('password')),
+            'api_token' => str_random(60),
+            'active' => false, //set to false if ur a fag
+            'activation_token' => str_random(191),
+          ]);    
+         }
+
+         auth()->login($user);
      }
      return redirect('/');    
   }
