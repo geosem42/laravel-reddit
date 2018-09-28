@@ -12,6 +12,7 @@
 */
 
 /*For New Register Button*/
+
 Route::get('/externalsignup', 'api\UsersController@externalsignup');
 Route::any('externalauth','api\UsersController@externalauth');
 
