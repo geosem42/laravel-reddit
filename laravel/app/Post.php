@@ -18,10 +18,15 @@ class Post extends Model
         'user_id', 'user_display_name', 'thread_id', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'timestamp'
     ];
 
+    public function user()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
+    
     public function postsbyUser($id, $sort, $skip, $amount)
     {
         if ($sort == 'popular') {
-            return $this->select('posts.id', 'thread_id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at')
+            return $this->select('posts.id', 'thread_id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at', 'thread_karma')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->where('user_id', $id)
                 ->orderBy('score', 'DESC')
@@ -29,14 +34,14 @@ class Post extends Model
                 ->skip($skip)->take($amount)->get();
         }
         else if ($sort == 'top') {
-            return $this->select('posts.id', 'thread_id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at')
+            return $this->select('posts.id', 'thread_id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at', 'thread_karma')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->where('user_id', $id)
                 ->orderBy('score', 'DESC')
                 ->skip($skip)->take($amount)->get();
         }
         else if ($sort == 'new') {
-            return $this->select('posts.id', 'thread_id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at')
+            return $this->select('posts.id', 'thread_id', 'username as user_display_name', 'parent_id', 'upvotes', 'downvotes', 'score', 'comment', 'posts.created_at', 'thread_karma')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->where('user_id', $id)
                 ->orderBy('created_at', 'DESC')

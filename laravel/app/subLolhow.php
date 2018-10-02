@@ -22,4 +22,8 @@ class subLolhow extends Model
         return $this->select('name')->where('name', 'LIKE', '%' . $query . '%')->orderBy('name', 'asc')->take(10)->get();
     }
 
+    public function thread()
+    {
+        return $this->hasMany('App\Thread', 'sub_lolhow_id', 'id');
+    }
 }

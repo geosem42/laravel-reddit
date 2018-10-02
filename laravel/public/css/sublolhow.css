@@ -85,6 +85,19 @@
     margin-top: 50px;
 }
 
+ul.nav.post_box a {
+    padding: 5px 5px;
+    color: #000;
+}
+ul.nav.post_box li a span {
+    min-width: 180px;
+    display: inline-block;
+    color: #3697d2;
+}
+ul.nav.post_box a:hover{
+    background: transparent;
+}
+
 @media screen and (max-width: 560px) {
     .tabmenu {
         position: absolute;

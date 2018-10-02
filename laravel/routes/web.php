@@ -12,6 +12,7 @@
 */
 
 /*For New Register Button*/
+
 Route::get('/externalsignup', 'api\UsersController@externalsignup');
 Route::any('externalauth','api\UsersController@externalauth');
 
@@ -47,6 +48,8 @@ Route::group(['prefix' => '', 'middleware' => 'throttle:30,5'], function () {
     Route::get('/cdn/css/{name}.css', 'ManageSubLolhowsController@loadcss');
 });
 
+Route::resource('bet', 'BetController');
+
 Route::get('/p/{name}', 'subLolhowsController@subLolhow');
 Route::get('/p/{name}/{sort}', 'subLolhowsController@subLolhow');
 
@@ -58,6 +61,7 @@ Route::get('/amp/p/{name}/comments/{code}', 'commentsController@index');
 
 Route::get('/u/{name}', 'userProfileController@index');
 Route::get('/u/{name}/{sort}', 'userProfileController@index');
+Route::post('/updatekarma', 'userProfileController@updatekarma')->name('updatekarma');
 
 Route::get('/search', 'SearchController@search');
 Route::get('/search/{sublolhow}', 'SearchController@search');

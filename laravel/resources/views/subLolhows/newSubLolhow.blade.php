@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                            <label for="description" class="col-md-2 control-label">Description</label>
+                            <label for="description" class="col-md-2 control-label">Social Description</label>
                             <div class="col-md-9">
                                 <textarea style="max-width: 100%;" placeholder="Description" id="description" class="form-control" name="description">{{ old('description') }}</textarea>
 
@@ -52,7 +52,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('social_description') ? ' has-error' : '' }}">
+                        <!--div class="form-group{{ $errors->has('social_description') ? ' has-error' : '' }}">
                             <label for="SocialDescription" class="col-md-2 control-label">Social Description</label>
                             <div class="col-md-9">
                                 <textarea style="max-width: 100%;" placeholder="Social Description" id="SocialDescription" class="form-control" name="social_description">{{ old('social_description') }}</textarea>
@@ -63,7 +63,7 @@
                                         </span>
                                 @endif
                             </div>
-                        </div>
+                        </div-->
 
 
                         <div class="form-group">

@@ -30,4 +30,14 @@ class Subscription extends Model
             ->where('user_id', $user_id)->get();
     }
 
+    public function sublolname()
+    {
+        return $this->hasMany('App\subLolhow', 'id', 'sub_lolhow_id');
+    }
+
+    public function threadcount()
+    {
+        return $this->hasMany('App\Thread', 'sub_lolhow_id', 'sub_lolhow_id');
+    }
+
 }

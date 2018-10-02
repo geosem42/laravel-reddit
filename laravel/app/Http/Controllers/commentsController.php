@@ -58,6 +58,7 @@ class commentsController extends Controller
             $pattern = "/\[hide](.*)\[\/hide]/siU";
             $thread->post = preg_replace($pattern, $replace, $thread->post);
         }
+        
         if ($request->segment(1) == 'amp') {
             return view('threads.amp_thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod));
         } else {

@@ -57,7 +57,7 @@
                     @if(isset($subLolhow) && $subLolhow->icon)
                         <img style="height: 48px; margin-top: -11px;" src="/images/lolhows/icons/{{$subLolhow->icon}}" alt="lolhow">
                     @else
-                        <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile.gif')}}" alt="lolhow">
+                        <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile_transperent.gif')}}" alt="lolhow">
                     @endif
                 </div>
             </a>
@@ -96,8 +96,8 @@
                 @if (Auth::guest())
                     <li><a href="{{url('login/irt') }}">Login with Obliooooo!</a></li>
              <!--<li><a href="{{-- route('register') --}}">Register</a></li>-->
-             <!-- <li> <a href="{{url('register')}}">Register with Oblio!</a></li> -->
-                <li> <a href="{{config('services.oblio.distribution_url').'externalsignup'}}">Register with Oblio!</a></li>
+             <li> <a href="{{url('externalsignup')}}">Register with Oblio!</a></li>
+                <!-- <li> <a href="{{config('services.oblio.distribution_url').'externalsignup'}}">Register with Oblio!</a></li> -->
                 @else
                     <li id="alerts_desktop" class="dropdown">
                         <a style="margin:0; padding:10px; background: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -148,6 +148,9 @@
                             </li>
                             <li>
                                 <a href="{{ route('sublolhow.create') }}">Create sublolhow</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('bet.create') }}">Create bet</a>
                             </li>
                             <li>
                                 <a href="{{ route('logout') }}"

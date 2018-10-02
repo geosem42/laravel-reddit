@@ -7,6 +7,8 @@ use App\Thread;
 use App\Vote;
 use Illuminate\Support\Facades\Auth;
 use App\Subscription;
+use App\subLolhow;
+use DB;
 
 class HomeController extends Controller
 {
@@ -85,8 +87,8 @@ class HomeController extends Controller
                 $userVotes = $vote->where('user_id', Auth::user()->id)->whereIn('thread_id', $threadsArray)->get();
             }
         }
-
-
-        return view('home', array('threads' => $threads, 'userVotes' => $userVotes, 'sort' => $sort, 'page' => $page));
+    
+        $sublolhows = Subscription::with('sublolname', 'threadcount')->where('user_id', Auth::user()['id'])->limit(25)->get();
+        return view('home', array('threads' => $threads, 'userVotes' => $userVotes, 'sort' => $sort, 'page' => $page, 'topsublolhows' => $sublolhows));
     }
 }

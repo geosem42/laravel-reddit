@@ -9,6 +9,7 @@ use App\Thread;
 use App\Vote;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use Redirect;
 
 class userProfileController extends Controller
 {
@@ -71,6 +72,18 @@ class userProfileController extends Controller
             return $collection->sortBy('score');
         } else {
             return false;
+        }
+    }
+
+    public function updatekarma(Request $request)
+    {
+        if(isset($request->karmavalue) && $request->karmavalue != '') {
+            $user = User::find(Auth::user()->id);
+            $user->thread_karma = $request->karmavalue;
+            
+            if($user->save()) {
+                return \Redirect::back();
+            }
         }
     }
 }
