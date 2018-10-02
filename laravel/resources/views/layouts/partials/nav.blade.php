@@ -150,6 +150,9 @@
                                 <a href="{{ route('sublolhow.create') }}">Create sublolhow</a>
                             </li>
                             <li>
+                                <a href="{{ route('bet.create') }}">Create bet</a>
+                            </li>
+                            <li>
                                 <a href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

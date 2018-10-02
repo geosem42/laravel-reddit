@@ -48,6 +48,8 @@ Route::group(['prefix' => '', 'middleware' => 'throttle:30,5'], function () {
     Route::get('/cdn/css/{name}.css', 'ManageSubLolhowsController@loadcss');
 });
 
+Route::resource('bet', 'BetController');
+
 Route::get('/p/{name}', 'subLolhowsController@subLolhow');
 Route::get('/p/{name}/{sort}', 'subLolhowsController@subLolhow');
 
