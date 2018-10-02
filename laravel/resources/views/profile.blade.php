@@ -70,6 +70,14 @@
                     </li>
                     <a style="margin-left: 2px;" href="{{ route('messages.send') }}/{{ $user->username }}">Message <span class="{{$user->karma_color}}">{{ $user->username }}</span></a>
                 </ul>
+                <div class="">
+                    <label>Update karma value :</label>
+                    <form action="{{ route('updatekarma') }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="number" name="karmavalue" value="<?php echo (isset($user->thread_karma) && $user->thread_karma != '') ? $user->thread_karma : ''; ?>" min="1" max="5000" class="form-control" required>
+                        <button type="submit" class="btn" style="margin: 10px 0px 0px 0px">Update</button>
+                    </form>
+                </div>
             </div>
 
             <div class="col-sm-8 col-md-9">

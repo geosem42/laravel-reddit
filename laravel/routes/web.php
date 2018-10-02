@@ -59,6 +59,7 @@ Route::get('/amp/p/{name}/comments/{code}', 'commentsController@index');
 
 Route::get('/u/{name}', 'userProfileController@index');
 Route::get('/u/{name}/{sort}', 'userProfileController@index');
+Route::post('/updatekarma', 'userProfileController@updatekarma')->name('updatekarma');
 
 Route::get('/search', 'SearchController@search');
 Route::get('/search/{sublolhow}', 'SearchController@search');
