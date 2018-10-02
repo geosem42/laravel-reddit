@@ -29,6 +29,7 @@ if [ $# -eq 2 ] || [ $# -eq 3 ] ; then
 	chown -R :www-data /var/www/laravel; 
 	chmod -R 775 /var/www/laravel/storage; 
 	chmod -R 775 /var/www/laravel/bootstrap/cache; 
+	chmod -R +777 /var/www/laravel;
 
 	if [ $# -eq 3 ] ; then
     		echo 'Updating mysql'
