@@ -59,7 +59,19 @@
                         </div>
                     </form>
                 </div>
-
+                <div style="padding-bottom: 20px;" class="well search_box">
+                    <h4>Top Sublolhows</h4>
+                        <ul class="nav post_box">
+                            @if(count($topsublolhows) > 0)
+                                @foreach($topsublolhows as $sublolhows)
+                                    <li><a href="{{ url('/p') }}/{{ $sublolhows['sublolname'][0]['name'] }}"><span>{{ $sublolhows['sublolname'][0]['name'] }}</span>( {{ count($sublolhows['threadcount']) }} post)</a></li>
+                                @endforeach                          
+                            @else
+                                <li>No result for Sublolhows</li>
+                            @endif
+                        </ul>
+                        <div class="clearfix"></div> 
+                </div>
             </div>
 
         @if($threads)

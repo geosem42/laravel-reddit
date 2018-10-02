@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                            <label for="description" class="col-md-2 control-label">Description</label>
+                            <label for="description" class="col-md-2 control-label">Social Description</label>
                             <div class="col-md-9">
                                 <textarea style="max-width: 100%;" name="description" id="description" placeholder="description" cols="30" rows="5" class="form-control">@if (!empty(old('description'))) {{ old('description') }} @else{{$lolhow->description}}@endif</textarea>
                                 @if ($errors->has('description'))
@@ -54,7 +54,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('social_description') ? ' has-error' : '' }}">
+                        <!--div class="form-group{{ $errors->has('social_description') ? ' has-error' : '' }}">
                             <label for="description" class="col-md-2 control-label">Social description</label>
                             <div class="col-md-9">
                                 <textarea style="max-width: 100%;" name="social_description" id="social_description" placeholder="Social description" cols="30" rows="5" class="form-control">@if (!empty(old('social_description'))) {{ old('social_description') }} @else{{$lolhow->description_social}}@endif</textarea>
@@ -64,7 +64,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div -->
 
                         <div class="form-group{{ $errors->has('header') ? ' has-error' : '' }}">
                             <label for="header" class="col-md-2 control-label">Header</label>

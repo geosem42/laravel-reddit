@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Cookie;
 
 use Illuminate\Http\Request;
 use Session;
+use DB;
+use App\Thread;
+use App\Subscription;
 
 class UsersController extends Controller
 {
@@ -49,6 +52,19 @@ class UsersController extends Controller
          }
 
          auth()->login($user);
+
+        //Add auto suscribe top 25 sublolhow
+        $insertBatchForSubscribe = array();
+        $topsublolhow = Thread::select('sub_lolhow_id', DB::raw('count(*) as thread_count'))->GroupBy('sub_lolhow_id')->orderBy('thread_count', 'DESC')->limit(5)->get();      
+        foreach($topsublolhow as $key => $sub_lolhow_id) {
+            $insertBatchForSubscribe[$key]['sub_lolhow_id'] = $sub_lolhow_id->sub_lolhow_id;
+            $insertBatchForSubscribe[$key]['user_id']       = Auth::user()->id;
+            $insertBatchForSubscribe[$key]['created_at']    = date('Y-m-d H:i:s');
+            $insertBatchForSubscribe[$key]['updated_at']    = date('Y-m-d H:i:s');
+        }
+        DB::beginTransaction();
+        Subscription::insert($insertBatchForSubscribe);
+        DB::commit();
      }
      return redirect('/');    
   }

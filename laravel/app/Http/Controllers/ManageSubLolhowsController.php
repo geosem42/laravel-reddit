@@ -12,6 +12,8 @@ use App\Moderator;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Validator;
 use Image;
+use App\Subscription;
+use DB;
 
 class ManageSubLolhowsController extends Controller
 {
@@ -69,6 +71,8 @@ class ManageSubLolhowsController extends Controller
             'social_description' => 'max:200',
         ]);
 
+        DB::beginTransaction();
+
         $lolhow = new subLolhow();
         $lolhow->name = $request->input('name');
         $lolhow->title = $request->input('title');
@@ -84,6 +88,13 @@ class ManageSubLolhowsController extends Controller
             'user_id' => $request->user()->id,
             'sub_lolhow_id' => $lolhow->id
         ]);
+
+        $subscribe = new Subscription();
+        $subscribe->user_id = Auth::user()->id;
+        $subscribe->sub_lolhow_id = $lolhow->id;
+        $subscribe->save();
+
+        DB::commit();
 
         return redirect('/p/'.$lolhow->name);
     }
