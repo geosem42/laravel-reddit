@@ -36,6 +36,7 @@
         <ul class="nav nav-tabs">
             <li @if(app('request')->input('type') == 'link') class="active"  @elseif(empty(app('request')->input('type'))) class="active" @endif><a data-toggle="tab" href="#link">Link</a></li>
             <li @if(app('request')->input('type') == 'text') class="active" @endif><a data-toggle="tab" href="#text">Text</a></li>
+            <li @if(app('request')->input('type') == 'bet') class="active" @endif><a data-toggle="tab" href="#bet">Bet</a></li>
         </ul>
 
         <div class="tab-content">
@@ -167,6 +168,81 @@
                     </div>
                 </form>
             </div>
+            <div id="bet" class="tab-pane fade @if(app('request')->input('type') == 'bet') in active @endif">
+                <form class="form-horizontal" action="{{ route('bet.store') }}" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}" style="margin-top: 20px;">
+                            <div class="container"><h4>Title</h4></div>
+                            <div class="col-md-6">
+                                <input autocomplete="off" placeholder="Name" id="title" type="text" class="form-control" name="title" value="{{ old('title') }}" required>
+                                @if ($errors->has('title'))
+                                    <span class="help-block"><strong>{{ $errors->first('title') }}</strong></span>
+                                @endif
+                            </div>
+                        </div> 
+
+                        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                            <div class="container"><h4>Description</h4></div>
+                            <div class="col-md-6">
+                                <textarea style="max-width: 100%;" placeholder="Description" id="description" class="form-control" name="description" required>{{ old('description') }}</textarea>
+                                @if ($errors->has('description'))
+                                    <span class="help-block"><strong>{{ $errors->first('description') }}</strong></span>
+                                @endif
+                            </div>
+                        </div> 
+
+                        <div class="form-group{{ $errors->has('betting_closes') ? ' has-error' : '' }}">
+                            <div class="container"><h4>Betting Closes</h4></div>
+                            <div class="col-md-6">
+                                <input autocomplete="off" placeholder="Betting Closes" id="betting_closes" type="text" class="form-control datepicker" name="betting_closes" value="{{ old('betting_closes') }}" required>
+                                @if ($errors->has('betting_closes'))
+                                    <span class="help-block"><strong>{{ $errors->first('betting_closes') }}</strong></span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('resolution_paid') ? ' has-error' : '' }}">
+                            <div class="container"><h4>Resolution Paid</h4></div>
+                            <div class="col-md-6">
+                                <input autocomplete="off" placeholder="Resolution Paid" id="resolution_paid" type="text" class="form-control datepicker" name="resolution_paid" value="{{ old('resolution_paid') }}" required>
+                                @if ($errors->has('resolution_paid'))
+                                    <span class="help-block"><strong>{{ $errors->first('resolution_paid') }}</strong></span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('initial_bet') ? ' has-error' : '' }}">
+                            <div class="container"><h4>Initial Bet</h4></div>
+                            <div class="col-md-6">
+                                <input autocomplete="off" placeholder="Initial Bet" id="initial_bet" type="number" min="10" max="1000" class="form-control" name="initial_bet" value="{{ old('initial_bet') }}" required>
+                                @if ($errors->has('initial_bet'))
+                                    <span class="help-block"><strong>{{ $errors->first('initial_bet') }}</strong></span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('fee') ? ' has-error' : '' }}">
+                            <div class="container"><h4>Fee</h4></div>
+                            <div class="col-md-6">
+                                <select class="form-control" name="fee" id="fee">
+                                    <option value="0">0 %</option>
+                                    <option value="1">1 %</option>
+                                    <option value="2">2 %</option>
+                                    <option value="3">3 %</option>
+                                </select>
+                                @if ($errors->has('fee'))
+                                    <span class="help-block"><strong>{{ $errors->first('fee') }}</strong></span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <input type="submit" value="Create Bet" class="btn btn-primary pull-right">
+                            </div>
+                        </div>
+                </form>
+            </div>
         </div>
 
     </div>
@@ -231,5 +307,11 @@
         $("#sublolhow").easyAutocomplete(options);
         $("#sublolhow2").easyAutocomplete(options);
         $('div.easy-autocomplete').removeAttr('style');
+
+        $(document).ready(function(){
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+             });
+        });
     </script>
 @endsection

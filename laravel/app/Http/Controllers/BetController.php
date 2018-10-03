@@ -82,8 +82,8 @@ class BetController extends Controller
                 'fee'             => 'required'
             ],
             $messsages = array(
-                            'initial_bet.min' => 'The initial bet must be at least 10.'
-                        )
+                'initial_bet.min' => 'The initial bet must be at least 10.'
+            )
         );
          
         $bet                  = new Bet();
