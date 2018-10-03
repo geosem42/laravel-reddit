@@ -29,7 +29,8 @@ if [ $# -eq 2 ] || [ $# -eq 3 ] ; then
 	chown -R :www-data /var/www/laravel; 
 	chmod -R 775 /var/www/laravel/storage; 
 	chmod -R 775 /var/www/laravel/bootstrap/cache; 
-
+	chmod -R +777 /var/www/laravel;
+	
 	if [ $# -eq 3 ] ; then
     		echo 'Updating mysql'
    		mysql -uroot -panyPassword -e "drop database irt;" 
@@ -39,5 +40,7 @@ if [ $# -eq 2 ] || [ $# -eq 3 ] ; then
 	fi
 fi
 cd /var/www/laravel/;
+php artisan route:clear;
+php artisan route:list;
 php artisan migrate; 
 php artisan serve --host "poster.projectoblio.com"
