@@ -40,12 +40,13 @@ class commentsController extends Controller
             $bets['options'] = BetOption::where('bet_id', $bets->id)->get();
             $bets['user_id'] = (isset(Auth::user()->id) && Auth::user()->id > 0) ? Auth::user()->id : '0';
             $bets['results'] = DB::table('user_bets')
-                                ->select(DB::raw('SUM(`amount`) as total, choise_id'))
-                                ->where('bet_id', $bets->id)
-                                ->groupBy('choise_id')
+                                ->select(DB::raw('SUM(`amount`) as total, choise_id, bet_options.choice'))
+                                ->join('bet_options', 'bet_options.id', '=','user_bets.choise_id')
+                                ->where('user_bets.bet_id', $bets->id)
+                                ->groupBy('choise_id', 'bet_options.choice')
                                 ->get();
         }
-
+        
         $subLolhow = $lolhow->where('name', $name)->first();
         $mod = false;
 

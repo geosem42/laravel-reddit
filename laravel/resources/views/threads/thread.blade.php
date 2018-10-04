@@ -91,7 +91,7 @@
                                 <b>Current Bets :</b> 
                                 @if(count($bet['results']) > 0)
                                     @foreach($bet['results'] as $result)
-                                        {{ $result->total }}(<i class="fa fa-arrow-circle-up"></i>) {{ $result->choise_id }} &nbsp;&nbsp;
+                                        {{ $result->total }}(<i class="fa fa-arrow-circle-up"></i>) {{ $result->choice }} &nbsp;&nbsp;
                                     @endforeach
                                 @endif
                             </p>
