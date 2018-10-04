@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\subLolhow;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use App\Moderator;
+use App\BetOption;
+use App\Bet;
+use DB;
 
 class commentsController extends Controller
 {
@@ -30,6 +33,19 @@ class commentsController extends Controller
     public function index($name, $code, Request $request, Thread $thread, Vote $vote, subLolhow $lolhow, Moderator $moderator)
     {
         $thread = $thread->where('code', $code)->first();
+        $bets = [];
+        if($thread->type == 'bet')
+        {
+            $bets = Bet::where('thread_id', $thread->id)->first();
+            $bets['options'] = BetOption::where('bet_id', $bets->id)->get();
+            $bets['user_id'] = (isset(Auth::user()->id) && Auth::user()->id > 0) ? Auth::user()->id : '0';
+            $bets['results'] = DB::table('user_bets')
+                                ->select(DB::raw('SUM(`amount`) as total, choise_id'))
+                                ->where('bet_id', $bets->id)
+                                ->groupBy('choise_id')
+                                ->get();
+        }
+
         $subLolhow = $lolhow->where('name', $name)->first();
         $mod = false;
 
@@ -60,9 +76,9 @@ class commentsController extends Controller
         }
         
         if ($request->segment(1) == 'amp') {
-            return view('threads.amp_thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod));
+            return view('threads.amp_thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod, 'bet' => $bets));
         } else {
-            return view('threads.thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod));
+            return view('threads.thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod, 'bet' => $bets));
         }
     }
 

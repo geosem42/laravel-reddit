@@ -55,7 +55,7 @@ class UsersController extends Controller
 
         //Add auto suscribe top 25 sublolhow
         $insertBatchForSubscribe = array();
-        $topsublolhow = Thread::select('sub_lolhow_id', DB::raw('count(*) as thread_count'))->GroupBy('sub_lolhow_id')->orderBy('thread_count', 'DESC')->limit(25)->get();      
+        $topsublolhow = Thread::select('sub_lolhow_id', DB::raw('count(*) as thread_count'))->where('sub_lolhow_id', '!=', 'null')->GroupBy('sub_lolhow_id')->orderBy('thread_count', 'DESC')->limit(25)->get();      
         foreach($topsublolhow as $key => $sub_lolhow_id) {
             $insertBatchForSubscribe[$key]['sub_lolhow_id'] = $sub_lolhow_id->sub_lolhow_id;
             $insertBatchForSubscribe[$key]['user_id']       = Auth::user()->id;

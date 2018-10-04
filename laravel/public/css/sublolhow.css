@@ -97,6 +97,13 @@ ul.nav.post_box li a span {
 ul.nav.post_box a:hover{
     background: transparent;
 }
+.betamount {
+    padding: 7px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 150px;
+    margin: 0px 20px 0px 10px;
+}
 
 @media screen and (max-width: 560px) {
     .tabmenu {

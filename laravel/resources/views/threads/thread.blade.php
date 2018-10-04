@@ -47,7 +47,12 @@
 @endsection
 
 @section('content')
-
+    @if(count($bet) > 0)
+        @php $btn = 'btn-warning'; @endphp
+    @else
+        @php $btn = 'btn-primary'; @endphp
+    @endif
+    
     @if($subLolhow->header)
         <div id="stripe" data-spy="affix"></div>
     @endif
@@ -79,8 +84,22 @@
                             $user = new \App\User();
                             $postername = $user->select('username','thread_karma')->where('id', $thread->poster_id)->first();
                         @endphp
-                        <p class="overflow" style="margin-bottom: -5px;">placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
+                        <p class="overflow">placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
                             <a href="/p/{{$subLolhow->name}}">{{$subLolhow->name}}</a></p>
+                        @if(count($bet) > 0)
+                            <p>
+                                <b>Current Bets :</b> 
+                                @if(count($bet['results']) > 0)
+                                    @foreach($bet['results'] as $result)
+                                        {{ $result->total }}(<i class="fa fa-arrow-circle-up"></i>) {{ $result->choise_id }} &nbsp;&nbsp;
+                                    @endforeach
+                                @endif
+                            </p>
+                            <p style="margin-bottom: -5px;">
+                                <b>Betting close :</b> {{ $bet->betting_closes }} UTC | 
+                                <b>Resolution begins :</b> {{ $bet->resolution_paid }} UTC
+                            </p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -125,6 +144,38 @@
                     @if($thread->post)
                        {!! $thread->post !!}
                     @endif
+
+                    @if(Session::has('success'))
+                        <div class="row">
+                            <div id="message" class="alert alert-success">
+                                {{ Session::get('success') }}
+                            </div>
+                        </div>
+                    @endif
+                    @if(Session::has('warning'))
+                        <div class="row">
+                            <div id="message" class="alert alert-warning">
+                                {{ Session::get('warning') }}
+                            </div>
+                        </div>
+                    @endif
+                    @if(count($bet) > 0)
+                        @if(isset($bet['user_id']) && $bet['user_id'] > 0)
+                            <form method="post" action="{{ route('submitbet') }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="bet_id" value="{{ $bet['id'] }}">
+                                @if(count($bet['options']) > 0)
+                                    @foreach($bet['options'] as $option)
+                                        <input type="radio" name="option_id" value="{{ $option['id'] }}" required> {{ $option['choice'] }} &nbsp;&nbsp;
+                                    @endforeach
+                                @endif
+                                <input type="number" name="betamount" value="{{ old('betamount') }}" min="{{ $bet['initial_bet'] }}" max="1000" placeholder="Enter bet amount" class="betamount" required>
+                                <button type="submit" class="btn">Submit</button>
+                            </form>
+                        @else
+                            <p class="text-danger">Please login to apply bet</p>
+                        @endif
+                    @endif
                 </div>
             @endif
             @if($mod)
@@ -137,7 +188,7 @@
                 <div class="col-md-5">
                     <h5>Place a comment</h5>
                     <textarea data-thread="{{$thread->id}}" placeholder="Comment" name="comment" id="comment" cols="30" rows="4" class="form-control commentbox"></textarea>
-                    <button style="margin-top: 5px;" class="btn btn-primary submitpostbtn pull-right ladda-button" data-style="slide-up">Post comment</button>
+                    <button style="margin-top: 5px;" class="btn {{ $btn }} submitpostbtn pull-right ladda-button" data-style="slide-up">Post comment</button>
                     <div class="errors"></div>
                 </div>
             </div>

@@ -5,8 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Thread;
+use Validator;
+use App\subLolhow;
+use App\BetOption;
+use App\UserBet;
+use App\User;
+use App\Arrow;
 use App\Bet;
 use Redirect;
+use DB;
 
 class BetController extends Controller
 {
@@ -71,8 +79,8 @@ class BetController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $request->validate(
+    {        
+        $validator = Validator::make($request->all(),
             [
                 'title'           => 'required|unique:bets',
                 'description'     => 'required',
@@ -86,16 +94,47 @@ class BetController extends Controller
             )
         );
          
+        if ($validator->fails())
+        {
+            return redirect('/submit?type=bet')->withErrors($validator)->withInput();
+        }
+
+        DB::beginTransaction();
+
+        $subLolhow = subLolhow::where('name', $request->sublolhow)->first();
+
+        $thread                = new Thread();
+        $thread->title         = $request->title;
+        $thread->code          = $thread->getCode();
+        $thread->type          = 'bet';
+        $thread->post          = $request->description;
+        $thread->poster_id     = Auth::user()->id;
+        $thread->sub_lolhow_id = $subLolhow->id;
+        $thread->save();
+        
         $bet                  = new Bet();
         $bet->user_id         = Auth::user()->id;
+        $bet->thread_id       = $thread->id;
         $bet->title           = $request->title;
         $bet->description     = $request->description;
-        $bet->betting_closes  = $request->betting_closes;
-        $bet->resolution_paid = $request->resolution_paid;
+        $bet->betting_closes  = date('Y-m-d H:i:s', strtotime("$request->betting_closes $request->timzone_bc"));
+        $bet->resolution_paid = date('Y-m-d H:i:s', strtotime("$request->resolution_paid $request->timzone_rp"));
         $bet->initial_bet     = $request->initial_bet;
         $bet->fee             = $request->fee;
         if($bet->save())
         {
+            $optionsArr  = explode(',', $request->options);
+            $optionBatch = array();
+            if(count($optionsArr) > 0) {
+                foreach ($optionsArr as $key => $value) {
+                    $optionBatch[$key]['choice']     = $value;
+                    $optionBatch[$key]['bet_id']     = $bet->id;
+                    $optionBatch[$key]['created_at'] = date('Y-m-d H:i:s');
+                    $optionBatch[$key]['updated_at'] = date('Y-m-d H:i:s');
+                }
+            }
+            BetOption::insert($optionBatch);
+            DB::commit();
             return \Redirect::back()->with('success', 'Bets has been successfully added!');
         }
         else
@@ -147,5 +186,68 @@ class BetController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function submitbet(Request $request)
+    {
+        $request->validate(
+            [
+                'bet_id'    => 'required',
+                'option_id' => 'required',
+                'betamount' => 'required'
+            ]
+        );
+
+        $checkbet = UserBet::where(['bet_id' => $request->bet_id, 'user_id' => Auth::user()->id])->get();
+        if(count($checkbet) > 0) {
+            return \Redirect::back()->with('warning', 'Your have already applied on this bet.');
+        }
+
+        DB::beginTransaction();
+
+        $userarrow = User::select('arrow')->where('id', Auth::user()->id)->first();        
+        if($userarrow->arrow > 0)
+        {
+            $betarrow = Bet::select('initial_bet')->where('id', $request->bet_id)->first();
+            if($userarrow->arrow >= $betarrow->initial_bet && $userarrow->arrow >= $request->betamount)
+            {
+                $arrow = new Arrow();
+                $arrow->user_id     = Auth::user()->id;
+                $arrow->bet_id      = $request->bet_id;
+                $arrow->arrow       = '-'.$request->betamount;
+                $arrow->description = 'Applied on Bet';
+                if($arrow->save())
+                {
+                    $query = DB::select(DB::raw("SELECT SUM(`arrow`) as `arrow_count` FROM `arrows` WHERE `user_id` = " . Auth::user()->id));
+                    $user = User::find(Auth::user()->id);
+                    $user->arrow = $query[0]->arrow_count;
+                    $user->save(); 
+                }
+                
+                $userbet = new UserBet();
+                $userbet->user_id   = Auth::user()->id;
+                $userbet->bet_id    = $request->bet_id;
+                $userbet->choise_id = $request->option_id;
+                $userbet->amount    = $request->betamount;        
+
+                if($userbet->save())
+                {
+                    DB::commit();
+                    return \Redirect::back()->with('success', 'Your Bets has been successfully applied!');
+                }
+                else
+                {
+                    return \Redirect::back()->with('warning', 'Something went wrong. Please try again.');
+                }
+            }
+            else
+            {
+                return \Redirect::back()->with('warning', 'You need at least '. $request->betamount .' arrow to apply this bet.');
+            }
+        }
+        else
+        {
+            return \Redirect::back()->with('warning', 'You have not enough arrow to apply bet.');
+        }
     }
 }

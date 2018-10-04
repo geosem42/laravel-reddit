@@ -62,6 +62,7 @@
                     <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> {{\Carbon\Carbon::createFromTimeStamp(strtotime($user->created_at))->diffForHumans()}}</li>
                     <li class="list-group-item text-right"><span class="pull-left"><strong>Karma</strong></span> {{$user->thread_karma + $user->post_karma}}</li>
                     <li class="list-group-item text-right"><span class="pull-left"><strong>Post Karma</strong></span> {{$user->thread_karma}}</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Arrow</strong></span> {{ (int)$user->arrow }} </li>
                     <li class="list-group-item text-right"><span class="pull-left"><strong>Comment Karma</strong></span> {{$user->post_karma}}</li>
                     <li id="subs_list" style="max-height: 250px; overflow-y: scroll" class="list-group-item text-left"><span><strong>Subscribed to</strong></span>
                         @foreach($subscriptions as $sub)
@@ -70,11 +71,15 @@
                     </li>
                     <a style="margin-left: 2px;" href="{{ route('messages.send') }}/{{ $user->username }}">Message <span class="{{$user->karma_color}}">{{ $user->username }}</span></a>
                 </ul>
-                <div class="">
-                    <label>Update karma value :</label>
+                <div class="">                    
                     <form action="{{ route('updatekarma') }}" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="number" name="karmavalue" value="<?php echo (isset($user->thread_karma) && $user->thread_karma != '') ? $user->thread_karma : ''; ?>" min="1" max="5000" class="form-control" required>
+                        <label>Update karma value :</label>
+                        <input type="hidden" name="currentkarma" value="<?php echo (isset($user->thread_karma) && $user->thread_karma != '') ? $user->thread_karma : 0 ; ?>">
+                        <input type="number" name="karmavalue" value="<?php echo (isset($user->thread_karma) && $user->thread_karma != '') ? $user->thread_karma : 0 ; ?>" min="1" max="5000" class="form-control" required>
+                        <label style="margin-top: 5px;">Add arrow value :</label>
+                        <input type="hidden" name="currentarrow" value="{{ (int)$user->arrow }}">
+                        <input type="number" name="arrowvalue" value="{{ (int)$user->arrow }}" min="-100" max="100" class="form-control" required>
                         <button type="submit" class="btn" style="margin: 10px 0px 0px 0px">Update</button>
                     </form>
                 </div>

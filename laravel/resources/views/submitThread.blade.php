@@ -191,33 +191,48 @@
                             </div>
                         </div> 
 
-                        <div class="form-group{{ $errors->has('betting_closes') ? ' has-error' : '' }}">
-                            <div class="container"><h4>Betting Closes</h4></div>
-                            <div class="col-md-6">
+                        <div class="form-group{{ $errors->has('betting_closes') ? ' has-error' : '' }}">                            
+                            <div class="col-md-4 col-sm-6">
+                                <div class="font-style"><h4>Betting Closes</h4></div>
                                 <input autocomplete="off" placeholder="Betting Closes" id="betting_closes" type="text" class="form-control datepicker" name="betting_closes" value="{{ old('betting_closes') }}" required>
                                 @if ($errors->has('betting_closes'))
                                     <span class="help-block"><strong>{{ $errors->first('betting_closes') }}</strong></span>
                                 @endif
                             </div>
-                        </div>
+                            
+                            <div class="col-md-2 col-sm-6">
+                                <div class="font-style"><h4>Timezone : UTC</h4></div>
+                                <input type="time" id="timzone_bc" name="timzone_bc" min="00:00" max="24:00" class="form-control" required />
+                            </div>
+                        </div> 
 
                         <div class="form-group{{ $errors->has('resolution_paid') ? ' has-error' : '' }}">
-                            <div class="container"><h4>Resolution Paid</h4></div>
-                            <div class="col-md-6">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="font-style"><h4>Resolution Paid</h4></div>
                                 <input autocomplete="off" placeholder="Resolution Paid" id="resolution_paid" type="text" class="form-control datepicker" name="resolution_paid" value="{{ old('resolution_paid') }}" required>
                                 @if ($errors->has('resolution_paid'))
                                     <span class="help-block"><strong>{{ $errors->first('resolution_paid') }}</strong></span>
                                 @endif
                             </div>
+                            <div class="col-md-2 col-sm-6">
+                                <div class="font-style"><h4>Timezone : UTC</h4></div>
+                                <input type="time" id="timzone_rp" name="timzone_rp" min="00:00" max="24:00" class="form-control" required />
+                            </div>
                         </div>
 
                         <div class="form-group{{ $errors->has('initial_bet') ? ' has-error' : '' }}">
                             <div class="container"><h4>Initial Bet</h4></div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <input autocomplete="off" placeholder="Initial Bet" id="initial_bet" type="number" min="10" max="1000" class="form-control" name="initial_bet" value="{{ old('initial_bet') }}" required>
                                 @if ($errors->has('initial_bet'))
                                     <span class="help-block"><strong>{{ $errors->first('initial_bet') }}</strong></span>
                                 @endif
+                            </div>
+                            <div class="col-md-1">
+                                <label><input type="checkbox" name="initial_bet_chk" value="yes">&nbsp;Yes</label>
+                            </div>
+                            <div class="col-md-1">
+                                <label><input type="checkbox" name="initial_bet_chk" value="no">&nbsp;No</label>
                             </div>
                         </div>
 
@@ -232,6 +247,30 @@
                                 </select>
                                 @if ($errors->has('fee'))
                                     <span class="help-block"><strong>{{ $errors->first('fee') }}</strong></span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('options') ? ' has-error' : '' }}">
+                        <div class="container"><h4>Bet Options</h4></div>
+                            <div class="col-md-6">
+                                <input autocomplete="off" placeholder="Name" id="options" type="text" class="form-control" name="options" value="{{ old('options') }}" required>
+                                @if ($errors->has('options'))
+                                    <span class="help-block"><strong>{{ $errors->first('options') }}</strong></span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('sublolhow') ? ' has-error' : '' }}">
+                            <div class="container">
+                                <h4>Sublolhow <span style="color:red">*</span></h4>
+                            </div>
+                            <div class="col-md-6">
+                                <input autocomplete="off" type="text" id="sublolhow3" class="form-control" name="sublolhow" placeholder="Sublolhow" value="@if (!empty(old('sublolhow'))){{old('sublolhow')}}@elseif(isset($name)){{$name}}@endif">
+                                @if ($errors->has('sublolhow'))
+                                    <span class="help-block">
+                                            <strong>{{ $errors->first('sublolhow') }}</strong>
+                                    </span>
                                 @endif
                             </div>
                         </div>
@@ -306,6 +345,7 @@
 
         $("#sublolhow").easyAutocomplete(options);
         $("#sublolhow2").easyAutocomplete(options);
+        $("#sublolhow3").easyAutocomplete(options);
         $('div.easy-autocomplete').removeAttr('style');
 
         $(document).ready(function(){

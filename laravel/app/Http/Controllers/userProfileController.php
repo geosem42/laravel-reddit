@@ -9,7 +9,9 @@ use App\Thread;
 use App\Vote;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Arrow;
 use Redirect;
+use DB;
 
 class userProfileController extends Controller
 {
@@ -77,13 +79,26 @@ class userProfileController extends Controller
 
     public function updatekarma(Request $request)
     {
-        if(isset($request->karmavalue) && $request->karmavalue != '') {
-            $user = User::find(Auth::user()->id);
-            $user->thread_karma = $request->karmavalue;
-            
-            if($user->save()) {
-                return \Redirect::back();
+        $user_id = Auth::user()->id;
+        if(isset($request->karmavalue) && $request->karmavalue != '' && $request->karmavalue != $request->currentkarma) {
+            $user = User::find($user_id);
+            $user->thread_karma = $request->karmavalue;        
+            $user->save();
+        }
+        if(isset($request->arrowvalue) && $request->arrowvalue != '' && $request->arrowvalue != $request->currentarrow) {
+            $arrow = new Arrow();
+            $arrow->user_id     = $user_id;
+            $arrow->bet_id      = 0;
+            $arrow->arrow       = $request->arrowvalue;
+            $arrow->description = 'Manually Added';
+            if($arrow->save())
+            {
+                $query = DB::select(DB::raw("SELECT SUM(`arrow`) as `arrow_count` FROM `arrows` WHERE `user_id` = " . $user_id));
+                $user = User::find($user_id);
+                $user->arrow = $query[0]->arrow_count;
+                $user->save();
             }
         }
+        return \Redirect::back();
     }
 }
