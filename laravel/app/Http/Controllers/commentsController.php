@@ -75,10 +75,10 @@ class commentsController extends Controller
             $pattern = "/\[hide](.*)\[\/hide]/siU";
             $thread->post = preg_replace($pattern, $replace, $thread->post);
         }
-    
-        echo "<pre>";
-        echo count($bets);
-        print_r($bets);
+        
+        if(!empty($bets)) {
+            echo "not empty";
+        } 
         exit();
 
         if ($request->segment(1) == 'amp') {
