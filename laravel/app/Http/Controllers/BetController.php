@@ -102,6 +102,9 @@ class BetController extends Controller
         DB::beginTransaction();
 
         $subLolhow = subLolhow::where('name', $request->sublolhow)->first();
+        if(empty($subLolhow)) {
+            return redirect('/submit?type=bet')->with('warning', 'Sublolhow not exits');
+        }
 
         $thread                = new Thread();
         $thread->title         = $request->title;
@@ -127,19 +130,24 @@ class BetController extends Controller
             $optionBatch = array();
             if(count($optionsArr) > 0) {
                 foreach ($optionsArr as $key => $value) {
-                    $optionBatch[$key]['choice']     = $value;
-                    $optionBatch[$key]['bet_id']     = $bet->id;
-                    $optionBatch[$key]['created_at'] = date('Y-m-d H:i:s');
-                    $optionBatch[$key]['updated_at'] = date('Y-m-d H:i:s');
+                    if(isset($value) && $value != '') {
+                        $optionBatch[$key]['choice']     = trim($value);
+                        $optionBatch[$key]['bet_id']     = $bet->id;
+                        $optionBatch[$key]['created_at'] = date('Y-m-d H:i:s');
+                        $optionBatch[$key]['updated_at'] = date('Y-m-d H:i:s');
+                    }
                 }
             }
+            
             BetOption::insert($optionBatch);
             DB::commit();
-            return \Redirect::back()->with('success', 'Bets has been successfully added!');
+            return redirect('/submit?type=bet')->with('success', 'Bets has been successfully added!');
+            //return \Redirect::back()->with('success', 'Bets has been successfully added!');
         }
         else
         {
-            return \Redirect::back()->with('warning', 'Something went wrong. Please try again.');
+            return redirect('/submit?type=bet')->with('warning', 'Something went wrong. Please try again.');
+            //return \Redirect::back()->with('warning', 'Something went wrong. Please try again.');
         }
     }
 
