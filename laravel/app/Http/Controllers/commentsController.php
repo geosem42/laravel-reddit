@@ -77,6 +77,7 @@ class commentsController extends Controller
         }
     
         echo "<pre>";
+        echo count($bets);
         print_r($bets);
         exit();
 
