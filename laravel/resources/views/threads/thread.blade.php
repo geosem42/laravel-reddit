@@ -89,14 +89,13 @@
                         @if(!empty($bet))
                             <p>
                                 <b>Current Bets :</b>
-                                {{ $bet['results'] }} 
-                                <!-- @if(count($bet['results']) > 0)
+                                @if(count($bet['results']) > 0)
                                     @foreach($bet['results'] as $result)
                                         {{ $result->total }}(<i class="fa fa-arrow-circle-up"></i>) {{ $result->choice }} &nbsp;&nbsp;
                                     @endforeach
                                 @else
                                     <span style="color: #a94442;">No any bet applied on this</span>
-                                @endif -->
+                                @endif
                             </p>
                             <p style="margin-bottom: -5px;">
                                 <b>Betting close :</b> {{ $bet->betting_closes }} UTC | 
