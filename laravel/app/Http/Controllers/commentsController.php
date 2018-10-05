@@ -76,11 +76,6 @@ class commentsController extends Controller
             $thread->post = preg_replace($pattern, $replace, $thread->post);
         }
         
-        if(!empty($bets)) {
-            echo "not empty";
-        } 
-        exit();
-
         if ($request->segment(1) == 'amp') {
             return view('threads.amp_thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod, 'bet' => $bets));
         } else {
