@@ -47,13 +47,16 @@
 @endsection
 
 @section('content')
-    <?php echo "1"; ?>
     @if(count($bet) > 0)
         @php $btn = 'btn-warning'; @endphp
     @else
         @php $btn = 'btn-primary'; @endphp
     @endif
-    
+    <?php 
+        echo "count : " . count($bet);
+        print_r($bet);
+        exit();
+    ?>
     @if($subLolhow->header)
         <div id="stripe" data-spy="affix"></div>
     @endif
@@ -61,7 +64,7 @@
         <h1 id="header_name">{{$subLolhow->name}}</h1>
         <p id="header_title">{{ $subLolhow->title }}</p>
     </div>
-    <?php echo "2"; ?>
+
     <div class="container">
         <div class="panel">
             <div class="modal-header">
@@ -80,7 +83,6 @@
                         </div>
                     </div>
                     <div style="margin-top: -4px;" class="col-xs-10 col-sm-11">
-                    <?php echo "3"; ?>
                         <h4><a href="@if($thread->link){{$thread->link}}@else @endif">{{$thread->title}}</a></h4>
                         @php
                             $user = new \App\User();
@@ -105,7 +107,6 @@
                             </p>
                         @endif
                     </div>
-                    <?php echo "4"; exit(); ?>
                 </div>
             </div>
             @if($thread->link || $thread->post)
