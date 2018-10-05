@@ -86,6 +86,20 @@
             </div>
 
             <div class="col-sm-8 col-md-9">
+                @if(Session::has('success'))
+                    <div class="row">
+                        <div id="message" class="alert alert-success">
+                            {{ Session::get('success') }}
+                        </div>
+                    </div>
+                @endif
+                @if(Session::has('warning'))
+                    <div class="row">
+                        <div id="message" class="alert alert-warning">
+                            {{ Session::get('warning') }}
+                        </div>
+                    </div>
+                @endif
                 <ul class="nav nav-tabs">
                     <li @if(app('request')->input('type') == 'posts') class="active"  @elseif(empty(app('request')->input('type'))) class="active" @endif><a data-toggle="tab" href="#posts">Posts</a></li>
                     <li @if(app('request')->input('type') == 'comments') class="active" @endif><a data-toggle="tab" href="#comments">Comments</a></li>
@@ -99,6 +113,7 @@
                         @foreach($posts as $post)
                             @php $postername = $user->select('username', 'thread_karma')->where('id', $post->poster_id)->first(); @endphp
                             @php $sublolhow = \App\subLolhow::select('name')->where('id', $post->sub_lolhow_id)->first(); if (!$sublolhow) {$sublolhow->name = 'removed'; } @endphp
+                            @php $type = (isset($post->type) && $post->type == 'bet') ? '[Bet]' : ''; @endphp
                             <div style="margin-top:0; padding-bottom: 10px; margin-bottom: 10px;" class="panel">
                                 <div class="thread">
                                     <div style="min-width: 40px;" class="votes col-xs-1">
@@ -119,10 +134,30 @@
                                     </div>
                                     
                                     <div class="thread_info">
-                                        <a style="color: #636b6f;" href="@if($post->link) {{$post->link}} @else {{url('/')}}/p/{{$sublolhow->name}}/comments/{{$post->code}}/{{str_slug($post->title)}} @endif"><h3 class="thread_title overflow">{{$post->title}}</h3></a>
+                                        <a style="color: #636b6f;" href="@if($post->link) {{$post->link}} @else {{url('/')}}/p/{{$sublolhow->name}}/comments/{{$post->code}}/{{str_slug($post->title)}} @endif"><h3 class="thread_title overflow">{{ $type }} {{$post->title}}</h3></a>
                                         <p class="overflow" style="margin-top: -10px;">placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($post->created_at)->diffForHumans()}} in
                                             <a href="/p/{{$sublolhow->name}}">{{$sublolhow->name}}</a></p>
                                         <a href="{{url('/')}}/p/{{$sublolhow->name}}/comments/{{$post->code}}/{{$post->title}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$post->reply_count}} {{str_plural('reply', $post->reply_count)}}</strong></p></a>
+                                    </div>
+                                    <div class="option" style="margin-left: 30px;">
+                                        @if(isset($post->type) && $post->type == 'bet' && !empty($options))
+                                            @if($options[$post->id]['status'] == 'open')
+                                            <form name="betresult_{{ $post->id }}" action="{{ route('betresult') }}" method="post">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                @foreach($options as $option)
+                                                    @if($option['thread_id'] == $post->id)
+                                                        @foreach($option['options'] as $ans)
+                                                            <input type="hidden" name="bet_id" value="{{ $ans['bet_id'] }}">
+                                                            <input type="radio" name="option_id" value="{{ $ans['id'] }}" required> {{ $ans['choice'] }} &nbsp;&nbsp;
+                                                        @endforeach
+                                                    @endif
+                                                @endforeach
+                                                <button type="submit" class="btn">Submit</button>
+                                            </form>
+                                            @else
+                                                <p style="color: #a94442">This bet is closed</p>
+                                            @endif
+                                        @endif
                                     </div>
                                 </div>
                             </div>

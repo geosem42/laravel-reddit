@@ -258,4 +258,61 @@ class BetController extends Controller
             return \Redirect::back()->with('warning', 'You have not enough arrow to apply bet.');
         }
     }
+
+    public function betresult(Request $request)
+    {
+        DB::beginTransaction();
+
+        // get all arrow spent by all users
+        $totalBetArrow = DB::table('user_bets')
+                        ->select(DB::raw('SUM(amount) as total_arrow'))
+                        ->where('bet_id', $request->bet_id)
+                        ->get();
+
+        // get all arrow of winner users
+        $winnerArrow   = DB::table('user_bets')
+                        ->select(DB::raw('SUM(amount) as total_arrow'))
+                        ->where(['bet_id' => $request->bet_id, 'choise_id' => $request->option_id])
+                        ->get();
+
+        // distributes arrow                        
+        $distributeArr = (int)$totalBetArrow[0]->total_arrow - (int)$winnerArrow[0]->total_arrow;
+
+        // get all user who won this bet
+        $wonusersArr   = UserBet::where(['bet_id' => $request->bet_id, 'choise_id' => $request->option_id])->get();
+    
+        if(!empty($wonusersArr))
+        {
+            foreach ($wonusersArr as $key => $user) {
+                $arrowCal = $user->amount/(int)$winnerArrow[0]->total_arrow;                  
+                $arrow = new Arrow();
+                $arrow->user_id     = $user->user_id;
+                $arrow->bet_id      = $request->bet_id;
+                $arrow->arrow       = $arrowCal * $distributeArr;
+                $arrow->description = 'Won arrow of bet id ' . $request->bet_id .'( you spent : '.$user->amount.' )';                
+                if($arrow->save())
+                {
+                    $query = DB::select(DB::raw("SELECT SUM(`arrow`) as `arrow_count` FROM `arrows` WHERE `user_id` = " . $user->user_id));
+                    $user = User::find($user->user_id);
+                    $user->arrow = $query[0]->arrow_count;
+                    $user->save(); 
+                }
+            }
+            $bet = Bet::find($request->bet_id);
+            $bet->status = 'closed';
+            if($bet->save())
+            {
+                DB::commit();
+                return \Redirect::back()->with('success', 'Result announced and arrow distributed to winner users.');   
+            }
+            else
+            {
+                return \Redirect::back()->with('warning', 'Something went wrong. Please try again.');       
+            }  
+        }
+        else
+        {
+            return \Redirect::back()->with('warning', 'Something went wrong. Please try again.');
+        }
+    }
 }

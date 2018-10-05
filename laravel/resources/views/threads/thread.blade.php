@@ -168,7 +168,7 @@
                                 <input type="hidden" name="bet_id" value="{{ $bet['id'] }}">
                                 @if(!empty($bet['options']))
                                     @foreach($bet['options'] as $option)
-                                        <input type="radio" name="option_id" value="{{ $option['id'] }}" required> {{ $option['choice'] }} &nbsp;&nbsp;
+                                        <input type="radio" name="option_id" value="{{ $option['id'] }}" required style="margin-left: 10px; margin-bottom: 10px;"> {{ $option['choice'] }} <br>
                                     @endforeach
                                 @endif
                                 <input type="number" name="betamount" value="{{ old('betamount') }}" min="{{ $bet['initial_bet'] }}" max="1000" placeholder="Enter bet amount" class="betamount" required>
