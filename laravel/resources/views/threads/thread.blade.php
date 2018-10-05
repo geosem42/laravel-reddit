@@ -162,7 +162,7 @@
                         </div>
                     @endif
                     @if(!empty($bet))
-                        @if(isset($bet['user_id']) && $bet['user_id'] > 0)
+                        @if(!empty($bet['user_id']) && $bet['user_id'] > 0)
                             <form method="post" action="{{ route('submitbet') }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="bet_id" value="{{ $bet['id'] }}">
