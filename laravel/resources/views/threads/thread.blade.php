@@ -88,7 +88,13 @@
                             <a href="/p/{{$subLolhow->name}}">{{$subLolhow->name}}</a></p>
                         @if(!empty($bet))
                             <p>
-                                <b>Current Bets :</b> 
+                                <b>Current Bets :</b>
+                                {{ $bet['results'] }}
+                                @if(count($bet['results']) > 0)
+                                    <p>0</p>
+                                @else
+                                    <p>1</p>
+                                @endif
                                 @if(!empty($bet['results']))
                                     @foreach($bet['results'] as $result)
                                         {{ $result->total }}(<i class="fa fa-arrow-circle-up"></i>) {{ $result->choice }} &nbsp;&nbsp;
