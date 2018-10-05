@@ -16,16 +16,18 @@ use Session;
 use DB;
 use App\Thread;
 use App\Subscription;
+use Illuminate\Cookie\CookieJar;
 
 class UsersController extends Controller
 {
  
-    public function externalsignup(Request $request){
+    public function externalsignup(CookieJar $cookieJar, Request $request){
  
     $redirect_back=env('APP_URL').'/externalauth';
         
     //Cookie::make('redirect_back',$redirect_back);
-    setcookie('redirect_back', $redirect_back, time() + (86400 * 30), "/"); // 86400 = 1 day
+    $cookieJar->queue(cookie('redirect_back', $redirect_back, time() + (86400 * 30)));
+    //setcookie('redirect_back', $redirect_back, time() + (86400 * 30), "/"); // 86400 = 1 day
 
     $external_site=env('DISTRIBUTION_URL').'externalsignup';
 
