@@ -47,6 +47,12 @@
 @endsection
 
 @section('content')
+    <?php 
+        echo "debug on way";
+        echo "<pre>";
+        print_r($bet);
+        exit();
+    ?>
     @if(count($bet) > 0)
         @php $btn = 'btn-warning'; @endphp
     @else
