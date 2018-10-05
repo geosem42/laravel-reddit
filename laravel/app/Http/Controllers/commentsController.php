@@ -46,7 +46,7 @@ class commentsController extends Controller
                                 ->groupBy('choise_id', 'bet_options.choice')
                                 ->get();
         }
-        
+        dd($bets);
         $subLolhow = $lolhow->where('name', $name)->first();
         $mod = false;
 

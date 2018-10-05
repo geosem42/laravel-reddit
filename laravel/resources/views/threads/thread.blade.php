@@ -93,6 +93,8 @@
                                     @foreach($bet['results'] as $result)
                                         {{ $result->total }}(<i class="fa fa-arrow-circle-up"></i>) {{ $result->choice }} &nbsp;&nbsp;
                                     @endforeach
+                                @else
+                                    <span style="color: #a94442;">No any bet applied on this</span>
                                 @endif
                             </p>
                             <p style="margin-bottom: -5px;">
