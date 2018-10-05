@@ -52,11 +52,7 @@
     @else
         @php $btn = 'btn-primary'; @endphp
     @endif
-    <?php 
-        echo "count : " . count($bet);
-        print_r($bet);
-        exit();
-    ?>
+    
     @if($subLolhow->header)
         <div id="stripe" data-spy="affix"></div>
     @endif
