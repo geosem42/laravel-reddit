@@ -94,9 +94,13 @@
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 @if (Auth::guest())
-                    <li><a href="{{url('login/irt') }}">Login with Obliooooo!</a></li>
-             <!--<li><a href="{{-- route('register') --}}">Register</a></li>-->
-             <li> <a href="{{url('externalsignup')}}">Register with Oblio!</a></li>
+                    <img href="{{url('login/irt') }}" style="width: 113px; margin-top: -11px;" src="{{url('/images/auth/Login.png')}}" alt="login"></img>
+		  <img href="{{url('externalsignup')}}" style="width: 113px; margin-top: -11px;" src="{{url('/images/auth/Register.png')}}" alt="register"></img>
+             <!--<li><a href="{{url('login/irt') }}">Login with Obliooooo!</a></li>
+		<li><a href="{{-- route('register') --}}">Register</a></li>
+			  <li> <a href="{{url('externalsignup')}}">Register with Oblio!</a></li>
+			-->
+           
                 <!-- <li> <a href="{{config('services.oblio.distribution_url').'externalsignup'}}">Register with Oblio!</a></li> -->
                 @else
                     <li id="alerts_desktop" class="dropdown">
