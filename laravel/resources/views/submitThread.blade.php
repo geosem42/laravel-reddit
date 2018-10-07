@@ -169,6 +169,20 @@
                 </form>
             </div>
             <div id="bet" class="tab-pane fade @if(app('request')->input('type') == 'bet') in active @endif">
+                @if(Session::has('success'))
+                    <div class="row">
+                        <div id="message" class="alert alert-success">
+                            {{ Session::get('success') }}
+                        </div>
+                    </div>
+                @endif
+                @if(Session::has('warning'))
+                    <div class="row">
+                        <div id="message" class="alert alert-warning">
+                            {{ Session::get('warning') }}
+                        </div>
+                    </div>
+                @endif
                 <form class="form-horizontal" action="{{ route('bet.store') }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}" style="margin-top: 20px;">
@@ -252,7 +266,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('options') ? ' has-error' : '' }}">
-                        <div class="container"><h4>Bet Options</h4></div>
+                        <div class="container"><h4>Bet Options <span style="font-size: 15px;">[ Ex. option1,option2,option3 ]</span></h4></div>
                             <div class="col-md-6">
                                 <input autocomplete="off" placeholder="Name" id="options" type="text" class="form-control" name="options" value="{{ old('options') }}" required>
                                 @if ($errors->has('options'))
@@ -266,7 +280,7 @@
                                 <h4>Sublolhow <span style="color:red">*</span></h4>
                             </div>
                             <div class="col-md-6">
-                                <input autocomplete="off" type="text" id="sublolhow3" class="form-control" name="sublolhow" placeholder="Sublolhow" value="@if (!empty(old('sublolhow'))){{old('sublolhow')}}@elseif(isset($name)){{$name}}@endif">
+                                <input autocomplete="off" type="text" id="sublolhow3" class="form-control" name="sublolhow" placeholder="Sublolhow" value="@if (!empty(old('sublolhow'))){{old('sublolhow')}}@elseif(isset($name)){{$name}}@endif" required>
                                 @if ($errors->has('sublolhow'))
                                     <span class="help-block">
                                             <strong>{{ $errors->first('sublolhow') }}</strong>

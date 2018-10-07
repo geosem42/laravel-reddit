@@ -9,6 +9,7 @@ use App\Thread;
 use App\Vote;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Bet;
 use App\Arrow;
 use Redirect;
 use DB;
@@ -61,9 +62,26 @@ class userProfileController extends Controller
             $thread_votes = $vote->where('user_id', $auth_user->id)->whereIn('thread_id', $threadsArray)->get();
             $post_votes = $vote->where('user_id', $auth_user->id)->whereIn('post_id', $postsArray)->get();
             $userVotes = $thread_votes->merge($post_votes);
-    }
+        }
         
-        return view('profile', array('sort' => $sort, 'user' => $user, 'posts' => $posts, 'comments' => $comments, 'userVotes' => $userVotes, 'page' => $page, 'subscriptions' => $subscriptions));
+        $threadIdArr = array();
+        foreach ($posts as $key => $value)
+        {
+            if(isset($value->type) && $value->type == 'bet')
+            {
+                $threadIdArr[$key] = $value->id;
+            }
+        }
+
+        $betIdArr = array();
+        if(!empty($threadIdArr))
+        {
+            foreach ($threadIdArr as $value) {
+                $betIdArr[$value] = Bet::with('options')->where('thread_id', $value)->first();
+            }
+        }
+
+        return view('profile', array('sort' => $sort, 'user' => $user, 'posts' => $posts, 'comments' => $comments, 'userVotes' => $userVotes, 'page' => $page, 'subscriptions' => $subscriptions, 'options' => $betIdArr));
     }
 
     public function sortPackage($sort, $collection)

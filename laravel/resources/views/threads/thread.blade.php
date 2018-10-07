@@ -47,7 +47,7 @@
 @endsection
 
 @section('content')
-    @if(count($bet) > 0)
+    @if(!empty($bet))
         @php $btn = 'btn-warning'; @endphp
     @else
         @php $btn = 'btn-primary'; @endphp
@@ -86,13 +86,15 @@
                         @endphp
                         <p class="overflow">placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
                             <a href="/p/{{$subLolhow->name}}">{{$subLolhow->name}}</a></p>
-                        @if(count($bet) > 0)
+                        @if(!empty($bet))
                             <p>
-                                <b>Current Bets :</b> 
+                                <b>Current Bets :</b>
                                 @if(count($bet['results']) > 0)
                                     @foreach($bet['results'] as $result)
                                         {{ $result->total }}(<i class="fa fa-arrow-circle-up"></i>) {{ $result->choice }} &nbsp;&nbsp;
                                     @endforeach
+                                @else
+                                    <span style="color: #a94442;">No any bet applied on this</span>
                                 @endif
                             </p>
                             <p style="margin-bottom: -5px;">
@@ -159,14 +161,14 @@
                             </div>
                         </div>
                     @endif
-                    @if(count($bet) > 0)
+                    @if(!empty($bet))
                         @if(isset($bet['user_id']) && $bet['user_id'] > 0)
                             <form method="post" action="{{ route('submitbet') }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="bet_id" value="{{ $bet['id'] }}">
-                                @if(count($bet['options']) > 0)
+                                @if(!empty($bet['options']))
                                     @foreach($bet['options'] as $option)
-                                        <input type="radio" name="option_id" value="{{ $option['id'] }}" required> {{ $option['choice'] }} &nbsp;&nbsp;
+                                        <input type="radio" name="option_id" value="{{ $option['id'] }}" required style="margin-left: 10px; margin-bottom: 10px;"> {{ $option['choice'] }} <br>
                                     @endforeach
                                 @endif
                                 <input type="number" name="betamount" value="{{ old('betamount') }}" min="{{ $bet['initial_bet'] }}" max="1000" placeholder="Enter bet amount" class="betamount" required>
