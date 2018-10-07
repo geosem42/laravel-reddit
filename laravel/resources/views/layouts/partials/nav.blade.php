@@ -94,9 +94,13 @@
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 @if (Auth::guest())
-                    <img href="{{url('login/irt') }}" style="width: 113px; margin-top: -11px;" src="{{url('/auth/Login.png')}}" alt="login"></img>
-		  <img href="{{url('externalsignup')}}" style="width: 113px; margin-top: -11px;" src="{{url('/auth/Register.png')}}" alt="register"></img>
-             <!--<li><a href="{{url('login/irt') }}">Login with Obliooooo!</a></li>
+                    <a href="{{url('login/irt') }}">
+				<img style="width: 250px; margin-top: -11px;" src="{{url('/auth/Login.png')}}" alt="login"></img>
+			</a> 
+			<a href="{{url('externalsignup')}}">
+				<img style="width: 113px; margin-top: -11px;" src="{{url('/auth/Register.png')}}" alt="register"></img>
+        		</a>
+	 <!--<li><a href="{{url('login/irt') }}">Login with Obliooooo!</a></li>
 		<li><a href="{{-- route('register') --}}">Register</a></li>
 			  <li> <a href="{{url('externalsignup')}}">Register with Oblio!</a></li>
 			-->

@@ -48,7 +48,7 @@ class ResetPasswordController extends Controller
             $this->guard()->login($user);
         } else {
             flash('Your password has been reset, to login please activate your account', 'success');
-            $this->redirectTo = '/login';
+            $this->redirectTo = '/login/irt';
         }
     }
 }
