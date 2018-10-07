@@ -35,6 +35,7 @@ Route::group(['prefix' => '', 'middleware' => ['throttle:50,5', 'auth:api']], fu
 
     Route::post('/vote/{code}', 'api\votesController@vote');
 
+    Route::post('/login/getDubCode', 'Auth\LoginController@getDubCode');
     Route::post('/subscribe/{name}', 'api\subscriptionsApiController@subscribe');
     Route::post('/unsubscribe/{name}', 'api\subscriptionsApiController@unsubscribe');
 

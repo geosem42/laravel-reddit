@@ -35,6 +35,11 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/';
 
+	public function getDubCode(){
+		//$code=Auth::user()->id+
+		
+		
+	}
 
     /**
      * Override the username method used to validate login

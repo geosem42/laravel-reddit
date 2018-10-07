@@ -31,6 +31,9 @@ Route::get('/activate', 'Auth\ActivationController@activate')->name('auth.activa
 Route::get('/activate/resend', 'Auth\ActivationController@showResendForm')->name('auth.activate.resend');
 Route::post('/activate/resend', 'Auth\ActivationController@resend');
 
+
+
+
 Route::get('/sublolhows/create', 'ManageSubLolhowsController@getNewSubLolhow')->name('sublolhow.create');
 Route::post('/sublolhows/create', 'ManageSubLolhowsController@postNewSubLolhow');
 
