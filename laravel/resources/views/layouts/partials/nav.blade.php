@@ -57,7 +57,9 @@
                     @if(isset($subLolhow) && $subLolhow->icon)
                         <img style="height: 48px; margin-top: -11px;" src="/images/lolhows/icons/{{$subLolhow->icon}}" alt="lolhow">
                     @else
-                        <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile_transperent.gif')}}" alt="lolhow">
+                       <a href="https://poster.projectoblio.com/g/popular">
+				 <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile_transperent.gif')}}" alt="lolhow">
+			</a>
                     @endif
                 </div>
             </a>
@@ -95,10 +97,10 @@
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <a href="{{url('login/irt') }}">
-				<img style="width: 250px; margin-top: -11px;" src="{{url('/auth/Login.png')}}" alt="login"></img>
+				<img style="width: 200px; margin-top: -11px;" src="{{url('/auth/Login.png')}}" alt="login"></img>
 			</a> 
 			<a href="{{url('externalsignup')}}">
-				<img style="width: 113px; margin-top: -11px;" src="{{url('/auth/Register.png')}}" alt="register"></img>
+				<img style="width: 200px; margin-top: -11px;" src="{{url('/auth/Register.png')}}" alt="register"></img>
         		</a>
 	 <!--<li><a href="{{url('login/irt') }}">Login with Obliooooo!</a></li>
 		<li><a href="{{-- route('register') --}}">Register</a></li>

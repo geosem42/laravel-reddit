@@ -45,7 +45,7 @@
 
             <div class="col-sm-4 col-sm-push-8">
                 <div style="padding-bottom: 20px;" class="well search_box">
-                    <h4>Search Lolhow</h4>
+                    <h4>Search Lolhow</h4>	
                     <form method="GET" action="{{url('/search')}}">
                         <div id="custom-search-input">
                             <div class="input-group col-md-12">
