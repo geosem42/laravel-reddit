@@ -87,8 +87,15 @@ class HomeController extends Controller
                 $userVotes = $vote->where('user_id', Auth::user()->id)->whereIn('thread_id', $threadsArray)->get();
             }
         }
-    
-        $sublolhows = Subscription::with('sublolname', 'threadcount')->where('user_id', Auth::user()['id'])->limit(25)->get();
+        $sublolhows = DB::table('sub_lolhows')
+                    ->select('sub_lolhows.id', DB::raw('sum(case when ifnull(`threads`.`id`,0) > 0 then 1 else 0 end) as count'), 'sub_lolhows.name')
+                    ->leftJoin('threads', 'sub_lolhows.id', '=', 'threads.sub_lolhow_id')
+                    ->whereIn('sub_lolhows.id', Subscription::select('sub_lolhow_id')->where('user_id', Auth::user()['id'])->get())
+                    ->GroupBy('sub_lolhows.id', 'sub_lolhows.name')
+                    ->orderBy('count', 'DESC')
+                    ->limit(25)
+                    ->get();                  
+        //$sublolhows = Subscription::with('sublolname', 'threadcount')->where('user_id', Auth::user()['id'])->limit(25)->get();
         return view('home', array('threads' => $threads, 'userVotes' => $userVotes, 'sort' => $sort, 'page' => $page, 'topsublolhows' => $sublolhows));
     }
 }

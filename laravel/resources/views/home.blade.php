@@ -64,7 +64,7 @@
                         <ul class="nav post_box">
                             @if(count($topsublolhows) > 0)
                                 @foreach($topsublolhows as $sublolhows)
-                                    <li><a href="{{ url('/p') }}/{{ $sublolhows['sublolname'][0]['name'] }}"><span>{{ $sublolhows['sublolname'][0]['name'] }}</span>( {{ count($sublolhows['threadcount']) }} post)</a></li>
+                                    <li><a href="{{ url('/p') }}/{{ $sublolhows->name }}"><span>{{ $sublolhows->name }}</span>( {{ $sublolhows->count }} post)</a></li>
                                 @endforeach                          
                             @else
                                 <li>No result for Sublolhows</li>
