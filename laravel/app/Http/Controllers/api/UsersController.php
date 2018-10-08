@@ -25,7 +25,7 @@ class UsersController extends Controller
     $redirect_back=env('APP_URL').'/externalauth';
         
     //Cookie::make('redirect_back',$redirect_back);
-    setcookie("redirect_back", $redirect_back, time() + (86400 * 30), '/', 'https://distribution.projectoblio.com');
+    setcookie("redirect_back", $redirect_back, time() + (86400 * 30), '/', 'https://projectoblio.com');
 
     $external_site=env('DISTRIBUTION_URL').'externalsignup';
 
