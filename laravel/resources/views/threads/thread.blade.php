@@ -162,7 +162,8 @@
                         </div>
                     @endif
                     @if(!empty($bet))
-                        @if(isset($bet['user_id']) && $bet['user_id'] > 0)
+                        @if(isset($bet['user_id']) && $bet['user_id'] > 0)                            
+                            @if(isset($bet['status']) && $bet['status'] != 'closed')
                             <form method="post" action="{{ route('submitbet') }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="bet_id" value="{{ $bet['id'] }}">
@@ -174,6 +175,9 @@
                                 <input type="number" name="betamount" value="{{ old('betamount') }}" min="{{ $bet['initial_bet'] }}" max="1000" placeholder="Enter bet amount" class="betamount" required>
                                 <button type="submit" class="btn">Submit</button>
                             </form>
+                            @else
+                                <p class="text-danger">This bet is closed.</p>
+                            @endif
                         @else
                             <p class="text-danger">Please login to apply bet</p>
                         @endif

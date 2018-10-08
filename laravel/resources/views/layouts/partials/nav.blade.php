@@ -58,7 +58,7 @@
                         <img style="height: 48px; margin-top: -11px;" src="/images/lolhows/icons/{{$subLolhow->icon}}" alt="lolhow">
                     @else
                        <a href="https://poster.projectoblio.com/g/popular">
-				 <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile_transperent.gif')}}" alt="lolhow">
+				 <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile_transperent.gif')}}" alt="lolhow" width="50px">
 			</a>
                     @endif
                 </div>
