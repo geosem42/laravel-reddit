@@ -99,7 +99,7 @@
                     <a href="{{url('login/irt') }}">
 				<img style="width: 200px; margin-top: -11px;" src="{{url('/auth/Login.png')}}" alt="login"></img>
 			</a> 
-			<a href="{{url('externalsignup')}}">
+			<a href="https://distribution.projectoblio.com">
 				<img style="width: 200px; margin-top: -11px;" src="{{url('/auth/Register.png')}}" alt="register"></img>
         		</a>
 	 <!--<li><a href="{{url('login/irt') }}">Login with Obliooooo!</a></li>
