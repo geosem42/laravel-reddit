@@ -8,9 +8,12 @@ use App\Vote;
 use Illuminate\Support\Facades\Auth;
 use App\subLolhow;
 use GrahamCampbell\Markdown\Facades\Markdown;
+use App\PollOption;
 use App\Moderator;
 use App\BetOption;
+use App\UserPoll;
 use App\Bet;
+use App\Poll;
 use DB;
 
 class commentsController extends Controller
@@ -34,6 +37,7 @@ class commentsController extends Controller
     {
         $thread = $thread->where('code', $code)->first();
         $bets = [];
+        $polls = [];
         if($thread->type == 'bet')
         {
             $bets = Bet::where('thread_id', $thread->id)->first();
@@ -45,6 +49,14 @@ class commentsController extends Controller
                                 ->where('user_bets.bet_id', $bets->id)
                                 ->groupBy('choise_id', 'bet_options.choice')
                                 ->get();
+        }
+        elseif($thread->type == 'poll'){
+            // We will cosider bets as poll here 
+            $polls = Poll::where('thread_id', $thread->id)->first();
+            $polls['options'] = PollOption::where('poll_id', $polls->id)->orderBy('id', 'ASC')->get();
+            $polls['user']    = Auth::user();
+            $polls['results'] = UserPoll::select(DB::raw('count(*) as total, option_id'))->where('poll_id', $polls->id)->groupBy('option_id')->get();
+            $polls['count']   = UserPoll::where('poll_id', $polls->id)->count();
         }
         
         $subLolhow = $lolhow->where('name', $name)->first();
@@ -79,7 +91,7 @@ class commentsController extends Controller
         if ($request->segment(1) == 'amp') {
             return view('threads.amp_thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod, 'bet' => $bets));
         } else {
-            return view('threads.thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod, 'bet' => $bets));
+            return view('threads.thread', array('thread' => $thread, 'subLolhow' => $subLolhow, 'userVotes' => $userVotes, 'mod' => $mod, 'bet' => $bets, 'poll' => $polls));
         }
     }
 

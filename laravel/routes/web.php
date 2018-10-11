@@ -67,6 +67,8 @@ Route::get('/u/{name}/{sort}', 'userProfileController@index');
 Route::post('/updatekarma', 'userProfileController@updatekarma')->name('updatekarma');
 Route::post('/submitbet', 'BetController@submitbet')->name('submitbet');
 Route::post('/betresult', 'BetController@betresult')->name('betresult');
+Route::post('/submitpoll', 'BetController@submitpoll')->name('submitpoll');
+Route::post('/cancelbet', 'BetController@cancelbet')->name('cancelbet');
 
 Route::get('/search', 'SearchController@search');
 Route::get('/search/{sublolhow}', 'SearchController@search');

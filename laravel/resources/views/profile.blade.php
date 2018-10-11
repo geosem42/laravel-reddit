@@ -153,9 +153,22 @@
                                                     @endif
                                                 @endforeach
                                                 <button type="submit" class="btn">Submit</button>
-                                            </form>
+                                            </form>                                            
                                             @else
                                                 <p style="color: #a94442">This bet is closed</p>
+                                            @endif
+                                        @endif
+                                        @if(isset($post->type) && $post->type == 'bet' && !empty($options))
+                                            @if($options[$post->id]['status'] == 'open')
+                                                @foreach($options as $option)
+                                                    @if($option['thread_id'] == $post->id)                                                        
+                                                        <form name="betcancel_{{ $post->id }}" action="{{ route('cancelbet') }}" method="post">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <input type="hidden" name="bet_id" value="{{ $option->id }}">
+                                                            <button type="submit" class="btn">Cancel Bet</button>
+                                                        </form>
+                                                    @endif
+                                                @endforeach
                                             @endif
                                         @endif
                                     </div>

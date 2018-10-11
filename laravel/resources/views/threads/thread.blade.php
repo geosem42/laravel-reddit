@@ -84,7 +84,7 @@
                             $user = new \App\User();
                             $postername = $user->select('username','thread_karma')->where('id', $thread->poster_id)->first();
                         @endphp
-                        <p class="overflow">placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
+                        <p class="overflow">@if(!empty($poll)) <span style="background: #ccc; padding: 2px 5px;">Poll</span> @endif Placed by <a href="/u/{{$postername->username}}"><span class="{{$postername->karma_color}}">{{$postername->username}}</span></a> {{Carbon\Carbon::parse($thread->created_at)->diffForHumans()}} in
                             <a href="/p/{{$subLolhow->name}}">{{$subLolhow->name}}</a></p>
                         @if(!empty($bet))
                             <p>
@@ -100,6 +100,11 @@
                             <p style="margin-bottom: -5px;">
                                 <b>Betting close :</b> {{ $bet->betting_closes }} UTC | 
                                 <b>Resolution begins :</b> {{ $bet->resolution_paid }} UTC
+                            </p>
+                        @endif
+                        @if(!empty($poll))
+                            <p style="margin-bottom: -5px;">
+                                <b>Poll expire on : </b> {{ $poll['poll_end'] }}
                             </p>
                         @endif
                     </div>
@@ -162,26 +167,65 @@
                         </div>
                     @endif
                     @if(!empty($bet))
-                        @if(isset($bet['user_id']) && $bet['user_id'] > 0)                            
-                            @if(isset($bet['status']) && $bet['status'] != 'closed')
-                            <form method="post" action="{{ route('submitbet') }}">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="bet_id" value="{{ $bet['id'] }}">
-                                @if(!empty($bet['options']))
-                                    @foreach($bet['options'] as $option)
-                                        <input type="radio" name="option_id" value="{{ $option['id'] }}" required style="margin-left: 10px; margin-bottom: 10px;"> {{ $option['choice'] }} <br>
-                                    @endforeach
+                        @if(isset($bet['user_id']) && $bet['user_id'] > 0)
+                            @if($bet['betting_closes'] > date('Y-m-d H:i:s'))                  
+                                @if(isset($bet['status']) && $bet['status'] != 'closed')
+                                <form method="post" action="{{ route('submitbet') }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="bet_id" value="{{ $bet['id'] }}">
+                                    @if(!empty($bet['options']))
+                                        @foreach($bet['options'] as $option)
+                                            <input type="radio" name="option_id" value="{{ $option['id'] }}" required style="margin-left: 10px; margin-bottom: 10px;"> {{ $option['choice'] }} <br>
+                                        @endforeach
+                                    @endif
+                                    <input type="number" name="betamount" value="{{ old('betamount') }}" min="{{ $bet['initial_bet'] }}" max="1000" placeholder="Enter bet amount" class="betamount" required>
+                                    <button type="submit" class="btn">Submit</button>
+                                </form>
+                                @else
+                                    <p class="text-danger">This bet is closed.</p>
                                 @endif
-                                <input type="number" name="betamount" value="{{ old('betamount') }}" min="{{ $bet['initial_bet'] }}" max="1000" placeholder="Enter bet amount" class="betamount" required>
-                                <button type="submit" class="btn">Submit</button>
-                            </form>
                             @else
-                                <p class="text-danger">This bet is closed.</p>
+                                <p class="text-danger">This bet is closed.</p>    
                             @endif
                         @else
                             <p class="text-danger">Please login to apply bet</p>
                         @endif
                     @endif
+
+                    @if(!empty($poll))
+                        <div class="col-md-6"> 
+                            @if(isset($poll['user']) && count($poll['user']) > 0)
+                                @if(isset($poll['user']->thread_karma) && $poll['user']->thread_karma >= 10)
+                                    @if(isset($poll['options']) && count($poll['options']) > 0)                                                                
+                                        <form method="post" action="{{ route('submitpoll') }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="poll_id" value="{{ $poll['id'] }}">
+                                            @foreach($poll['options'] as $option)
+                                                <input type="radio" name="option_id" value="{{ $option['id'] }}" required style="margin-left: 10px; margin-bottom: 10px;"> {{ $option['choise'] }} <br>
+                                            @endforeach
+                                            <button type="submit" class="btn">Submit</button>
+                                        </form>
+                                    @endif
+                                @else
+                                    <p class="text-danger" style="margin-left: -15px;">[ You need minimum 10 karma to give answer ]</p>
+                                @endif
+                            @else
+                                <p class="text-danger">You are not login</p>
+                            @endif
+                        </div>   
+                        <div class="col-md-6">
+                            @if(isset($poll['results']) && count($poll['results']) > 0)
+                                @foreach($poll['results'] as $result)
+                                    @php $percentage = $result['total'] * 100 / $poll['count'] ; @endphp                                    
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{ $percentage }}%">
+                                        </div> &nbsp; {{ $percentage }} %
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div> 
+                        <div class="crearfix"></div> 
+                    @endif 
                 </div>
             @endif
             @if($mod)
