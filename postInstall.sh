@@ -1,0 +1,4 @@
+#!/bin/sh
+file=
+./prepend.sh "use Illuminate\Auth\Access\Gate;use Illuminate\Contracts\Auth\Access\Gate as GateContract;use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;"  $file;
+printf "public function boot(GateContract $gate){ parent::registerPolicies($gate); $gate->define('update-post', function ($user, $post, $isModerator) { if ($user->id === $post->subirt->user->id) { return true; } if ($user->id === $post->user_id) { return true; } if ($isModerator) { return true; } return false; }); $gate->define('update-sub', function($user, $subirt) { if($user->id === $subirt->user->id) { return true; } return false; }); $gate->define('update-comment', function($user, $comment, $isModerator) { if($user->id === $comment->user_id) { return true; } if ($isModerator) { return true; } });}" >> $file

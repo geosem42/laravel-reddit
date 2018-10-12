@@ -1,5 +1,9 @@
 /vendor
+./laravel/vendor
 /node_modules
 Homestead.yaml
-.env
 .idea
+
+laravel/vendor/*
+laravel/vendor/
+/laravel/nbproject/private/
