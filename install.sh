@@ -17,9 +17,9 @@ curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh; sudo bash 
 add-apt-repository ppa:ondrej/php -y; 
 apt-get update --allow-unauthenticated; 
 apt-get install php7.2-fpm php7.2-common php7.2-mbstring php7.2-xmlrpc php7.2-soap php7.2-gd php7.2-xml php7.2-intl php7.2-mysql php7.2-cli php7.2-zip php7.2-curl nano -y --allow-unauthenticated; 
-mysql -uroot -p -e "SET GLOBAL slow_query_log = 'ON';SET GLOBAL long_query_time = 0;SET GLOBAL slow_query_log_file = '/var/lib/mysql/mysqllog.log';"
+#mysql -uroot -p -e "SET GLOBAL slow_query_log = 'ON';SET GLOBAL long_query_time = 0;SET GLOBAL slow_query_log_file = '/var/lib/mysql/mysqllog.log';"
 mysql -uroot -panyPassword -e "set global general_log = 'ON'; set global general_log_file='/var/lib/mysql/general.log'";
-
+mysql -uroot -panyPassword -e "CREATE EVENT 'prune_general_log' ON SCHEDULE EVERY 1 DAY STARTS '2013-10-18' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'This will trim the gene ral_log table to contain only the past 24 hours of logs.' DO BEGIN SET GLOBAL general_log = 'OFF';  RENAME TABLE mysql.general_log TO mysql.general_log2; DELETE FROM mysql.general_log2 WHERE event_time &lt;= NOW()-INTERVAL 24 HOUR; OPTIMIZE TABLE general_log2; RENAME TABLE mysql.general_log2 TO mysql.general_log; SET GLOBAL general_log = 'ON'; ";
 cp php.ini /etc/php/7.2/fpm/php.ini;
 cp nginx-default /etc/nginx/sites-available/default; 
 systemctl reload nginx; 
