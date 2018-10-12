@@ -8,6 +8,12 @@ apt-get install -y --no-install-recommends apt-utils;
 apt-get install software-properties-common -y;  
 apt-get -y install mysql-server; 
 
+sudo apt-get install nodejs npm -y;
+sudo apt-get install nodejs-legacy -y;
+sudo apt-get install curl -y ; 
+curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh; sudo bash  nodesource_setup.sh; sudo apt-get update; sudo apt-get install nodejs -y;
+
+
 add-apt-repository ppa:ondrej/php -y; 
 apt-get update --allow-unauthenticated; 
 apt-get install php7.2-fpm php7.2-common php7.2-mbstring php7.2-xmlrpc php7.2-soap php7.2-gd php7.2-xml php7.2-intl php7.2-mysql php7.2-cli php7.2-zip php7.2-curl nano -y --allow-unauthenticated; 

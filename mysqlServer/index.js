@@ -1,3 +1,5 @@
+'use strict'
+
 const Tail = require('tail').Tail;
 var tail = new Tail("/var/lib/mysql/general.log");
 tail.watch()
