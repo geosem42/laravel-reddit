@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\GetRedditPost::class,
+        \App\Console\Commands\ReadBets::class,
+        \App\Console\Commands\ReadPoll::class,
+        \App\Console\Commands\ReadResult::class,
     ];
 
     /**

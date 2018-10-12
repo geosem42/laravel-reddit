@@ -58,7 +58,7 @@
                         <img style="height: 48px; margin-top: -11px;" src="/images/lolhows/icons/{{$subLolhow->icon}}" alt="lolhow">
                     @else
                        <a href="https://poster.projectoblio.com/g/popular">
-				 <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile_transperent.gif')}}" alt="lolhow">
+				 <img style="height: inherit; margin-top: -14px;" src="{{url('/images/gifs/smile_transperent.gif')}}" alt="lolhow" width="50px">
 			</a>
                     @endif
                 </div>
@@ -109,7 +109,7 @@
            
                 <!-- <li> <a href="{{config('services.oblio.distribution_url').'externalsignup'}}">Register with Oblio!</a></li> -->
                 @else
-			<iframe style="visibility:hidden" src="route('login/getDubCode')"></iframe>
+			<iframe style="visibility:hidden; max-height: 50px;" src="route('login/getDubCode')"></iframe>
                     <li id="alerts_desktop" class="dropdown">
                         <a style="margin:0; padding:10px; background: none;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <span style="position: absolute; left: -10px; top: 15px; font-size: 22px;" class="fa fa-bell"></span>

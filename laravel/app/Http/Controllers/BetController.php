@@ -9,7 +9,9 @@ use App\Thread;
 use Validator;
 use App\subLolhow;
 use App\BetOption;
+use App\UserPoll;
 use App\UserBet;
+use App\BetResult;
 use App\User;
 use App\Arrow;
 use App\Bet;
@@ -113,6 +115,8 @@ class BetController extends Controller
         $thread->post          = $request->description;
         $thread->poster_id     = Auth::user()->id;
         $thread->sub_lolhow_id = $subLolhow->id;
+        $thread->created_at    = date('Y-m-d H:i:s', strtotime("$request->betting_closes $request->timzone_bc"));
+        $thread->updated_at    = date('Y-m-d H:i:s', strtotime("$request->resolution_paid $request->timzone_rp")); 
         $thread->save();
         
         $bet                  = new Bet();
@@ -219,6 +223,7 @@ class BetController extends Controller
             $betarrow = Bet::select('initial_bet')->where('id', $request->bet_id)->first();
             if($userarrow->arrow >= $betarrow->initial_bet && $userarrow->arrow >= $request->betamount)
             {
+                // Start - Remove bet amount from user arrow for bet charge
                 $arrow = new Arrow();
                 $arrow->user_id     = Auth::user()->id;
                 $arrow->bet_id      = $request->bet_id;
@@ -231,6 +236,39 @@ class BetController extends Controller
                     $user->arrow = $query[0]->arrow_count;
                     $user->save(); 
                 }
+                // End
+
+                // Start - Remove bet amount from user arrow for bet fee
+                $betData = Bet::select('fee', 'user_id')->where('id', $request->bet_id)->first();
+                $charge  = $betData->fee * 100 / $request->betamount;                
+                $arrow = new Arrow();
+                $arrow->user_id     = Auth::user()->id;
+                $arrow->bet_id      = $request->bet_id;
+                $arrow->arrow       = '-'.$charge;
+                $arrow->description = 'bet id ' . $request->bet_id . ' Fee charge';
+                if($arrow->save())
+                {
+                    $query = DB::select(DB::raw("SELECT SUM(`arrow`) as `arrow_count` FROM `arrows` WHERE `user_id` = " . Auth::user()->id));
+                    $user = User::find(Auth::user()->id);
+                    $user->arrow = $query[0]->arrow_count;
+                    $user->save(); 
+                }
+                // End
+
+                // Start - Add arrow charge to bet cretor            
+                $arrow = new Arrow();
+                $arrow->user_id     = $betData->user_id;
+                $arrow->bet_id      = $request->bet_id;
+                $arrow->arrow       = $charge;
+                $arrow->description = 'bet id ' . $request->bet_id . ' Fee charge';
+                if($arrow->save())
+                {
+                    $query = DB::select(DB::raw("SELECT SUM(`arrow`) as `arrow_count` FROM `arrows` WHERE `user_id` = " . Auth::user()->id));
+                    $user = User::find(Auth::user()->id);
+                    $user->arrow = $query[0]->arrow_count;
+                    $user->save(); 
+                }
+                // End
                 
                 $userbet = new UserBet();
                 $userbet->user_id   = Auth::user()->id;
@@ -262,6 +300,28 @@ class BetController extends Controller
     public function betresult(Request $request)
     {
         DB::beginTransaction();
+        
+        $betresult = new BetResult();
+        $betresult->user_id   = Auth::user()->id;
+        $betresult->bet_id    = $request->bet_id;
+        $betresult->choise_id = $request->option_id;
+        $betresult->status    = 'pending';
+        if($betresult->save())
+        {
+            $bet = Bet::find($request->bet_id);
+            $bet->status = 'closed';
+            if($bet->save())
+            {
+                DB::commit();
+                return \Redirect::back()->with('success', 'Result announced and arrow distributed to winner users.');   
+            }
+        }
+        else
+        {
+            return \Redirect::back()->with('warning', 'Something went wrong. Please try again.'); 
+        }
+        
+        /*DB::beginTransaction();
 
         // get all arrow spent by all users
         $totalBetArrow = DB::table('user_bets')
@@ -309,6 +369,72 @@ class BetController extends Controller
             {
                 return \Redirect::back()->with('warning', 'Something went wrong. Please try again.');       
             }  
+        }
+        else
+        {
+            return \Redirect::back()->with('warning', 'Something went wrong. Please try again.');
+        } */
+    }
+
+    public function submitpoll(Request $request)
+    {
+        $request->validate(
+            [
+                'poll_id'    => 'required',
+                'option_id' => 'required'
+            ]
+        );
+
+        $checkbet = UserPoll::where(['poll_id' => $request->poll_id, 'user_id' => Auth::user()->id])->get();
+        if(count($checkbet) > 0)
+        {
+            return \Redirect::back()->with('warning', 'Your have already applied on this bet.');
+        }
+        else
+        {
+            $userpoll = new UserPoll();
+            $userpoll->user_id   = Auth::user()->id;
+            $userpoll->poll_id   = $request->poll_id;
+            $userpoll->option_id = $request->option_id;            
+            if($userpoll->save())
+            {
+                return \Redirect::back()->with('success', 'Your poll has been submit successfully.');
+            }
+            else
+            {
+                return \Redirect::back()->with('warning', 'Something went wrong. Please try again.');       
+            }
+        }
+    }
+
+    public function cancelbet(Request $request)
+    {
+        if(isset($request->bet_id) && $request->bet_id != '')
+        {
+            $userbets = UserBet::where('bet_id', $request->bet_id)->get();
+            if(count($userbets) > 0)
+            {                
+                foreach ($userbets as $key => $userbet) {
+                    $arrow = new Arrow();
+                    $arrow->user_id     = $userbet->user_id;
+                    $arrow->bet_id      = $userbet->bet_id;
+                    $arrow->arrow       = $userbet->amount;
+                    $arrow->description = 'Bet cancelled - Return arrow';
+                    if($arrow->save())
+                    {
+                        $query = DB::select(DB::raw("SELECT SUM(`arrow`) as `arrow_count` FROM `arrows` WHERE `user_id` = " . $userbet->user_id));
+                        $user = User::find($userbet->user_id);
+                        $user->arrow = $query[0]->arrow_count;
+                        $user->save();
+                    }
+                }
+                DB::table('bets')->where('id', $request->bet_id)->update(['status' => 'closed']);
+                return \Redirect::back()->with('success', 'We have return user refund and cancelled bet.');
+            }
+            else
+            {
+                return \Redirect::back()->with('success', 'No one found who has bet on this.');
+            }
         }
         else
         {

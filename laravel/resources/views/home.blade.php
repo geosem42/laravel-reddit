@@ -64,7 +64,7 @@
                         <ul class="nav post_box">
                             @if(count($topsublolhows) > 0)
                                 @foreach($topsublolhows as $sublolhows)
-                                    <li><a href="{{ url('/p') }}/{{ $sublolhows['sublolname'][0]['name'] }}"><span>{{ $sublolhows['sublolname'][0]['name'] }}</span>( {{ count($sublolhows['threadcount']) }} post)</a></li>
+                                    <li><a href="{{ url('/p') }}/{{ $sublolhows->name }}"><span>{{ $sublolhows->name }}</span>( {{ $sublolhows->count }} post)</a></li>
                                 @endforeach                          
                             @else
                                 <li>No result for Sublolhows</li>
@@ -80,8 +80,20 @@
                 @foreach($threads as $thread)
                     @php $postername = $user->select('username', 'thread_karma')->where('id', $thread->poster_id)->first(); @endphp
                     @php $lolhow = \App\subLolhow::select('id', 'name')->where('id', $thread->sub_lolhow_id)->first(); @endphp
-                    @php $type = (isset($thread->type) && $thread->type == 'bet') ? '[Bet]' : ''; @endphp
-
+                    <?php 
+                        if(isset($thread->type) && $thread->type == 'bet')
+                        {
+                            $type = '[Bet]';
+                        }
+                        elseif(isset($thread->type) && $thread->type == 'poll')
+                        {
+                            $type = '[Poll]';
+                        }
+                        else
+                        {
+                            $type = '';
+                        }
+                    ?>
                     <div class="thread @if($first) first  @php $first = false @endphp @endif">
                         <div style="min-width: 40px;" class="votes col-xs-1">
                             <div style="margin-bottom: -5px; font-size: 20px;" class="row stack">
@@ -105,7 +117,7 @@
                                 <a href="/p/{{$lolhow->name}}">{{$lolhow->name}}</a></p>
                             <a href="{{url('/')}}/p/{{$lolhow->name}}/comments/{{$thread->code}}/{{str_slug($thread->title)}}"><p class="overflow" style="margin-top: -10px;"><strong>{{$thread->reply_count}} {{str_plural('reply', $thread->reply_count)}}</strong></p></a>
                         </div>
-                    </div>
+                    </div>                    
                 @endforeach
            </div>
                 @php unset($thread); // Unset variable so it doesn't get confused with a normal thread @endphp

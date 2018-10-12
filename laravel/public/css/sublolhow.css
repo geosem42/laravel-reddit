@@ -105,6 +105,10 @@ ul.nav.post_box a:hover{
     margin: 0px 20px 0px 10px;
 }
 
+.crearfix{
+    clear: both;
+}
+
 @media screen and (max-width: 560px) {
     .tabmenu {
         position: absolute;
