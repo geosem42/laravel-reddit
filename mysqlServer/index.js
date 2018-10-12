@@ -77,7 +77,9 @@ tail.watch();
 var writeCommands=["insert","replace","update"];
 tail.on("line", data => {
 	var command=data.split("\t")[2];
-	if(writeCommands.indexOf(command)>-1){
+	var commandSplit=command.split(" ");
+	
+	if(writeCommands.indexOf(commandSplit[0])>-1){
 		console.log(command);
 		commandStruct={};
 		commandStruct["command"]=command;
@@ -87,7 +89,7 @@ tail.on("line", data => {
 		}catch(err){
 			console.log("could not send this tx");
 		}
-		mysqlCommand("");
+		//mysqlCommand("");
 		//request("https://poster.projectoblio.com/sendTx?struct="+
 	}
  
