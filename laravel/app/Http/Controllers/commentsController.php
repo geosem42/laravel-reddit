@@ -63,7 +63,7 @@ class commentsController extends Controller
                                 ->where('poll_options.poll_id', $polls->id)
                                 ->groupBy('poll_options.id')
                                 ->get()->toArray();
-//            dd($polls['results']);
+
             $polls['isUserAnswered'] =  UserPoll::where([['poll_id', $polls->id],['user_id', Auth::user()->id]])->count();
             $polls['count']   = UserPoll::where('poll_id', $polls->id)->count();
         }
