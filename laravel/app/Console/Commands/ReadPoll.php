@@ -54,9 +54,15 @@ class ReadPoll extends Command
         // Step 4.1.1 : 
         // Step 4.1.2 : Else then extend this poll to 1o Days
         
-        //$today = date('Y-m-d H:i:s');
-        $today = "2018-10-23 10:13:02";
-        $polls = Poll::with('bet_result', 'poll_result')->where(['poll_end' => $today, 'status' => 'open'])->get();        
+        $today = date('Y-m-d H:i');
+//        $today = "2018-10-23 10:13";
+        
+        $polls = Poll::with('bet_result', 'poll_result')
+//                ->where(['poll_end' => $today, 'status' => 'open'])
+                ->where(DB::raw("DATE_FORMAT(poll_end,'%Y-%m-%d %H:%i')"), $today)
+                ->where('status','open')
+                ->get();
+        
         if(count($polls) > 0)
         {
             foreach ($polls as $key => $poll) {                
@@ -65,7 +71,7 @@ class ReadPoll extends Command
                 $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                 $days   = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
                 
-                if($days >= 10) // 10 Days period poll
+                if($days >= config('settings.secondBetToPollDays')) // 10 Days period poll
                 {
                     $results = UserPoll::select(DB::raw('count(*) as total, option_id'))->where('poll_id', $poll->id)->groupBy('option_id')->get();
                     if(count($results) > 0)
@@ -82,6 +88,7 @@ class ReadPoll extends Command
                         $pollresult = new PollResult();
                         $pollresult->poll_id   = $poll->id;
                         $pollresult->choise_id = $result_option;
+                        $pollresult->updated_at = date("Y-m-d H:i:s", strtotime('+10 minutes'));
                         if($pollresult->save())
                         {
                             $pollupdate = Poll::find($poll->id);
@@ -99,9 +106,9 @@ class ReadPoll extends Command
                         echo "\n";
                     }
                 }
-                else // 2 Days period poll
+                else // 2(from config variable firstBetToPollDays) Days period poll
                 {
-                    if($days == 2)
+                    if($days == config('settings.firstBetToPollDays'))
                     {
                         if(count($poll['bet_result']) > 0)
                         {
@@ -126,6 +133,7 @@ class ReadPoll extends Command
                                 $pollresult = new PollResult();
                                 $pollresult->poll_id   = $poll->id;
                                 $pollresult->choise_id = $result_option;
+                                $pollresult->updated_at = date("Y-m-d H:i:s", strtotime('+10 minutes'));
                                 if($pollresult->save())
                                 {
                                     $pollupdate = Poll::find($poll->id);
@@ -137,7 +145,7 @@ class ReadPoll extends Command
                                     }
                                 }
                             }
-                            else // Result not then dispute and poll will be extend for 10 days
+                            else // Result not then dispute and poll will be extend for 10(from config variable secondBetToPollDays) days
                             {
                                 $pollOptionDetails  = PollOption::select('id')->where('choise', $bet_option->choice)->first();
                                 $bet_poll_option_id = $pollOptionDetails->id;
@@ -157,10 +165,10 @@ class ReadPoll extends Command
                                     if($percentagefordispute > 20)
                                     {
                                         $pollupdate = Poll::find($poll->id);
-                                        $pollupdate->poll_end = date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + 240 * 3600 );
+                                        $pollupdate->poll_end = date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + (24 * config('settings.secondBetToPollDays')) * 3600 );
                                         if($pollupdate->save())
                                         {
-                                            echo "Poll id - " . $poll->id . " +10 Days from " . $poll->poll_end.  " to " . date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + 240 * 3600 );
+                                            echo "Poll id - " . $poll->id . " +10 Days from " . $poll->poll_end.  " to " . date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + (24 * config('settings.secondBetToPollDays')) * 3600 );
                                             echo "\n";
                                         }
                                     }
@@ -168,10 +176,10 @@ class ReadPoll extends Command
                                 else
                                 {
                                     $pollupdate = Poll::find($poll->id);
-                                    $pollupdate->poll_end = date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + 240 * 3600 );
+                                    $pollupdate->poll_end = date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + (24 * config('settings.secondBetToPollDays')) * 3600 );
                                     if($pollupdate->save())
                                     {
-                                        echo "Poll id - " . $poll->id . " +10 Days from " . $poll->poll_end.  " to " . date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + 240 * 3600 );
+                                        echo "Poll id - " . $poll->id . " +10 Days from " . $poll->poll_end.  " to " . date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + (24 * config('settings.secondBetToPollDays')) * 3600 );
                                         echo "\n";
                                     }
                                 }
@@ -180,10 +188,10 @@ class ReadPoll extends Command
                         else
                         {
                             $pollupdate = Poll::find($poll->id);
-                            $pollupdate->poll_end = date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + 240 * 3600 );
+                            $pollupdate->poll_end = date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + (24 * config('settings.secondBetToPollDays')) * 3600 );
                             if($pollupdate->save())
                             {
-                                echo "Poll id - " . $poll->id . " +10 Days from " . $poll->poll_end.  " to " . date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + 240 * 3600 );
+                                echo "Poll id - " . $poll->id . " +10 Days from " . $poll->poll_end.  " to " . date( "Y-m-d H:i:s", strtotime( $poll->poll_end ) + (24 * config('settings.secondBetToPollDays')) * 3600 );
                                 echo "\n";
                             }
                         }

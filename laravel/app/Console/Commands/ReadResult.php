@@ -45,9 +45,14 @@ class ReadResult extends Command
      */
     public function handle()
     {        
-        //$today = date('Y-m-d H:i:s');
-        $today = '2018-10-11 10:31:15';
-        $polls = PollResult::with('option_name', 'poll_details')->where('updated_at', $today)->get();
+        $today = date('Y-m-d H:i');
+//        $today = '2018-10-11 10:31';
+        
+        $polls = PollResult::with('option_name', 'poll_details')
+//                ->where('updated_at', $today)
+                ->where(DB::raw("DATE_FORMAT(updated_at,'%Y-%m-%d %H:%i')"), $today)
+                ->get();
+        
         if(count($polls) > 0)
         {
             foreach ($polls as $key => $poll) 

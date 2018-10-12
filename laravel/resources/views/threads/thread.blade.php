@@ -40,6 +40,9 @@
             color: {{$subLolhow->color}};
         }
         @endif
+        .post .progress {
+            margin-bottom: 4px !important;
+        }
     </style>
     @if($subLolhow->custom_css)
         <link rel="stylesheet" href="{{asset('cdn/css/'.$subLolhow->name.'.css')}}">
@@ -193,37 +196,45 @@
                     @endif
 
                     @if(!empty($poll))
-                        <div class="col-md-6"> 
-                            @if(isset($poll['user']) && count($poll['user']) > 0)
-                                @if(isset($poll['user']->thread_karma) && $poll['user']->thread_karma >= 10)
-                                    @if(isset($poll['options']) && count($poll['options']) > 0)                                                                
-                                        <form method="post" action="{{ route('submitpoll') }}">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="hidden" name="poll_id" value="{{ $poll['id'] }}">
-                                            @foreach($poll['options'] as $option)
-                                                <input type="radio" name="option_id" value="{{ $option['id'] }}" required style="margin-left: 10px; margin-bottom: 10px;"> {{ $option['choise'] }} <br>
-                                            @endforeach
-                                            <button type="submit" class="btn">Submit</button>
-                                        </form>
+                        @if($poll['isUserAnswered'] <= 0)
+                            <div class="col-md-6"> 
+                                @if(isset($poll['user']) && count($poll['user']) > 0)
+                                    @if(isset($poll['user']->thread_karma) && $poll['user']->thread_karma >= $poll['minimum_karma'])
+                                        @if(isset($poll['options']) && count($poll['options']) > 0)                                                                
+                                            <form method="post" action="{{ route('submitpoll') }}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="poll_id" value="{{ $poll['id'] }}">
+                                                @foreach($poll['options'] as $option)
+                                                    <input type="radio" name="option_id" value="{{ $option['id'] }}" required style="margin-left: 10px; margin-bottom: 10px;"> {{ $option['choise'] }} <br>
+                                                @endforeach
+                                                <button type="submit" class="btn">Submit</button>
+                                            </form>
+                                        @endif
+                                    @else
+                                        <p class="text-danger" style="margin-left: -15px;">[ You need minimum {{$poll['minimum_karma']}} karma to give answer ]</p>
                                     @endif
                                 @else
-                                    <p class="text-danger" style="margin-left: -15px;">[ You need minimum 10 karma to give answer ]</p>
+                                    <p class="text-danger">You are not login</p>
                                 @endif
-                            @else
-                                <p class="text-danger">You are not login</p>
-                            @endif
-                        </div>   
-                        <div class="col-md-6">
-                            @if(isset($poll['results']) && count($poll['results']) > 0)
-                                @foreach($poll['results'] as $result)
-                                    @php $percentage = $result['total'] * 100 / $poll['count'] ; @endphp                                    
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{ $percentage }}%">
-                                        </div> &nbsp; {{ $percentage }} %
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div> 
+                            </div>   
+                        @else
+                            <div class="col-md-6">
+                                @if(isset($poll['results']) && count($poll['results']) > 0)
+                                    @foreach($poll['results'] as $result)
+                                        @if($result->option_id == NULL)
+                                            @php $percentage = 0; @endphp
+                                        @else
+                                            @php $percentage = round($result->total * 100 / $poll['count'], 2) ; @endphp
+                                        @endif
+                                        @php echo $result->choise; @endphp
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{ $percentage }}%">
+                                            </div> &nbsp; {{ $percentage }} %
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div> 
+                        @endif
                         <div class="crearfix"></div> 
                     @endif 
                 </div>

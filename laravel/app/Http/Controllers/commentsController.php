@@ -35,6 +35,7 @@ class commentsController extends Controller
      */
     public function index($name, $code, Request $request, Thread $thread, Vote $vote, subLolhow $lolhow, Moderator $moderator)
     {
+//        dd(config('settings.minKarmaValueForPoll')); 
         $thread = $thread->where('code', $code)->first();
         $bets = [];
         $polls = [];
@@ -55,7 +56,15 @@ class commentsController extends Controller
             $polls = Poll::where('thread_id', $thread->id)->first();
             $polls['options'] = PollOption::where('poll_id', $polls->id)->orderBy('id', 'ASC')->get();
             $polls['user']    = Auth::user();
-            $polls['results'] = UserPoll::select(DB::raw('count(*) as total, option_id'))->where('poll_id', $polls->id)->groupBy('option_id')->get();
+//            $polls['results'] = UserPoll::select(DB::raw('count(*) as total, option_id'))->where('poll_id', $polls->id)->groupBy('option_id')->get();
+            $polls['results'] = DB::table('poll_options')
+                                ->select(DB::raw('count(*) as total, option_id, poll_options.id, poll_options.choise'))
+                                ->leftjoin('user_polls', 'poll_options.id', '=','user_polls.option_id')
+                                ->where('poll_options.poll_id', $polls->id)
+                                ->groupBy('poll_options.id')
+                                ->get()->toArray();
+//            dd($polls['results']);
+            $polls['isUserAnswered'] =  UserPoll::where([['poll_id', $polls->id],['user_id', Auth::user()->id]])->count();
             $polls['count']   = UserPoll::where('poll_id', $polls->id)->count();
         }
         

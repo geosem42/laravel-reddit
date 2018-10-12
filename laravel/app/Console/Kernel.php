@@ -31,6 +31,9 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->command('reddit:post')->cron('0 */3 * * *');
+        $schedule->command('read:bets')->everyMinute();
+        $schedule->command('read:poll')->everyMinute();
+        $schedule->command('read:result')->everyMinute();
     }
 
     /**

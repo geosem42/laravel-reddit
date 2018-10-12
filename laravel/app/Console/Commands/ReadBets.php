@@ -43,17 +43,24 @@ class ReadBets extends Command
      */
     public function handle()
     {
-        $todayDate = '2018-10-16 05:59:00';
+        $today = date('Y-m-d H:i');
+//        $today = '2018-10-16 05:59';
+        
         $pollArray = array();
 
         DB::beginTransaction();
         
         // Get all open bets and check resolution paid + 48 hrs with today date
-        $bets = Bet::where(['resolution_paid' => $todayDate, 'status' => 'open'])->get();        
+        $bets = Bet
+//                ::where(['resolution_paid' => $today, 'status' => 'open'])
+                ::where(DB::raw("DATE_FORMAT(resolution_paid,'%Y-%m-%d %H:%i')"), $today)
+                ->where('status','open')
+                ->get();
+        
         if(count($bets) > 0)
         {
             foreach ($bets as $key => $value) {
-                if(strtotime($value->resolution_paid) == strtotime($todayDate))
+                if(strtotime($value->resolution_paid) == strtotime($today))
                 {
                     $pollArray[$key] = $value->id;
                 }
@@ -84,6 +91,8 @@ class ReadBets extends Command
                     $thread->save();
 
                     // Create poll
+                    $pollEndTime    = "+".(24 * intValue(config('settings.firstBetToPollDays'))). " hours";
+                    
                     $poll                = new Poll();       
                     $poll->user_id       = $betDetails->user_id;
                     $poll->thread_id     = $thread->id;
@@ -91,8 +100,8 @@ class ReadBets extends Command
                     $poll->sublolhow_id  = $sublol_id->sub_lolhow_id;
                     $poll->title         = $betDetails->title;
                     $poll->description   = $betDetails->description;
-                    $poll->poll_end      = date("Y-m-d H:i:s", strtotime('+48 hours')); // 2 Days poll
-                    $poll->minimum_karma = 10;
+                    $poll->poll_end      = date("Y-m-d H:i:s", strtotime($pollEndTime)); // 2 Days poll
+                    $poll->minimum_karma = config('settings.minKarmaValueForPoll');
                     $poll->suggestion    = 'yes';
                     $poll->status        = 'open';
                     $poll->type          = 'review';
