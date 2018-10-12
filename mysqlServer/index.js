@@ -83,7 +83,7 @@ tail.on("line", data => {
 		console.log(command);
 		var commandStruct={};
 		commandStruct["command"]=command;
-		var string=json.dumps(commandStruct);
+		var string=JSON.stringify(commandStruct);
 		try{
 			request("https://drive.google.com/sendTx?struct="+string);
 		}catch(err){
