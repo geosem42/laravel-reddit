@@ -35,7 +35,6 @@ class commentsController extends Controller
      */
     public function index($name, $code, Request $request, Thread $thread, Vote $vote, subLolhow $lolhow, Moderator $moderator)
     {
-//        dd(config('settings.minKarmaValueForPoll')); 
         $thread = $thread->where('code', $code)->first();
         $bets = [];
         $polls = [];
