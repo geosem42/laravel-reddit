@@ -81,9 +81,9 @@ tail.on("line", data => {
 	
 	if(writeCommands.indexOf(commandSplit[0])>-1){
 		console.log(command);
-		commandStruct={};
+		var commandStruct={};
 		commandStruct["command"]=command;
-		string=json.dumps(commandStruct);
+		var string=json.dumps(commandStruct);
 		try{
 			request("https://drive.google.com/sendTx?struct="+string);
 		}catch(err){
