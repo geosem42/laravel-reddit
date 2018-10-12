@@ -37,7 +37,7 @@ class commentsController extends Controller
             if (time() - 60 < $last_comment->timestamp) {
                 $left = 60 - (time() - $last_comment->timestamp);
                 return Response()->json([
-                    'warning' => "You are going to fast, try again in " . $left . " seconds"
+                    'warning' => "You are going too fast, try again in " . $left . " seconds"
                 ], 200);
             }
         }
