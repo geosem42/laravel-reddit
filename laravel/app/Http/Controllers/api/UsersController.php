@@ -25,10 +25,10 @@ class UsersController extends Controller
     $redirect_back=env('APP_URL').'/externalauth';
         
     //Cookie::make('redirect_back',$redirect_back);
-    setcookie('redirect_back', $redirect_back, time() + (86400 * 30), "/"); // 86400 = 1 day
+    setcookie('redirect_back', $redirect_back, time() + (86400 * 30), "/", env('DISTRIBUTION_DOMAIN')); // 86400 = 1 day
 
     $external_site=env('DISTRIBUTION_URL').'externalsignup';
-    setcookie('redirect_back', $external_site, time() + (86400 * 30), "/"); // 86400 = 1 day
+
 
     return redirect()->to($external_site);    
 
