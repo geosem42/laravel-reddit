@@ -21,13 +21,13 @@ class UsersController extends Controller
 {
  
     public function externalsignup(Request $request){
- 
+    
     $redirect_back=env('APP_URL').'/externalauth';
         
     //Cookie::make('redirect_back',$redirect_back);
-    setcookie('redirect_back', $redirect_back, time() + (86400 * 30), "/"); // 86400 = 1 day
+    //setcookie('redirect_back', $redirect_back, time() + (86400 * 30), "/"); // 86400 = 1 day
 
-    $external_site=env('DISTRIBUTION_URL').'externalsignup';
+    $external_site=env('DISTRIBUTION_URL').'externalsignup/'.md5('redirect_back')."/";
 
 
     return redirect()->to($external_site);    
