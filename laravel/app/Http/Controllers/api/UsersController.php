@@ -28,7 +28,7 @@ class UsersController extends Controller
     setcookie('redirect_back', $redirect_back, time() + (86400 * 30), "/"); // 86400 = 1 day
 
     $external_site=env('DISTRIBUTION_URL').'externalsignup';
-
+    setcookie('redirect_back', $external_site, time() + (86400 * 30), "/"); // 86400 = 1 day
 
     return redirect()->to($external_site);    
 
