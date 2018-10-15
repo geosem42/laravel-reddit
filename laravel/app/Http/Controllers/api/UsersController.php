@@ -21,7 +21,7 @@ class UsersController extends Controller
 {
  
     public function externalsignup(Request $request){
-        dd(123);
+        
     $redirect_back=env('APP_URL').'/externalauth';
         
     //Cookie::make('redirect_back',$redirect_back);
