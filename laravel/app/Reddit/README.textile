@@ -1,0 +1,474 @@
+h1. Reddit PHP SDK
+
+The Reddit SDK is a wrapper around the Reddit OAuth 2 API: http://www.reddit.com/dev/api/oauth
+
+h2. Initiating Your Login Session
+
+Before making requests to any of the methods of the Reddit SDK, you first need to instantiate a new OAuth 2 session by using your client id and client secret.  You may obtain these keys by creating a new app at https://ssl.reddit.com/prefs/apps and posting the key and secret into the appropriate sections in config.php.
+<notextile>
+<pre>
+require_once("reddit.php");
+$reddit = new reddit();
+</pre>
+</notextile>
+
+h2. How to Build the Fullname Parameters
+
+Frequently within these SDK methods, you will see parameters that reference the fullname or id of a message, comment, account, etc (e.g. values like t4_1kuinv).  The Reddit API uses identifiers that consist of a prefix to identify the type of the fullname (e.g. t3_ or t4_), and the identifier of that thing (e.g. 1kuinv).  To build a fullname of a thing, you must take its id, and add the prefix to the front.
+
+The following is a list of prefixes that the Reddit API uses, and the type of thing that they reference:
+* t1_ : Comment
+* t2_ : Account
+* t3_ : Link
+* t4_ : Message
+* t5_ : Subreddit
+* t6_ : Award
+* t8_ : PromoCampaign
+
+h2. SDK Methods
+
+Once you are authenticated, you may then make requests to any of the methods in the SDK.
+
+*Needs CAPTCHA*
+Checks whether CAPTCHAs are needed for API endpoints
+@link http://www.reddit.com/dev/api/oauth#GET_api_needs_captcha.json
+<notextile>
+<pre>
+$response = $reddit->getCaptchaReqs();
+</pre>
+</notextile>
+
+*Get New CAPTCHA*
+Gets the iden of a new CAPTCHA, if the user cannot read the current one
+@link http://www.reddit.com/dev/api/oauth#POST_api_new_captcha
+<notextile>
+<pre>
+$response = $reddit->getNewCaptcha();
+$iden = $response->json->data->iden;
+</pre>
+</notextile>
+
+*Get CAPTCHA Image*
+Fetches a new CAPTCHA image from a given iden value
+@link http://www.reddit.com/dev/api/oauth#GET_captcha_{iden}
+@param string $iden The iden value of a new CAPTCHA from getNewCaptcha method
+<notextile>
+<pre>
+$response = $reddit->getNewCaptcha();
+$iden = $response->json->data->iden;
+$image = $reddit->getCaptchaImg($iden);
+$im = imagecreatefromstring($image);
+if ($im !== false){
+    header('Content-Type: image/png');
+    imagepng($im);
+    imagedestroy($im);
+} else {
+    echo 'An error occurred';
+}
+</pre>
+</notextile>
+
+*Creating a New Story*
+Creates a new story on a particular subreddit
+@link http://www.reddit.com/dev/api/oauth#POST_api_submit
+@param string $title The title of the story
+@param string $link The link that the story should forward to
+@param string $subreddit The subreddit where the story should be added
+<notextile>
+<pre>
+$title = "MakerBot Releases IPad App For Easy 3D Printing";
+$link = "http://makezine.com/2014/07/01/makerbot-realeases-ipad-app-for-easy-3d-printing/";
+$subreddit = "technology";
+$response = $reddit->createStory($title, $link, $subreddit);
+</pre>
+</notextile>
+
+*Get User Information*
+Get data for the current user
+@link http://www.reddit.com/dev/api#GET_api_v1_me
+<notextile>
+<pre>
+$userData = $reddit->getUser();
+</pre>
+</notextile>
+
+*Get User Preferences*
+Get preference data for the current user based on fields provided
+@link http://www.reddit.com/dev/api/oauth#GET_api_v1_me_prefs
+@param string $fields A comma separated list of pref data to return. Full list at
+                       http://www.reddit.com/dev/api/oauth#GET_api_v1_me_prefs.
+<notextile>
+<pre>
+$userPrefs = $reddit->getUserPrefs("num_comments,min_comment_score,private_feeds");
+</pre>
+</notextile>
+
+*Get User Trophies*
+Get current user trophies
+@link http://www.reddit.com/dev/api/oauth#GET_api_v1_me_trophies
+<notextile>
+<pre>
+$userTrophies = $reddit->getUserTrophies();
+</pre>
+</notextile>
+
+*Get User Karma Information*
+Get breakdown of karma for the current user
+@link http://www.reddit.com/dev/api/oauth#GET_api_v1_me_karma
+<notextile>
+<pre>
+$karma = $reddit->getKarma();
+</pre>
+</notextile>
+
+*Get Friend Information*
+Get information about a specified friend
+@link http://www.reddit.com/dev/api/oauth#GET_api_v1_me_friends_{username}
+@param string $username The username of a friend to search for details on
+<notextile>
+<pre>
+$response = $reddit->getFriendInfo("jcleblanc");
+</pre>
+</notextile>
+
+*Get Subreddit Relationship Information*
+Get relationship information for subreddits that user belongs to
+@link http://www.reddit.com/dev/api/oauth#GET_subreddits_mine_{where}
+@param string $where The subreddit relationship to search for.  One of
+                      subscriber, contributor, or moderator
+@param int $limit The number of results to return. Default = 25, Max = 100.
+@param string $after The fullname of a thing to return results after
+@param string $before The fullname of a thing to return results before
+<notextile>
+<pre>
+$subRel = $reddit->getSubRel("subscriber", 15);
+</pre>
+</notextile>
+
+*Get Messages (inbox / unread / sent)*
+Get messages (inbox / unread / sent) for the current user
+@link http://www.reddit.com/dev/api/oauth#GET_message_inbox
+@param string $where The message type to return. One of inbox, unread, or sent
+<notextile>
+<pre>
+$response = $reddit->getMessages("inbox");  //get inbox messages
+$response = $reddit->getMessages("unread"); //get unread messages
+$response = $reddit->getMessages("sent");   //get sent messages
+</pre>
+</notextile>
+
+*Send a Message to Another User*
+Send a message to another user, from the current user
+@link http://www.reddit.com/dev/api/oauth#POST_api_compose
+@param string $to The name of a existing user to send the message to
+@param string $subject The subject of the message, no longer than 100 characters
+@param string $text The content of the message, in raw markdown
+<notextile>
+<pre>
+$response = $reddit->sendMessage("jcleblanc", "Look at this message!", "Hey!\n\n**[search!](http://www.google.com/)**");
+</pre>
+</notextile>
+
+*Set the Read/Unread State of a Series of Messages*
+Sets the read and unread state of a comma separates list of messages
+@link http://www.reddit.com/dev/api/oauth#POST_api_read_message
+@link http://www.reddit.com/dev/api/oauth#POST_api_unread_message
+@param string $state The state to set the messages to, either read or unread
+@param string $subject A comma separated list of message fullnames (t4_ and the message id - e.g. t4_1kuinv). 
+<notextile>
+<pre>
+$response = $reddit->setMessageState("read", "t4_1kuinv,t4_1kriyc");
+$response = $reddit->setMessageState("unread", "t4_1kuinv,t4_1kriyc");
+</pre>
+</notextile>
+
+*Block Content via Inbox*
+Sets a given piece of content to a blocked state via the inbox
+@link http://www.reddit.com/dev/api/oauth#POST_api_block
+@param string $id The full name of the content to block (e.g. t4_ and the message id - t4_1kuinv). 
+<notextile>
+<pre>
+$response = $reddit->setContentBlock("t4_1kuinv");
+</pre>
+</notextile>
+
+*Delete Link or Comment*
+Deletes a given link or comment created by the user
+@link http://www.reddit.com/dev/api/oauth#POST_api_del
+@param string $id The fullname of the link or comment to delete (e.g. t3_1kuinv for link, t1_1kuinv for comment). 
+<notextile>
+<pre>
+$response = $reddit->deleteContent("t1_1kuinv");  //comment
+$response = $reddit->deleteContent("t3_1kuinv");  //link
+</pre>
+</notextile>
+
+*Edit Comment or Self Post*
+Edits the content of a self post or comment created by the user
+@link http://www.reddit.com/dev/api/oauth#POST_api_editusertext
+@param string $id The fullname of the link or comment to delete (e.g. t3_1kuinv for link, t1_1kuinv for comment).
+@param string $text The raw markdown text to replace the content with. 
+<notextile>
+<pre>
+$response = $reddit->editContent("t1_cj9qdna", "test\n\n**[test link](http://www.google.com/)**");
+</pre>
+</notextile>
+
+*Set Link Reply State*
+Enable or disable inbox replies for a link
+@link http://www.reddit.com/dev/api/oauth#POST_api_sendreplies
+@param string $id The fullname of the link to set the inbox reply state for.
+@param bool $state The state to set the link to.  true = enable inbox replies, false = disable inbox replies.
+<notextile>
+<pre>
+$response = $reddit->setReplyState("t3_2bxop3", true);
+</pre>
+</notextile>
+
+*Get User Subscriptions*
+Get the subscriptions that the user is subscribed to, has contributed to, or is moderator of
+@link http://www.reddit.com/dev/api#GET_subreddits_mine_contributor
+@param string $where The subscription content to obtain. One of subscriber, contributor, or moderator
+<notextile>
+<pre>
+$subscriptions = $reddit->getSubscriptions();
+</pre>
+</notextile>
+
+*Get Page Information*
+Get information on a URLs submission on Reddit
+@link http://www.reddit.com/dev/api#GET_api_info
+@param string $url The URL to get information for
+<notextile>
+<pre>
+$pageInfo = $reddit->getPageInfo("http://i.imgur.com/QxdCd.jpg");
+</pre>
+</notextile>
+
+*Get Subreddit Text*
+Get the submission text for a given subreddit
+@link http://www.reddit.com/dev/api/oauth#GET_api_submit_text.json
+@param string $sr The subreddit to get submission text for
+<notextile>
+<pre>
+$subText = $reddit->getSubText("politics");
+</pre>
+</notextile>
+
+*Save Story*
+Save a post to your account.  Save feeds:
+http://www.reddit.com/saved/.xml
+http://www.reddit.com/saved/.json
+@link http://www.reddit.com/dev/api#POST_api_save
+@param string $name the full name of the post to save (name parameter
+                    in the getSubscriptions() return value)
+@param string $category the categorty to save the post to (Reddit gold only)
+<notextile>
+<pre>
+$response = $reddit->savePost("t3_n6ocq");
+</pre>
+</notextile>
+
+*Unsave Story*
+Unsave a saved post from your account
+@link http://www.reddit.com/dev/api#POST_api_unsave
+@param string $name the full name of the post to unsave (name parameter
+                     in the getSubscriptions() return value)
+<notextile>
+<pre>
+$response = $reddit->unsavePost("t3_n6ocq");
+</pre>
+</notextile>
+
+*Get Saved Categories (Reddit gold only)*
+Get a list of categories in which things are currently saved
+@link http://www.reddit.com/dev/api/oauth#GET_api_saved_categories.json
+<notextile>
+<pre>
+$savedCats = $reddit->getSavedCats();
+</pre>
+</notextile>
+
+*Hide, Unhide, or Report Post*
+Hide or unhide a post on your account
+Hide, unhide, or report a post on your account
+@link http://www.reddit.com/dev/api/oauth#POST_api_hide
+@link http://www.reddit.com/dev/api/oauth#POST_api_unhide
+@link http://www.reddit.com/dev/api/oauth#POST_api_report
+@param string $state The state to set the post to, either hide, unhide, or report
+@param string $name The fullname of the post to hide, unhide, or report (name
+                     parameter in the getSubscriptions() return value)
+<notextile>
+<pre>
+$response = $reddit->setPostReportState("hide", "t3_n6ocq");
+$response = $reddit->setPostReportState("unhide", "t3_n6ocq");
+$response = $reddit->setPostReportState("report", "t3_n6ocq");
+</pre>
+</notextile>
+
+*Get Posts*
+Get the listing of submissions from a subreddit
+@link http://www.reddit.com/dev/api#GET_listing
+@param string $sr The subreddit name. Ex: technology, limit (integer): The number of posts to gather
+@param int $limit The number of listings to return
+<notextile>
+<pre>
+$response = $reddit->getListing("technology", 5);
+</pre>
+</notextile>
+
+*Get Historic User Data*
+Get the historical data of a user
+@link http://www.reddit.com/dev/api/oauth#scope_history
+@param string $username the desired user. Must be already authenticated.
+@param string $where the data to retrieve. One of overview,submitted,comments,liked,disliked,hidden,saved,gilded
+<notextile>
+<pre>
+$response = $reddit->getHistory("USERNAME", "liked");
+</pre>
+</notextile>
+
+*Get Raw JSON*
+Get Raw JSON for a reddit permalink
+@param string $permalink permalink to get raw JSON for
+<notextile>
+<pre>
+$response = $reddit->getRawJSON("/r/funny/comments/12ma0a/this_guy_showed_up_at_our_party_last_night_didnt/");
+</pre>
+<pre>
+//get the JSON for the top technology post
+$response1 = $reddit->getListing("technology", 1);
+$response2 = $reddit->getRawJSON($response1->data->children[0)]->data->permalink);
+</pre>
+</notextile>
+
+*Search Content Within Subreddit*
+Get the listing of submissions from a subreddit
+@link https://www.reddit.com/dev/api#GET_search
+@param string $query The query to search for
+@param int $count The number of results to return
+@param string $t The timeframe of results to return, one of (hour, day, week, month, year, all)
+@param string $after The fullname of a thing to search for results after
+@param string $before The fullname of a thing to search for results before
+<notextile>
+<pre>
+$response = $reddit->search("cat", "pics", 20);
+</pre>
+</notextile>
+
+*Search Subreddits*
+Get the listing of subreddit from a search
+@link http://www.reddit.com/dev/api/oauth#GET_subreddits_search
+@param string $query The query to search for
+@param int $count The number of results to return
+@param string $after The fullname of a thing to search for results after
+@param string $before The fullname of a thing to search for results before
+<notextile>
+<pre>
+$response = $reddit->search_sr("penguins", 20);
+</pre>
+</notextile>
+
+*Get All Subreddits*
+Get results for all subreddits combined, sorted by new / popular
+@link http://www.reddit.com/dev/api/oauth#GET_subreddits_{where}
+@param string $where The fetch method, either new or popular
+@param int $limit The number of results to return (max 100)
+@param string $after The fullname of a post which results should be returned after 
+@param string $before The fullname of a post which results should be returned before
+<notextile>
+<pre>
+$response = $reddit->getAllSubs("new", 5);
+$response = $reddit->getAllSubs("popular", 45);
+</pre>
+</notextile>
+
+*Add Comment*
+Add a new comment to a story
+@link http://www.reddit.com/dev/api/oauth#POST_api_comment
+@param string $name The full name of the post to comment (name parameter
+                    in the getSubscriptions() return value)
+@param string $text The comment markup
+<notextile>
+<pre>
+$response = $reddit->addComment("t3_jp2k7", "Hey!\n\n**[search!](http://www.google.com/)**");
+</pre>
+</notextile>
+
+*Add Vote*
+Adds a vote (up / down / neutral) on a story
+@link http://www.reddit.com/dev/api/oauth#POST_api_vote
+@param string $name The full name of the post to vote on (name parameter
+                     in the getSubscriptions() return value)
+@param int $vote The vote to be made (1 = upvote, 0 = no vote,
+                  -1 = downvote)
+<notextile>
+<pre>
+$response = $reddit->addVote("t3_n6ocq", 1);
+</pre>
+</notextile>
+
+*Set or Clear a User's Flair in a Subreddit*
+Set or clear a user's flair in a subreddit
+@link http://www.reddit.com/dev/api/oauth#POST_api_flair
+@param string $subreddit The subreddit to use
+@param string $user The name of the user
+@param string $text Flair text to assign
+@param string $cssClass CSS class to assign to the flair text
+<notextile>
+<pre>
+$response = $reddit->setFlair("motorcycles", "jcleblanc", "ZZR600", "kawasaki");
+</pre>
+</notextile>
+
+*Download the Flair Assignments of a Subreddit*
+Download the flair assignments of a subreddit
+@link http://www.reddit.com/dev/api/oauth#GET_api_flairlist
+@param string $subreddit The subreddit to use
+@param int $limit The maximum number of items to return (max 1000)
+@param string $after Return entries starting after this user
+@param string $before Return entries starting before this user
+<notextile>
+<pre>
+$response = $reddit->getFlairList("motorcycles", 100, "t2_39qab", "t2_39qab");
+</pre>
+</notextile>
+
+*Post a CSV File of Flair Settings to a Subreddit*
+Post a CSV file of flair settings to a subreddit
+@link http://www.reddit.com/dev/api/oauth#POST_api_flaircsv
+@param string $subreddit The subreddit to use
+@param string $flairCSV CSV file contents, up to 100 lines
+<notextile>
+<pre>
+$response = $reddit->setFlairCSV("motorcycles", "jcleblanc,ZZR600,kawasaki\n...");
+</pre>
+</notextile>
+
+h2. Other Resources
+
+The following are additional resources available for this SDK
+
+* "Drupal Module":https://github.com/ethanteague/redditview (created by "@ethanteague":https://github.com/ethanteague): A Drupal module that wraps this SDK
+
+h2. License
+
+Copyright (c) 2015 Jonathan LeBlanc (http://jcleblanc.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

@@ -1,0 +1,17 @@
+{
+  "name": "mysqlserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eth-crypto": "^1.2.4",
+    "mysql": "^2.16.0",
+    "request": "^2.88.0",
+    "tail": "^2.0.0"
+  }
+}

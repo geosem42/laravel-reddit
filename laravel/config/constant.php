@@ -1,0 +1,8 @@
+<?php
+
+return [
+
+"KARMA_COLOR_MIN_VALUE" => env("KARMA_COLOR_MIN_VALUE", 50),
+"KARMA_COLOR_MAX_VALUE" => env("KARMA_COLOR_MAX_VALUE", 50),
+
+];
